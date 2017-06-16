@@ -11,4 +11,6 @@ public class Global {
 	// Proxy
 	public static final String COMMON_PROXY = "wurmatron.spiritsofthegalaxy.common.proxy.CommonProxy";
 	public static final String CLIENT_PROXY = "wurmatron.spiritsofthegalaxy.client.proxy.ClientProxy";
+
+	public static int TILE_INDEX = 0;
 }
