@@ -24,10 +24,7 @@ minecraft {
     replaceIn "Global.java"
 }
 
-repositories {
-    maven { url = "http://dvs1.progwml6.com/files/maven" }
-    maven { url "http://tehnut.info/maven/" }
-}
+repositories {}
 
 dependencies {}
 
