@@ -1,0 +1,10 @@
+# Creative Tabs
+itemGroup.tabSprites=Sprites Of The Galaxy
+
+# Block
+tile.controller.name=Habitat Controller
+tile.tunnel.name=Sprite Tunnel
+
+# Gui
+stat.population.name=Population
+stat.food.name=Food

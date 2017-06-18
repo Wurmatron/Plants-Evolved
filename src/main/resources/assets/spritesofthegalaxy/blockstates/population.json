@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "tier=1": { "model":"spritesofthegalaxy:population1" },
+        "tier=2": { "model":"spritesofthegalaxy:population2" },
+        "tier=3": { "model":"spritesofthegalaxy:population3" },
+        "tier=4": { "model":"spritesofthegalaxy:population4" },
+        "tier=5": { "model":"spritesofthegalaxy:population5" },
+        "tier=6": { "model":"spritesofthegalaxy:population6" },
+        "tier=7": { "model":"spritesofthegalaxy:population7" },
+        "tier=8": { "model":"spritesofthegalaxy:population8" },
+        "tier=9": { "model":"spritesofthegalaxy:population9" },
+        "tier=10": { "model":"spritesofthegalaxy:population10" },
+        "tier=11": { "model":"spritesofthegalaxy:population11" },
+        "tier=12": { "model":"spritesofthegalaxy:population12" },
+        "tier=13": { "model":"spritesofthegalaxy:population13" },
+        "tier=14": { "model":"spritesofthegalaxy:population14" },
+        "tier=15": { "model":"spritesofthegalaxy:population15" },
+        "tier=16": { "model":"spritesofthegalaxy:population16" }
+      }
+}
