@@ -1,5 +1,7 @@
 package wurmatron.spritesofthegalaxy.common.utils;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,5 +35,15 @@ public class LogHandler {
 	public static void debug (String msg) {
 		if (Settings.debug)
 			log (Level.INFO,msg);
+	}
+
+	public static void serverInfo (String msg) {
+		if (FMLCommonHandler.instance ().getSide () == Side.SERVER)
+			info (msg);
+	}
+
+	public static void clientInfo (String msg) {
+		if (FMLCommonHandler.instance ().getSide () == Side.CLIENT)
+			info (msg);
 	}
 }

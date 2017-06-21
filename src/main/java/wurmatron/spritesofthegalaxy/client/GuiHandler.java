@@ -30,7 +30,6 @@ public class GuiHandler implements IGuiHandler {
 	@Nullable
 	@Override
 	public Object getClientGuiElement (int ID,EntityPlayer player,World world,int x,int y,int z) {
-		LogHandler.info ("" + world.isRemote);
 		switch (ID) {
 			case (OVERVIEW):
 				return new GuiOverview ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));

@@ -1,11 +1,11 @@
 package wurmatron.spritesofthegalaxy.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
+import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
+import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class GuiHabitatBase extends GuiScreen {
 	protected void actionPerformed (GuiButton button) throws IOException {
 		switch (button.id) {
 			case (0):
-				Minecraft.getMinecraft ().player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,Minecraft.getMinecraft ().player.world,(int) Minecraft.getMinecraft ().player.posX,(int) Minecraft.getMinecraft ().player.posY,(int) Minecraft.getMinecraft ().player.posZ);
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.OVERVIEW, tile.getCore ()));
 		}
 	}
 }
