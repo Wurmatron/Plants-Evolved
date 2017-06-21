@@ -16,12 +16,13 @@ import java.util.List;
 public class ConfigGui extends GuiConfig {
 
 	public ConfigGui (GuiScreen parent) {
-		super (parent,getConfigElements (),Global.MODID,false,false,"Spirits Of The Galaxy Configuration");
+		super (parent,getConfigElements (),Global.MODID,false,false,"Sprites Of The Galaxy Configuration");
 	}
 
 	private static List <IConfigElement> getConfigElements () {
 		List <IConfigElement> list = new ArrayList <> ();
 		list.add (categoryElement (Configuration.CATEGORY_GENERAL,"General","config.category.general"));
+		list.add (categoryElement (Global.HABITAT,"Habitat", "config.category.habitat"));
 		return list;
 	}
 

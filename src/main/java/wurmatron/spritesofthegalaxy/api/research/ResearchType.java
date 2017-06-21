@@ -4,12 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 public enum ResearchType {
 
-	ARGICULTURE("agriculture",new ResourceLocation("","")),
-	INDUSTRY("industry", new ResourceLocation ("", "")),
-	PRODUCTION("production", new ResourceLocation ("", "")),
-	RESEARCH("research", new ResourceLocation ("", "")),
-	MAGIC("magic", new ResourceLocation ("", "")),
-	UNIQUE("unique", new ResourceLocation("",""));
+	ARGICULTURE ("agriculture",new ResourceLocation ("","")),INDUSTRY ("industry",new ResourceLocation ("","")),PRODUCTION ("production",new ResourceLocation ("","")),RESEARCH ("research",new ResourceLocation ("","")),MAGIC ("magic",new ResourceLocation ("","")),UNIQUE ("unique",new ResourceLocation ("",""));
 
 	private final String displayKey;
 	private final ResourceLocation icon;

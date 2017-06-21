@@ -3,16 +3,16 @@ package wurmatron.spritesofthegalaxy.api.mutiblock;
 public interface IModuleStorage {
 
 	/**
-	 * What this module stores
+	 What this module stores
 	 */
-		StorageType getStorageType();
+	StorageType getStorageType ();
 
 	/**
-	 * Maximum amount of storage
+	 Maximum amount of storage
 	 */
-	int getBaseStorage();
+	int getBaseStorage ();
 
-	 enum StorageType {
-		POPULATION, ENERGY, FOOD, WATER, RESOURCE
+	enum StorageType {
+		POPULATION,ENERGY,FOOD,WATER,RESOURCE
 	}
 }

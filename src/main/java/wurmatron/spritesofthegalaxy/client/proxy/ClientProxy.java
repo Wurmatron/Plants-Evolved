@@ -2,22 +2,18 @@ package wurmatron.spritesofthegalaxy.client.proxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
-import wurmatron.spritesofthegalaxy.common.items.ModuleItemBlock;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {

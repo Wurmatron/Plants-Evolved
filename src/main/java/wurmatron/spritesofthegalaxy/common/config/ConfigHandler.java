@@ -19,6 +19,10 @@ public class ConfigHandler {
 	// General
 	private static Property debug;
 	private static Property maxTier;
+	// Habitat Config
+	private static Property maxPopulation;
+	private static Property populationFoodRequirement;
+	private static Property populationGrowth;
 
 	public static void preInit (FMLPreInitializationEvent e) {
 		config = new Configuration (e.getSuggestedConfigurationFile ());
@@ -29,8 +33,15 @@ public class ConfigHandler {
 		// General
 		debug = config.get (Configuration.CATEGORY_GENERAL,"Debug",Defaults.debug,"Enable debug mode");
 		Settings.debug = debug.getBoolean ();
-		maxTier = config.get (Configuration.CATEGORY_GENERAL, "maxTier", Defaults.maxTier, "Max Tier for Modules",1,16);
+		maxTier = config.get (Configuration.CATEGORY_GENERAL,"maxTier",Defaults.maxTier,"Max Tier for Modules",1,16);
 		Settings.maxTier = maxTier.getInt ();
+		// Habitat
+		maxPopulation = config.get (Global.HABITAT,"defaultMaxPopulation",Defaults.maxPopulation,"Max Population for a newly created Habitat",1,Integer.MAX_VALUE);
+		Settings.maxPopulation = maxPopulation.getInt ();
+		populationFoodRequirement = config.get (Global.HABITAT,"populationFoodRequirement",Defaults.foodRequirement,"Amount of food required per population",1,100000);
+		Settings.populationFoodRequirement = populationFoodRequirement.getInt ();
+		populationGrowth = config.get (Global.HABITAT,"populationGrowth",Defaults.populationGrowth,"Rate of population gpopulationGrowthrowth",1.01,100000);
+		Settings.populationGrowth = populationGrowth.getDouble ();
 
 		if (!DIRECTORY.exists ())
 			DIRECTORY.mkdir ();

@@ -1,13 +1,10 @@
 package wurmatron.spritesofthegalaxy.common.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.proxy.ClientProxy;
-import wurmatron.spritesofthegalaxy.common.items.ModuleItemBlock;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
 

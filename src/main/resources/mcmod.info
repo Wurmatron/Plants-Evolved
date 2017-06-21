@@ -1,16 +1,18 @@
 [
-{
-  "modid": "spiritsofthegalaxy",
-  "name": "Spirits Of The Galaxy",
-  "description": "",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Wurmatron"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "spritesofthegalaxy",
+    "name": "Sprites Of The Galaxy",
+    "description": "",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Wurmatron"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]

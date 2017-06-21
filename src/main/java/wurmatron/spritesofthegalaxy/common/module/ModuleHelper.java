@@ -9,7 +9,7 @@ public class ModuleHelper {
 
 	// Storage
 	public static final ModuleStorage population = new ModuleStorage ("population",ModuleType.STORAGE,Settings.maxTier,null,IModuleStorage.StorageType.POPULATION,10);
-	public static final ModuleStorage garden = new ModuleStorage ("garden", ModuleType.STORAGE, Settings.maxTier, null, IModuleStorage.StorageType.FOOD, 9);
+	public static final ModuleStorage garden = new ModuleStorage ("garden",ModuleType.STORAGE,Settings.maxTier,null,IModuleStorage.StorageType.FOOD,9);
 
 	public static void registerModules () {
 		SpritesOfTheGalaxyAPI.register (population);

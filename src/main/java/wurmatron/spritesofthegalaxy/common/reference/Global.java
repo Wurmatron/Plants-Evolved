@@ -11,4 +11,6 @@ public class Global {
 	// Proxy
 	public static final String COMMON_PROXY = "wurmatron.spritesofthegalaxy.common.proxy.CommonProxy";
 	public static final String CLIENT_PROXY = "wurmatron.spritesofthegalaxy.client.proxy.ClientProxy";
+	// Config
+	public static final String HABITAT = "habitat";
 }

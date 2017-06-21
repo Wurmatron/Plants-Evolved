@@ -5,22 +5,22 @@ import wurmatron.spritesofthegalaxy.api.research.IResearch;
 public interface IModule {
 
 	/**
-	 * Name for This Module
+	 Name for This Module
 	 */
 	String getName ();
 
 	/**
-	 * Type of this Module
+	 Type of this Module
 	 */
-	ModuleType getType();
+	ModuleType getType ();
 
 	/**
-	 * Max Tier for this Module
+	 Max Tier for this Module
 	 */
-	int getMaxTier();
+	int getMaxTier ();
 
 	/**
-	 * Research required to use this Module
+	 Research required to use this Module
 	 */
-	IResearch getResearch();
+	IResearch getResearch ();
 }
