@@ -9,7 +9,7 @@ import wurmatron.spritesofthegalaxy.client.gui.GuiIncome;
 import wurmatron.spritesofthegalaxy.client.gui.GuiInfo;
 import wurmatron.spritesofthegalaxy.client.gui.GuiOverview;
 import wurmatron.spritesofthegalaxy.client.gui.GuiStats;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatController;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import javax.annotation.Nullable;
@@ -33,13 +33,13 @@ public class GuiHandler implements IGuiHandler {
 		LogHandler.info ("" + world.isRemote);
 		switch (ID) {
 			case (OVERVIEW):
-				return new GuiOverview ((TileHabitatController) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiOverview ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (INCOME):
-				return new GuiIncome ((TileHabitatController) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiIncome ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (STATS):
-				return new GuiStats ((TileHabitatController) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStats ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (INFO):
-				return new GuiInfo ((TileHabitatController) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiInfo ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			default:
 				return null;
 		}

@@ -1,5 +1,5 @@
 {
-  "parent":"spritesofthegalaxy:block/tunnel",
+  "parent":"spritesofthegalaxy:block/core",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

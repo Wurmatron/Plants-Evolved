@@ -11,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import wurmatron.spritesofthegalaxy.common.blocks.BlockModule;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
 import wurmatron.spritesofthegalaxy.common.items.ModuleItemBlock;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
@@ -25,7 +24,6 @@ public class ClientProxy extends CommonProxy {
 
 	public static List <Block> blocks = new ArrayList <> ();
 	public static List <Item> items = new ArrayList <> ();
-	public static HashMap <BlockModule, ModuleItemBlock> moduleBlocks = new HashMap <> ();
 
 	@Override
 	public void onSideOnly () {
@@ -34,12 +32,6 @@ public class ClientProxy extends CommonProxy {
 			createModel (block);
 		for (Item item : items)
 			createModel (item);
-		for (BlockModule module : moduleBlocks.keySet ())
-			for (int tier = 0; tier < module.module.getMaxTier (); tier++) {
-				ModelLoader.setCustomModelResourceLocation (Item.getItemFromBlock (module),tier,new ModelResourceLocation (Global.MODID + ":" + module.getUnlocalizedName ().substring (5),"inventory"));
-				ModelLoader.setCustomModelResourceLocation (moduleBlocks.get (module),tier,new ModelResourceLocation (Global.MODID + ":" + module.getUnlocalizedName ().substring (5),"inventory"));
-				ModelBakery.registerItemVariants (Item.getItemFromBlock (module),new ResourceLocation (Global.MODID,module.getUnlocalizedName ().substring (5)));
-			}
 	}
 
 	private static void createModel (Block item) {

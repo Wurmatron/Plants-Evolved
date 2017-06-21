@@ -1,16 +1,18 @@
 package wurmatron.spritesofthegalaxy.client.gui;
 
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatController;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 public class GuiInfo extends GuiOverview {
 
-	public GuiInfo (TileHabitatController tile) {
+	public GuiInfo (TileHabitatCore tile) {
 		super (tile);
 	}
 
 	@Override
 	public void initGui () {
 		super.initGui ();
-		info.enabled = false;
+		income.visible = false;
+		info.visible = false;
+		stats.visible = false;
 	}
 }

@@ -2,8 +2,8 @@
 itemGroup.tabSprites=Sprites Of The Galaxy
 
 # Block
-tile.controller.name=Habitat Controller
-tile.tunnel.name=Sprite Tunnel
+tile.core.name=Habitat Core
+tile.casing.name=Habitat Casing
 
 # Gui
 stat.population.name=Population

@@ -1,5 +1,5 @@
 {
-  "parent":"spritesofthegalaxy:block/controller",
+  "parent":"spritesofthegalaxy:block/casing",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

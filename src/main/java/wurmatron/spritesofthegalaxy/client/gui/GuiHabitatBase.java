@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatController;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 
@@ -20,9 +20,9 @@ public class GuiHabitatBase extends GuiScreen {
 	protected GuiButton storage;
 	protected GuiButton research;
 
-	protected TileHabitatController tile;
+	protected TileHabitatCore tile;
 
-	public GuiHabitatBase (TileHabitatController tile) {
+	public GuiHabitatBase (TileHabitatCore tile) {
 		this.tile = tile;
 	}
 

@@ -1,7 +1,5 @@
 package wurmatron.spritesofthegalaxy.common.blocks;
 
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,21 +12,20 @@ import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
-import wurmatron.spritesofthegalaxy.common.network.client.UpdateHabitatMessage;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatController;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import javax.annotation.Nullable;
 
-public class ControllerBlock extends BlockContainer {
+public class CoreBlock extends BlockMutiBlock {
 
-	public ControllerBlock (Material material) {
-		super (material);
+	public CoreBlock () {
+		super ();
 	}
 
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {
-		return new TileHabitatController ();
+		return new TileHabitatCore ();
 	}
 
 	@Override
@@ -41,9 +38,8 @@ public class ControllerBlock extends BlockContainer {
 	public boolean onBlockActivated (World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
 		if (!world.isRemote) {
 			player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,pos.getX (),pos.getY (),pos.getZ ());
-			world.getTileEntity (pos).markDirty ();
-			NetworkHandler.sendTo (new UpdateHabitatMessage (pos,world.getTileEntity (pos).getTileData ()),(EntityPlayerMP) player);
+			return true;
 		}
-		return true;
+		return false;
 	}
 }
