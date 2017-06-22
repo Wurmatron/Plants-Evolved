@@ -2,9 +2,11 @@ package wurmatron.spritesofthegalaxy.common.reference;
 
 public class Local {
 
-	// Gui
+	// Stats
 	public static final String POPULATION = "stat.population.name";
 	public static final String FOOD = "stat.food.name";
+	public static final String LINEAGE = "stat.lineage.name";
+	// Gui
 	public static final String INCOME = "gui.income.name";
 	public static final String STATS = "gui.stats.name";
 	public static final String INFO = "gui.info.name";
@@ -21,5 +23,4 @@ public class Local {
 	public static final String RESEARCH_RESEARCH = "gui.researchResearch.name";
 	public static final String RESEARCH_MAGIC = "gui.researchMagic.name";
 	public static final String RESEARCH_UNIQUE = "gui.researchUnique.name";
-
 }

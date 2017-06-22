@@ -19,12 +19,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private static final long UPDATE_TIME = 1000;
 
 	private boolean update = false;
-	private int maxPopulation = Settings.maxPopulation;
-	private int food = Settings.populationFoodRequirement * Settings.maxPopulation;
+	private int maxPopulation = Settings.startPopulation + 100;
+	private int food = Settings.populationFoodRequirement * Settings.startPopulation + 100;
 	private long lastUpdate;
 	private HashMap <String, Integer> items = new HashMap <> ();
-	// TEMP
-	private double population = 1;
+	private ItemStack colonyItem;
 
 	@Override
 	public void update () {
@@ -58,8 +57,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			if (item != ItemStack.EMPTY && item.getItem () != Item.getItemFromBlock (Blocks.AIR))
 				items.put (convertToData (item),amount);
 		}
-		// Temp
-		population = nbt.getDouble ("population");
+		colonyItem = convertToStack (nbt.getString (NBT.COLONY));
 		markDirty ();
 	}
 
@@ -79,8 +77,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			invList.setTag (Integer.toString (index),temp);
 		}
 		nbt.setTag (NBT.INVENTORY,invList);
-		// Temp
-		nbt.setDouble ("population",population);
+		nbt.setString (NBT.COLONY,convertToData (colonyItem));
 		super.writeToNBT (nbt);
 		return nbt;
 	}
@@ -90,11 +87,17 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public double getPopulation () {
-		return population;
+		if (hasColony () && getColony ().getTagCompound () != null)
+			return getColony ().getTagCompound ().getDouble (NBT.POPULATION);
+		return -1;
 	}
 
 	public void setPopulation (double pop) {
-		this.population = pop;
+		if (hasColony () && getColony ().getTagCompound () != null) {
+			ItemStack colony = getColony ();
+			colony.getTagCompound ().setDouble (NBT.POPULATION,pop);
+			addColony (colony);
+		}
 	}
 
 	public int getFood () {
@@ -132,8 +135,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	private String convertToData (ItemStack item) {
-		item.setCount (1);
-		return StackHelper.convertToString (item);
+		if (item != null) {
+			item.setCount (1);
+			return StackHelper.convertToString (item);
+		}
+		return "";
 	}
 
 	private ItemStack convertToStack (String stack) {
@@ -154,7 +160,19 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	@Override
 	public void onDataPacket (NetworkManager net,SPacketUpdateTileEntity packet) {
-		population = packet.getNbtCompound ().getDouble ("population");
 		readFromNBT (packet.getNbtCompound ());
+	}
+
+	public void addColony (ItemStack stack) {
+		this.colonyItem = stack;
+		markDirty ();
+	}
+
+	public ItemStack getColony () {
+		return colonyItem;
+	}
+
+	public boolean hasColony () {
+		return colonyItem != null && colonyItem != ItemStack.EMPTY;
 	}
 }

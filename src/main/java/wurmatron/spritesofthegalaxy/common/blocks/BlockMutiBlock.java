@@ -5,6 +5,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -14,7 +15,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
+import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import javax.annotation.Nullable;
 
@@ -51,9 +55,23 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 	@Override
 	public boolean onBlockActivated (World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
 		TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
+		boolean added = false;
 		if (tile != null && tile.getCore () != null) {
-			BlockPos loc = tile.getCore () != null ? tile.getCore () : pos;
-			player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,loc.getX (),loc.getY (),loc.getZ ());
+			if (world.getTileEntity (tile.getCore ()) != null && world.getTileEntity (tile.getCore ()) instanceof TileHabitatCore) {
+				TileHabitatCore core = (TileHabitatCore) world.getTileEntity (tile.getCore ());
+				if (player.getHeldItemMainhand () != ItemStack.EMPTY && player.getHeldItemMainhand ().getItem () == SpriteItems.spriteColony && core != null && !core.hasColony ()) {
+					core.addColony (player.getHeldItemMainhand ());
+					player.inventory.deleteStack (player.getHeldItemMainhand ());
+					added = true;
+				} else if (player.getHeldItemMainhand () == ItemStack.EMPTY && core != null && player.isSneaking () && core.hasColony ()) {
+					player.inventory.addItemStackToInventory (core.getColony ());
+					core.addColony (null);
+				}
+			}
+			if (!player.isSneaking () && !added) {
+				BlockPos loc = tile.getCore () != null ? tile.getCore () : pos;
+				player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,loc.getX (),loc.getY (),loc.getZ ());
+			}
 			return true;
 		}
 		return false;

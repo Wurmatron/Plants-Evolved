@@ -7,7 +7,7 @@ public class Settings {
 	public static int maxTier;
 
 	 // Habitat
-	public static int maxPopulation;
+	public static int startPopulation;
 	public static int populationFoodRequirement;
 	public static double populationGrowth;
 }

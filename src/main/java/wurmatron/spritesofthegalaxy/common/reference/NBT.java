@@ -11,4 +11,9 @@ public class NBT {
 	public static final String INVENTORY = "inv";
 	public static final String AMOUNT = "amount";
 	public static final String ITEM = "item";
+	public static final String COLONY = "colony";
+
+	// Item
+	public static final String LINEAGE = "lineage";
+	public static final String POPULATION = "population";
 }

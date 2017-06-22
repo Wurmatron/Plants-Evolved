@@ -37,7 +37,7 @@ public class ConfigHandler {
 		Settings.maxTier = maxTier.getInt ();
 		// Habitat
 		maxPopulation = config.get (Global.HABITAT,"defaultMaxPopulation",Defaults.maxPopulation,"Max Population for a newly created Habitat",1,Integer.MAX_VALUE);
-		Settings.maxPopulation = maxPopulation.getInt ();
+		Settings.startPopulation = maxPopulation.getInt ();
 		populationFoodRequirement = config.get (Global.HABITAT,"populationFoodRequirement",Defaults.foodRequirement,"Amount of food required per population",1,100000);
 		Settings.populationFoodRequirement = populationFoodRequirement.getInt ();
 		populationGrowth = config.get (Global.HABITAT,"populationGrowth",Defaults.populationGrowth,"Rate of population gpopulationGrowthrowth",1.01,100000);
