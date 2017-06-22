@@ -16,7 +16,7 @@ public class GuiHabitatBase extends GuiScreen {
 	// Top Bar
 	protected GuiButton overview;
 	protected GuiButton population;
-	protected GuiButton resourceProduction;
+	protected GuiButton manage;
 	protected GuiButton storage;
 	protected GuiButton research;
 
@@ -38,7 +38,7 @@ public class GuiHabitatBase extends GuiScreen {
 		int buttonHeight = height / 20;
 		buttonList.add (overview = new GuiTexturedButton (0,startWidth,buttonHeight,width / 6,buttonHeight,"Overview"));
 		buttonList.add (population = new GuiTexturedButton (1,startWidth + width / 6,buttonHeight,width / 6,buttonHeight,"Population"));
-		buttonList.add (resourceProduction = new GuiTexturedButton (2,startWidth + ((width / 6) * 2),buttonHeight,width / 6,buttonHeight,"Manage"));
+		buttonList.add (manage = new GuiTexturedButton (2,startWidth + ((width / 6) * 2),buttonHeight,width / 6,buttonHeight,"Manage"));
 		buttonList.add (storage = new GuiTexturedButton (3,startWidth + ((width / 6) * 3),buttonHeight,width / 6,buttonHeight,"Storage"));
 		buttonList.add (research = new GuiTexturedButton (4,startWidth + ((width / 6) * 4),buttonHeight,width / 6,buttonHeight,"Research"));
 	}
@@ -52,7 +52,17 @@ public class GuiHabitatBase extends GuiScreen {
 	protected void actionPerformed (GuiButton button) throws IOException {
 		switch (button.id) {
 			case (0):
-				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.OVERVIEW, tile.getCore ()));
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.OVERVIEW,tile.getPos ()));
+				break;
+			case (1):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.POPULATION,tile.getPos ()));
+				break;
+			case (2):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MANAGE,tile.getPos ()));
+				break;
+			case (4):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH,tile.getPos ()));
+				break;
 		}
 	}
 }

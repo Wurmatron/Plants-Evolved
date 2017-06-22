@@ -12,7 +12,6 @@ import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.awt.*;
 import java.io.IOException;
@@ -45,9 +44,9 @@ public class GuiOverview extends GuiHabitatBase {
 		super.initGui ();
 		int startWidth = width / 20 + width / 60;
 		int buttonHeight = height / 20;
-		buttonList.add (income = new GuiTexturedButton (10,startWidth,(buttonHeight * 2) + buttonHeight / 4,width / 6,buttonHeight,"Income"));
-		buttonList.add (stats = new GuiTexturedButton (11,startWidth,(buttonHeight * 3) + buttonHeight / 4,width / 6,buttonHeight,"Stats"));
-		buttonList.add (info = new GuiTexturedButton (12,startWidth,buttonHeight * 4 + buttonHeight / 4,width / 6,buttonHeight,"Info"));
+		buttonList.add (income = new GuiTexturedButton (10,startWidth,(buttonHeight * 2) + buttonHeight / 4,width / 6,buttonHeight,I18n.format (Local.INCOME)));
+		buttonList.add (stats = new GuiTexturedButton (11,startWidth,(buttonHeight * 3) + buttonHeight / 4,width / 6,buttonHeight,I18n.format (Local.STATS)));
+		buttonList.add (info = new GuiTexturedButton (12,startWidth,buttonHeight * 4 + buttonHeight / 4,width / 6,buttonHeight,I18n.format (Local.INFO)));
 	}
 
 	@Override
@@ -60,13 +59,13 @@ public class GuiOverview extends GuiHabitatBase {
 		super.actionPerformed (button);
 		switch (button.id) {
 			case (10):
-				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.INCOME, tile.getCore ()));
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.INCOME,tile.getCore ()));
 				break;
 			case (11):
-				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.STATS, tile.getCore ()));
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.STATS,tile.getCore ()));
 				break;
 			case (12):
-				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.INFO, tile.getCore ()));
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.INFO,tile.getCore ()));
 				break;
 		}
 	}
