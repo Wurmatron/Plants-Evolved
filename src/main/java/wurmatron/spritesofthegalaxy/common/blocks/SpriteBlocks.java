@@ -26,7 +26,7 @@ public class SpriteBlocks {
 	public static void registerTiles () {
 		GameRegistry.registerTileEntity (TileHabitatCore.class,"habitatCore");
 		GameRegistry.registerTileEntity (TileMutiBlock.class,"mutiblock");
-		GameRegistry.registerTileEntity (TileInput.class, "input");
+		GameRegistry.registerTileEntity (TileInput.class,"input");
 	}
 
 	private static void register (Block block) {

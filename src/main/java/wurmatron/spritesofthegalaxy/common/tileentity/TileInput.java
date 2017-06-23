@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 
@@ -39,7 +38,7 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 
 	@Override
 	public ItemStack getStackInSlot (int index) {
-		if(inventory[index] == null)
+		if (inventory[index] == null)
 			return ItemStack.EMPTY;
 		return inventory[index];
 	}
