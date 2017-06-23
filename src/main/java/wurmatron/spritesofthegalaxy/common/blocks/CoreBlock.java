@@ -16,10 +16,6 @@ import javax.annotation.Nullable;
 
 public class CoreBlock extends BlockMutiBlock {
 
-	public CoreBlock () {
-		super ();
-	}
-
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {

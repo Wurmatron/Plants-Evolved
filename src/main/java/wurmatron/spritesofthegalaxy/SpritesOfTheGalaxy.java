@@ -17,6 +17,7 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
+import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
 
 @Mod (modid = Global.MODID, name = Global.NAME, version = Global.VERSION, guiFactory = Global.GUIFACTORY, dependencies = Global.DEPENDENCIES)
 public class SpritesOfTheGalaxy {
@@ -52,6 +53,7 @@ public class SpritesOfTheGalaxy {
 	@Mod.EventHandler
 	public void onPostInit (FMLPostInitializationEvent e) {
 		ResearchHelper.registerResearch ();
+		StructureHelper.registerStructures ();
 	}
 
 }

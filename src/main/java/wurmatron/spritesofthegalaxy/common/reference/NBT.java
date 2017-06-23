@@ -13,6 +13,7 @@ public class NBT {
 	public static final String ITEM = "item";
 	public static final String COLONY = "colony";
 	public static final String SLOT = "slot";
+	public static final String STRUCTURES = "structures";
 
 	// Item
 	public static final String LINEAGE = "lineage";
