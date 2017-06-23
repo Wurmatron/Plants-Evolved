@@ -24,7 +24,7 @@ public class OpenGuiMessage extends CustomMessage.CustomtServerMessage <OpenGuiM
 
 	public OpenGuiMessage (int id,BlockPos loc) {
 		this.id = id;
-		this.loc = new int[] {loc.getX (), loc.getY (),loc.getZ ()};
+		this.loc = new int[] {loc.getX (),loc.getY (),loc.getZ ()};
 	}
 
 	@Override

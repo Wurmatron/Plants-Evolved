@@ -18,7 +18,6 @@ import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import javax.annotation.Nullable;
 
@@ -27,6 +26,9 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 	public BlockMutiBlock () {
 		super (Material.IRON);
 		setCreativeTab (SpritesOfTheGalaxy.tabSprites);
+		setHardness (5);
+		setResistance (10);
+		setHarvestLevel ("pickaxe",3);
 	}
 
 	@Nullable

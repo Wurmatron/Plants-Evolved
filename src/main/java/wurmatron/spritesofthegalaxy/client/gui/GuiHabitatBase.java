@@ -10,7 +10,6 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 
-// TODO Gui Needs a way to be updated
 public class GuiHabitatBase extends GuiScreen {
 
 	// Top Bar

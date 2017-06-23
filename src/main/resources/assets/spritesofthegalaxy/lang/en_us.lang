@@ -4,6 +4,8 @@ itemGroup.tabSprites=Sprites Of The Galaxy
 # Block
 tile.core.name=Habitat Core
 tile.casing.name=Habitat Casing
+tile.output.name=Habitat Output
+tile.input.name=Habitat Input
 
 # Stats
 stat.population.name=Population

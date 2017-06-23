@@ -6,7 +6,7 @@ public class Settings {
 	public static boolean debug;
 	public static int maxTier;
 
-	 // Habitat
+	// Habitat
 	public static int startPopulation;
 	public static int populationFoodRequirement;
 	public static double populationGrowth;

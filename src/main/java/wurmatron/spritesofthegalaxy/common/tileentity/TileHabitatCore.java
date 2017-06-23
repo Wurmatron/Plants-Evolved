@@ -9,6 +9,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -34,7 +35,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				update = true;
 			}
 		}
-		// TODO Add Support for over 1 update
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
 			handleUpdate ();
 			lastUpdate = System.currentTimeMillis ();
@@ -125,13 +125,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void addStack (ItemStack stack) {
-		if (items.containsKey (convertToData (stack))) {
-			stack.setCount (1);
-			setStack (stack,items.get (convertToData (stack)) + stack.getCount ());
-		} else {
-			stack.setCount (1);
-			setStack (stack,stack.getCount ());
-		}
+		if (items != null && stack != null && !stack.isEmpty ())
+			if (items.containsKey (convertToData (stack))) {
+				stack.setCount (1);
+				setStack (stack,items.get (convertToData (stack)) + stack.getCount ());
+			} else {
+				stack.setCount (1);
+				setStack (stack,stack.getCount ());
+			}
 	}
 
 	private String convertToData (ItemStack item) {

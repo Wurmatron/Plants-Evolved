@@ -13,7 +13,6 @@ import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.blocks.SpriteBlocks;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
-import wurmatron.spritesofthegalaxy.common.module.ModuleHelper;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
@@ -53,7 +52,6 @@ public class SpritesOfTheGalaxy {
 	@Mod.EventHandler
 	public void onPostInit (FMLPostInitializationEvent e) {
 		ResearchHelper.registerResearch ();
-		ModuleHelper.registerModules ();
 	}
 
 }

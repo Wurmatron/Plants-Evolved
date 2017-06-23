@@ -22,7 +22,7 @@ public class ConfigGui extends GuiConfig {
 	private static List <IConfigElement> getConfigElements () {
 		List <IConfigElement> list = new ArrayList <> ();
 		list.add (categoryElement (Configuration.CATEGORY_GENERAL,"General","config.category.general"));
-		list.add (categoryElement (Global.HABITAT,"Habitat", "config.category.habitat"));
+		list.add (categoryElement (Global.HABITAT,"Habitat","config.category.habitat"));
 		return list;
 	}
 

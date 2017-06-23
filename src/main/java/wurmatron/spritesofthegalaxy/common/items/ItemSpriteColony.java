@@ -15,7 +15,6 @@ import wurmatron.spritesofthegalaxy.common.reference.Lineages;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 
-import java.awt.*;
 import java.util.List;
 
 public class ItemSpriteColony extends Item {

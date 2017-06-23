@@ -81,7 +81,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiManage ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (RESEARCH):
 				return new GuiResearch ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
-			case(POPULATION):
+			case (POPULATION):
 				return new GuiPopulation ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			default:
 				return null;
