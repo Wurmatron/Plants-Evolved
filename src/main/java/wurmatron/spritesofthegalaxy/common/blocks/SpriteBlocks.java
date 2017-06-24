@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.client.proxy.ClientProxy;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileInput;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileOutput;
 
 public class SpriteBlocks {
 
@@ -27,6 +28,7 @@ public class SpriteBlocks {
 		GameRegistry.registerTileEntity (TileHabitatCore.class,"habitatCore");
 		GameRegistry.registerTileEntity (TileMutiBlock.class,"mutiblock");
 		GameRegistry.registerTileEntity (TileInput.class,"input");
+		GameRegistry.registerTileEntity (TileOutput.class, "output");
 	}
 
 	private static void register (Block block) {

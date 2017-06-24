@@ -2,7 +2,10 @@ package wurmatron.spritesofthegalaxy.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
+import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
+import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
+import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
@@ -40,5 +43,27 @@ public class GuiManage extends GuiHabitatBase {
 	@Override
 	protected void actionPerformed (GuiButton button) throws IOException {
 		super.actionPerformed (button);
+		switch (button.id) {
+			case (10):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.AGRICULTURE,tile.getPos ()));
+				break;
+			case (11):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MINES,tile.getPos ()));
+				break;
+			case (12):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.ENERGY_PRODUCTION,tile.getPos ()));
+				break;
+			case (13):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MAGIC_PRODUCTION,tile.getPos ()));
+				break;
+			case (14):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MOB_FARM,tile.getPos ()));
+				break;
+			case (15):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.LIQUID_FARM,tile.getPos ()));
+				break;
+			case (16):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.NURSERY,tile.getPos ()));
+		}
 	}
 }

@@ -186,10 +186,8 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 			ItemStack stack = getStackInSlot (s);
 			if (stack != null && stack != ItemStack.EMPTY) {
 				IInventory inv = (IInventory) world.getTileEntity (outputLocation);
-				if (inv != null) {
-					if (addStack (inv,stack))
-						setInventorySlotContents (s,ItemStack.EMPTY);
-				}
+				if (inv != null && addStack (inv,stack))
+					setInventorySlotContents (s,ItemStack.EMPTY);
 			}
 		}
 	}
