@@ -14,6 +14,7 @@ public class NBT {
 	public static final String COLONY = "colony";
 	public static final String SLOT = "slot";
 	public static final String STRUCTURES = "structures";
+	public static final String OUTPUT_LOCATION = "output";
 
 	// Item
 	public static final String LINEAGE = "lineage";

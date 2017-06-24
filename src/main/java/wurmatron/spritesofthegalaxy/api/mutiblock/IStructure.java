@@ -18,5 +18,5 @@ public interface IStructure {
 
 	List <ItemStack> getCost (int researchLevel,int structureTier);
 
-	void tickStructure(TileHabitatCore core);
+	void tickStructure (TileHabitatCore core);
 }

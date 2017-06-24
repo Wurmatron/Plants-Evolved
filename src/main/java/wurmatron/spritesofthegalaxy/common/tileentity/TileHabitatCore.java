@@ -15,8 +15,6 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -41,8 +39,8 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			if (isValid > 0) {
 				MutiBlockHelper.setTilesCore (world,pos,isValid);
 				update = true;
-//				if (structures.size () == 0)
-//					addStructure (new FarmStructure (),100);
+				//				if (structures.size () == 0)
+				//					addStructure (new FarmStructure (),100);
 			}
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
@@ -211,7 +209,20 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		}
 	}
 
+	public void removeStructure (IStructure structure) {
+		if (structure instanceof IProduction) {
+			IProduction production = (IProduction) structure;
+			if (production.getType () == EnumProductionType.VALUE)
+				production.removeProduction (this,structures.remove (structure));
+		}
+		structures.remove (structure);
+	}
+
 	public void addFood (int food) {
 		this.food += food;
+	}
+
+	public void removeFood (int food) {
+		this.food -= food;
 	}
 }

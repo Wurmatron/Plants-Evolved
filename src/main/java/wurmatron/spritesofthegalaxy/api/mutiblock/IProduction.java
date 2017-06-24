@@ -4,7 +4,9 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 public interface IProduction {
 
-	void addProduction(TileHabitatCore core, int structureTier);
+	void addProduction (TileHabitatCore core,int structureTier);
 
-	EnumProductionType getType();
+	void removeProduction (TileHabitatCore core,int structureTier);
+
+	EnumProductionType getType ();
 }

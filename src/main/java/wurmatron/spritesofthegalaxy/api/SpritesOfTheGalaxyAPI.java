@@ -20,7 +20,7 @@ public class SpritesOfTheGalaxyAPI {
 	public static void register (IStructure structure) {
 		if (!structures.contains (structure)) {
 			structures.add (structure);
-			structureNames.put (structure.getName (), structure);
+			structureNames.put (structure.getName (),structure);
 		}
 	}
 

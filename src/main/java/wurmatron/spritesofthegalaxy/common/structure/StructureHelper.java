@@ -4,7 +4,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 
 public class StructureHelper {
 
-	public static void registerStructures() {
+	public static void registerStructures () {
 		SpritesOfTheGalaxyAPI.register (new FarmStructure ());
 	}
 }

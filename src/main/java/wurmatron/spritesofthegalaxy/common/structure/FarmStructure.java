@@ -6,7 +6,6 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,21 +18,27 @@ public class FarmStructure implements IStructure, IProduction {
 	}
 
 	@Override
-	public HashMap<IResearch, Integer> getRequiredResearch () {
+	public HashMap <IResearch, Integer> getRequiredResearch () {
 		return null;
 	}
 
 	@Override
-	public List<ItemStack> getCost (int researchLevel,int structureTier) {
+	public List <ItemStack> getCost (int researchLevel,int structureTier) {
 		return null;
 	}
 
 	@Override
-	public void tickStructure (TileHabitatCore core) { }
+	public void tickStructure (TileHabitatCore core) {
+	}
 
 	@Override
-	public void addProduction (TileHabitatCore core, int structureTier) {
+	public void addProduction (TileHabitatCore core,int structureTier) {
 		core.addFood (structureTier);
+	}
+
+	@Override
+	public void removeProduction (TileHabitatCore core,int structureTier) {
+		core.removeFood (structureTier);
 	}
 
 	@Override
