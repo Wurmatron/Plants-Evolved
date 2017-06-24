@@ -54,9 +54,11 @@ public class MutiBlockHelper {
 	}
 
 	private static void setCore (World world,BlockPos pos,BlockPos core) {
-		TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
-		if (tile != null)
-			tile.setCore (core);
+		if (world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof TileMutiBlock) {
+			TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
+			if (tile != null)
+				tile.setCore (core);
+		}
 	}
 
 	public static void delTilesCore (World world,BlockPos pos,int size) {
