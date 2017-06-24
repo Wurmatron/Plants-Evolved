@@ -178,7 +178,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	}
 
 	private boolean isValidInventory (BlockPos pos) {
-		return world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof IInventory;
+		return world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof IInventory && !(world.getTileEntity (pos) instanceof TileMutiBlock);
 	}
 
 	private void handleOutputItems () {
