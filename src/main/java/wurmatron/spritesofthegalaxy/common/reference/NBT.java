@@ -19,4 +19,7 @@ public class NBT {
 	// Item
 	public static final String LINEAGE = "lineage";
 	public static final String POPULATION = "population";
+	public static final String RESEARCH = "research";
+	public static final String NAME = "name";
+	public static final String LEVEL = "level";
 }

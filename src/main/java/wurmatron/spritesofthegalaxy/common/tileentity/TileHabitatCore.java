@@ -13,8 +13,11 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.EnumProductionType;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
+import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -41,6 +44,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				update = true;
 				//				if (structures.size () == 0)
 				//					addStructure (new FarmStructure (),100);
+				setResearchLevel (ResearchHelper.land,1);
 			}
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
@@ -224,5 +228,20 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void removeFood (int food) {
 		this.food -= food;
+	}
+
+	public void setResearchLevel (IResearch r,int level) {
+		if (colonyItem != null && colonyItem != ItemStack.EMPTY && colonyItem.getTagCompound () != null) {
+			HashMap <IResearch, Integer> research = ItemSpriteColony.getResearch (colonyItem);
+			if (research == null)
+				research = new HashMap <> ();
+			research.put (r,level);
+			ItemStack colony = ItemSpriteColony.createColony (colonyItem.getTagCompound ().getString (NBT.LINEAGE),getPopulation (),research);
+			addColony (colony);
+		}
+	}
+
+	public HashMap <IResearch, Integer> getResearch () {
+		return ItemSpriteColony.getResearch (colonyItem);
 	}
 }

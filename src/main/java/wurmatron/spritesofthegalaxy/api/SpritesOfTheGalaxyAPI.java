@@ -11,10 +11,13 @@ public class SpritesOfTheGalaxyAPI {
 	public static ArrayList <IResearch> research = new ArrayList <> ();
 	public static ArrayList <IStructure> structures = new ArrayList <> ();
 	private static HashMap <String, IStructure> structureNames = new HashMap <> ();
+	private static HashMap <String, IResearch> researchNames = new HashMap <> ();
 
 	public static void register (IResearch res) {
-		if (!research.contains (res))
+		if (!research.contains (res)) {
 			research.add (res);
+			researchNames.put (res.getName (),res);
+		}
 	}
 
 	public static void register (IStructure structure) {
@@ -31,6 +34,17 @@ public class SpritesOfTheGalaxyAPI {
 			if (structure.getName ().equalsIgnoreCase (name)) {
 				structureNames.put (name,structure);
 				return structure;
+			}
+		return null;
+	}
+
+	public static IResearch getResearchFromName (String name) {
+		if (researchNames.containsKey (name))
+			return researchNames.get (name);
+		for (IResearch r : research)
+			if (r.getName ().equalsIgnoreCase (name)) {
+				researchNames.put (name,r);
+				return r;
 			}
 		return null;
 	}

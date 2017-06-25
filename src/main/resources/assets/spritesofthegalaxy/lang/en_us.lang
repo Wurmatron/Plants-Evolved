@@ -33,3 +33,6 @@ gui.researchUnique.name=Unique
 # Item
 item.spriteColony.name=Sprite Colony
 
+# Research
+research.land.name=Farm Land
+

@@ -158,7 +158,8 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 			setInventorySlotContents (slot,new ItemStack (stackTag));
 		}
 		int[] output = nbt.getIntArray (NBT.OUTPUT_LOCATION);
-		outputLocation = new BlockPos (output[0],output[1],output[2]);
+		if (output.length == 3)
+			outputLocation = new BlockPos (output[0],output[1],output[2]);
 	}
 
 	@Override
@@ -173,7 +174,8 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 				list.appendTag (stackTag);
 			}
 		nbt.setTag (NBT.INVENTORY,list);
-		nbt.setIntArray (NBT.OUTPUT_LOCATION,new int[] {outputLocation.getX (),outputLocation.getY (),outputLocation.getZ ()});
+		if (outputLocation != null)
+			nbt.setIntArray (NBT.OUTPUT_LOCATION,new int[] {outputLocation.getX (),outputLocation.getY (),outputLocation.getZ ()});
 		return nbt;
 	}
 
