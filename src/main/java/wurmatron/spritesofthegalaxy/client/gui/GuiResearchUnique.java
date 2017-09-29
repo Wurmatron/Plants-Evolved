@@ -13,7 +13,7 @@ public class GuiResearchUnique extends GuiResearch {
 		super.initGui ();
 		agriculture.visible = false;
 		industry.visible = false;
-		energy.visible= false;
+		energy.visible = false;
 		researchResearch.visible = false;
 		magic.visible = false;
 		unique.visible = false;

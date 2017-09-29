@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.client.proxy.ClientProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
+import wurmatron.spritesofthegalaxy.common.reference.Registry;
 
 public class SpriteItems {
 
@@ -17,8 +18,6 @@ public class SpriteItems {
 	}
 
 	public static void register (Item item) {
-		GameRegistry.register (item,new ResourceLocation (Global.MODID,item.getUnlocalizedName ()));
-		if (FMLCommonHandler.instance ().getSide () == Side.CLIENT)
-			ClientProxy.items.add (item);
+		Registry.registerItem (item,item.getUnlocalizedName ());
 	}
 }

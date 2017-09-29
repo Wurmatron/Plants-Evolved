@@ -34,8 +34,8 @@ public class GuiOverview extends GuiHabitatBase {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 
 		if (tile != null) {
-			drawCenteredString (Minecraft.getMinecraft ().fontRendererObj,I18n.format (Local.POPULATION) + ": " + (int) tile.getPopulation () + " / " + tile.getMaxPopulation (),width / 6 * 4 - width / 20,height / 20 * 2 + height / 60,Color.WHITE.getRGB ());
-			drawCenteredString (Minecraft.getMinecraft ().fontRendererObj,I18n.format (Local.FOOD) + ": " + tile.getFood (),(width / 6 * 4 - width / 20) - fontRendererObj.FONT_HEIGHT * 3 + fontRendererObj.FONT_HEIGHT / 2,height / 20 * 2 + height / 60 + (Minecraft.getMinecraft ().fontRendererObj.FONT_HEIGHT * 2),Color.WHITE.getRGB ());
+			drawCenteredString (Minecraft.getMinecraft ().fontRenderer,I18n.format (Local.POPULATION) + ": " + (int) tile.getPopulation () + " / " + tile.getMaxPopulation (),width / 6 * 4 - width / 20,height / 20 * 2 + height / 60,Color.WHITE.getRGB ());
+			drawCenteredString (Minecraft.getMinecraft ().fontRenderer,I18n.format (Local.FOOD) + ": " + tile.getFood (),(width / 6 * 4 - width / 20) - fontRenderer.FONT_HEIGHT * 3 + fontRenderer.FONT_HEIGHT / 2,height / 20 * 2 + height / 60 + (Minecraft.getMinecraft ().fontRenderer.FONT_HEIGHT * 2),Color.WHITE.getRGB ());
 		}
 	}
 

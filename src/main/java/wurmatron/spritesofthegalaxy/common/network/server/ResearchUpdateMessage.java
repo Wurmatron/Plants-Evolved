@@ -24,7 +24,7 @@ public class ResearchUpdateMessage extends CustomMessage.CustomtServerMessage <R
 		data = new NBTTagCompound ();
 		data.setString (NBT.RESEARCH,research.getName ());
 		data.setInteger (NBT.LEVEL,level);
-		data.setIntArray (NBT.POSITION,new int[] {coreLoc.getX (),coreLoc.getY (), coreLoc.getZ ()});
+		data.setIntArray (NBT.POSITION,new int[] {coreLoc.getX (),coreLoc.getY (),coreLoc.getZ ()});
 	}
 
 	@Override

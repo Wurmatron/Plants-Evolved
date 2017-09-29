@@ -1,6 +1,7 @@
 package wurmatron.spritesofthegalaxy.common.items;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,6 +21,7 @@ import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,8 +43,9 @@ public class ItemSpriteColony extends Item {
 		stack.setTagCompound (nbt);
 	}
 
+
 	@Override
-	public void addInformation (ItemStack stack,EntityPlayer player,List <String> tip,boolean adv) {
+	public void addInformation (ItemStack stack,@Nullable World worldIn,List <String> tip,ITooltipFlag flagIn) {
 		if (stack.getTagCompound () != null) {
 			tip.add (TextFormatting.GOLD + I18n.format (Local.POPULATION) + ": " + (int) stack.getTagCompound ().getDouble (NBT.POPULATION));
 			tip.add (TextFormatting.GOLD + I18n.format (Local.LINEAGE) + ": " + stack.getTagCompound ().getString (NBT.LINEAGE));
@@ -75,7 +78,7 @@ public class ItemSpriteColony extends Item {
 	}
 
 	@Override
-	public void getSubItems (Item item,CreativeTabs tab,NonNullList <ItemStack> sub) {
+	public void getSubItems (CreativeTabs tab,NonNullList <ItemStack> sub) {
 		HashMap <IResearch, Integer> temp = new HashMap <> ();
 		temp.put (ResearchHelper.land,1);
 		sub.add (createColony (Lineages.COMMON,Settings.startPopulation,temp));

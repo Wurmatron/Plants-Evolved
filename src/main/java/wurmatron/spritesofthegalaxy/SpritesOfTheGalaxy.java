@@ -3,6 +3,7 @@ package wurmatron.spritesofthegalaxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -16,6 +17,7 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
+import wurmatron.spritesofthegalaxy.common.reference.Registry;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
 
@@ -38,6 +40,7 @@ public class SpritesOfTheGalaxy {
 	@Mod.EventHandler
 	public void onPreInit (FMLPreInitializationEvent e) {
 		ConfigHandler.preInit (e);
+		MinecraftForge.EVENT_BUS.register (new Registry());
 		SpriteBlocks.registerBlocks ();
 		SpriteItems.registerItems ();
 		SpriteBlocks.registerTiles ();

@@ -31,7 +31,7 @@ public class GuiAgriculture extends GuiManage {
 	public void drawScreen (int mouseX,int mouseY,float partialTicks) {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 		// TODO Scale depending on screen size
-		drawCenteredString (Minecraft.getMinecraft ().fontRendererObj,I18n.format ("research." + ResearchHelper.land.getName () + ".name") + " lvl " + getResearchLevel (ResearchHelper.land),res.getScaledWidth () / 5 + (res.getScaledWidth () / 30),height / 20 * 3,Color.WHITE.getRGB ());
+		drawCenteredString (Minecraft.getMinecraft ().fontRenderer,I18n.format ("research." + ResearchHelper.land.getName () + ".name") + " lvl " + getResearchLevel (ResearchHelper.land),res.getScaledWidth () / 5 + (res.getScaledWidth () / 30),height / 20 * 3,Color.WHITE.getRGB ());
 	}
 
 	@Override

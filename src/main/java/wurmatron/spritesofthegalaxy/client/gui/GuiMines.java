@@ -13,7 +13,7 @@ public class GuiMines extends GuiManage {
 		super.initGui ();
 		mines.visible = false;
 		energyProduction.visible = false;
-		magicProduction.visible= false;
+		magicProduction.visible = false;
 		mobFarm.visible = false;
 		liquidFarm.visible = false;
 		nursery.visible = false;

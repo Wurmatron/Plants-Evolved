@@ -12,21 +12,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
+import wurmatron.spritesofthegalaxy.common.reference.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy {
 
-	public static List <Block> blocks = new ArrayList <> ();
-	public static List <Item> items = new ArrayList <> ();
-
 	@Override
 	public void onSideOnly () {
 		MinecraftForge.EVENT_BUS.register (new ConfigHandler ());
-		for (Block block : blocks)
+		for (Block block : Registry.blocks)
 			createModel (block);
-		for (Item item : items)
+		for (Item item : Registry.items)
+			createModel (item);
+		for (Item item : Registry.blockItems.values ())
 			createModel (item);
 	}
 

@@ -4,7 +4,7 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -19,7 +19,7 @@ targetCompatibility = 1.8
 minecraft {
     version = "${mc_version}-${forge_version}"
     runDir = "run"
-    mappings = "snapshot_20161220"
+    mappings = "${mcp_map}"
     replace "@VERSION@", project.version
     replaceIn "Global.java"
 }
