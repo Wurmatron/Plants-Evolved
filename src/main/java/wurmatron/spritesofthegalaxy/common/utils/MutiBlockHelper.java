@@ -3,9 +3,15 @@ package wurmatron.spritesofthegalaxy.common.utils;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MutiBlockHelper {
 
@@ -82,6 +88,25 @@ public class MutiBlockHelper {
 					tile.requestUpdate ();
 			}
 		}
+	}
+
+	public static List <IStructure> filterStructures (HashMap <IStructure, Integer> structureList,StructureType type) {
+		List <IStructure> filtered = new ArrayList <> ();
+		for (IStructure structure : structureList.keySet ())
+			if (structure.getStructureType () == type)
+				filtered.add (structure);
+		return filtered;
+	}
+
+	public static boolean canBuildStructure (TileHabitatCore tile,IStructure structure,int currentTier,int nextTier) {
+		return tile.getMinerals () >= calcMineralsForStructure (structure,currentTier,nextTier,0);
+	}
+
+	public static int calcMineralsForStructure (IStructure structure,int currentTier,int nextTier,int researchLevel) {
+		int amountNeeded = 0;
+		for (int index = currentTier + 1; index <= nextTier; index++)
+			amountNeeded += structure.getCost (researchLevel,index);
+		return Math.abs (amountNeeded);
 	}
 
 }

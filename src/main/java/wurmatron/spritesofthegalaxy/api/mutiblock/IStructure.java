@@ -14,9 +14,13 @@ public interface IStructure {
 	 */
 	String getName ();
 
+	String getDisplayName();
+
+	StructureType getStructureType();
+
 	HashMap <IResearch, Integer> getRequiredResearch ();
 
-	List <ItemStack> getCost (int researchLevel,int structureTier);
+	int getCost (int researchLevel,int structureTier);
 
 	void tickStructure (TileHabitatCore core);
 }

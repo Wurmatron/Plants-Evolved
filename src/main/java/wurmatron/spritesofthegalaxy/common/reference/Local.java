@@ -7,6 +7,7 @@ public class Local {
 	public static final String FOOD = "stat.food.name";
 	public static final String LINEAGE = "stat.lineage.name";
 	public static final String SIZE = "stat.size.name";
+	public static final String MINERALS = "stat.minerals.name";
 	// Gui
 	public static final String INCOME = "gui.income.name";
 	public static final String STATS = "gui.stats.name";
@@ -25,4 +26,5 @@ public class Local {
 	public static final String RESEARCH_MAGIC = "gui.researchMagic.name";
 	public static final String RESEARCH_UNIQUE = "gui.researchUnique.name";
 	public static final String MISSING_RESEARCH = "gui.missingResearch.name";
+	public static final String NEED_MINERALS = "gui.needMinerals.name";
 }

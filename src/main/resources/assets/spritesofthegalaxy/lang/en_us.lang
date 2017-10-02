@@ -12,6 +12,7 @@ stat.population.name=Population
 stat.food.name=Food
 stat.lineage.name=Lineage
 stat.size.name=Size
+stat.minerals.name=Minerals
 
 # Gui
 gui.agriculture.name=Agriculture
@@ -30,7 +31,8 @@ gui.researchEnergy.name=Energy
 gui.researchResearch.name=Research
 gui.researchMagic.name=Magic
 gui.researchUnique.name=Unique
-gui.missingResearch.name=Require Research $Research$
+gui.missingResearch.name=Require Research 'Research'
+gui.needMinerals.name=Need 'Minerals' More Minerals!
 
 # Item
 item.spriteColony.name=Sprite Colony

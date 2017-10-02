@@ -19,6 +19,8 @@ import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
+import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -38,6 +40,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private ItemStack colonyItem;
 	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	public int mutiBlockSize;
+	private int minerals = 1000;
 
 	@Override
 	public void update () {
@@ -47,9 +50,8 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			if (isValid > 0) {
 				MutiBlockHelper.setTilesCore (world,pos,isValid);
 				update = true;
-				//				if (structures.size () == 0)
-				//					addStructure (new FarmStructure (),100);
-				setResearchLevel (ResearchHelper.land,1);
+				if (structures.size () == 0)
+					addStructure (new FarmStructure (),1);
 			}
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
@@ -83,6 +85,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			structures.put (structure,tier);
 		}
 		mutiBlockSize = nbt.getInteger (NBT.SIZE);
+		minerals = nbt.getInteger (NBT.MINERALS);
 		markDirty ();
 	}
 
@@ -108,6 +111,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			structureList.appendTag (new NBTTagString (structure.getName () + "." + structures.get (structure)));
 		nbt.setTag (NBT.STRUCTURES,structureList);
 		nbt.setInteger (NBT.SIZE,mutiBlockSize);
+		nbt.setInteger (NBT.MINERALS,minerals);
 		super.writeToNBT (nbt);
 		return nbt;
 	}
@@ -222,12 +226,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void removeStructure (IStructure structure) {
-		if (structure instanceof IProduction) {
-			IProduction production = (IProduction) structure;
-			if (production.getType () == EnumProductionType.VALUE)
-				production.removeProduction (this,structures.remove (structure));
+		if (structures.containsKey (structure)) {
+			if (structure instanceof IProduction) {
+				IProduction production = (IProduction) structure;
+				if (production.getType () == EnumProductionType.VALUE)
+					production.removeProduction (this,structures.remove (structure));
+			}
+			structures.remove (structure);
 		}
-		structures.remove (structure);
 	}
 
 	public void addFood (int food) {
@@ -253,5 +259,19 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public HashMap <IResearch, Integer> getResearch () {
 		return ItemSpriteColony.getResearch (colonyItem);
+	}
+
+	public int getMinerals () {
+		return minerals;
+	}
+
+	public void addMinerals (int minerals) {
+		this.minerals += minerals;
+		markDirty ();
+	}
+
+	public void eatMinerals (int minerals) {
+		this.minerals -= minerals;
+		markDirty ();
 	}
 }
