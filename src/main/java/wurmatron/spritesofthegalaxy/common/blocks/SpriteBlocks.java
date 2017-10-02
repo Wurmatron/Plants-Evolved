@@ -33,6 +33,6 @@ public class SpriteBlocks {
 	}
 
 	private static void register (Block block) {
-		Registry.registerBlock (block,block.getUnlocalizedName ());
+		Registry.registerBlock (block,block.getUnlocalizedName ().substring (5));
 	}
 }

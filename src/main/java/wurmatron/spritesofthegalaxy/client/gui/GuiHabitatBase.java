@@ -2,15 +2,24 @@ package wurmatron.spritesofthegalaxy.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
+import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class GuiHabitatBase extends GuiScreen {
+
+	protected int startWidth;
+	protected int startHeight;
 
 	// Top Bar
 	protected GuiButton overview;
@@ -27,19 +36,24 @@ public class GuiHabitatBase extends GuiScreen {
 
 	@Override
 	public void drawScreen (int mouseX,int mouseY,float partialTicks) {
-		drawRect (width / 20,height / 20,width - width / 20,height - width / 20,0xB33d3d3d);
+		startWidth = (width - 256) / 2;
+		startHeight = (height - 256) / 2;
+		GlStateManager.pushMatrix ();
+		mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/colonyBackground.png"));
+		drawTexturedModalRect (startWidth,startHeight,0,0,256,256);
+		GlStateManager.popMatrix ();
 		super.drawScreen (mouseX,mouseY,partialTicks);
 	}
 
 	@Override
 	public void initGui () {
-		int startWidth = width / 20 + width / 60;
-		int buttonHeight = height / 20;
-		buttonList.add (overview = new GuiTexturedButton (0,startWidth,buttonHeight,width / 6,buttonHeight,"Overview"));
-		buttonList.add (population = new GuiTexturedButton (1,startWidth + width / 6,buttonHeight,width / 6,buttonHeight,"Population"));
-		buttonList.add (manage = new GuiTexturedButton (2,startWidth + ((width / 6) * 2),buttonHeight,width / 6,buttonHeight,"Manage"));
-		buttonList.add (storage = new GuiTexturedButton (3,startWidth + ((width / 6) * 3),buttonHeight,width / 6,buttonHeight,"Storage"));
-		buttonList.add (research = new GuiTexturedButton (4,startWidth + ((width / 6) * 4),buttonHeight,width / 6,buttonHeight,"Research"));
+		startWidth = (width - 256) / 2;
+		startHeight = (height - 256) / 2;
+		buttonList.add(overview = new GuiTexturedButton (0, startWidth + 2, startHeight + 5,63,15, "Overview"));
+		buttonList.add(population = new GuiTexturedButton (1, startWidth + 57, startHeight + 5,46,15,"Pop."));
+		buttonList.add(manage = new GuiTexturedButton (2, startWidth + 95, startHeight + 5,54,15, "Manage"));
+		buttonList.add(storage = new GuiTexturedButton (3, startWidth + 141, startHeight + 5,56,15, "Storage"));
+		buttonList.add(storage = new GuiTexturedButton (3, startWidth + 190, startHeight + 5,62,15, "Research"));
 	}
 
 	@Override
@@ -49,6 +63,8 @@ public class GuiHabitatBase extends GuiScreen {
 
 	@Override
 	protected void actionPerformed (GuiButton button) throws IOException {
+		startWidth = (width - 256) / 2;
+		startHeight = (height - 256) / 2;
 		switch (button.id) {
 			case (0):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.OVERVIEW,tile.getPos ()));

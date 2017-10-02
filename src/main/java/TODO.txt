@@ -1,0 +1,19 @@
+ - Blocks
+    - All Block Textures
+    - Add More Blocks Check with Files on Flash or ask Troy
+    *******
+    *******
+    *******
+    *******
+ - Items
+    - Colony Item
+    - Info Wand (NonGui Info)
+
+ - Colony Item Output
+    - Species
+    - Types of Outputs
+    - Possible Json Based Species System
+
+ - Mod Support
+    - Energy Blocks
+    - Fluid Blocks

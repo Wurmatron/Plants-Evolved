@@ -11,6 +11,7 @@ tile.input.name=Habitat Input
 stat.population.name=Population
 stat.food.name=Food
 stat.lineage.name=Lineage
+stat.size.name=Size
 
 # Gui
 gui.agriculture.name=Agriculture
@@ -29,6 +30,7 @@ gui.researchEnergy.name=Energy
 gui.researchResearch.name=Research
 gui.researchMagic.name=Magic
 gui.researchUnique.name=Unique
+gui.missingResearch.name=Require Research $Research$
 
 # Item
 item.spriteColony.name=Sprite Colony

@@ -18,10 +18,13 @@ import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
+import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
@@ -34,11 +37,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private HashMap <String, Integer> items = new HashMap <> ();
 	private ItemStack colonyItem;
 	private HashMap <IStructure, Integer> structures = new HashMap <> ();
+	public int mutiBlockSize;
 
 	@Override
 	public void update () {
 		if (!update && world.getWorldTime () % 20 == 0) {
 			int isValid = MutiBlockHelper.isValid (world,pos);
+			mutiBlockSize = isValid;
 			if (isValid > 0) {
 				MutiBlockHelper.setTilesCore (world,pos,isValid);
 				update = true;
@@ -77,6 +82,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
 			structures.put (structure,tier);
 		}
+		mutiBlockSize = nbt.getInteger (NBT.SIZE);
 		markDirty ();
 	}
 
@@ -101,6 +107,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		for (IStructure structure : structures.keySet ())
 			structureList.appendTag (new NBTTagString (structure.getName () + "." + structures.get (structure)));
 		nbt.setTag (NBT.STRUCTURES,structureList);
+		nbt.setInteger (NBT.SIZE,mutiBlockSize);
 		super.writeToNBT (nbt);
 		return nbt;
 	}
@@ -116,11 +123,12 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void setPopulation (double pop) {
-		if (hasColony () && getColony ().getTagCompound () != null) {
-			ItemStack colony = getColony ();
-			colony.getTagCompound ().setDouble (NBT.POPULATION,pop < maxPopulation ? pop : maxPopulation);
-			addColony (colony);
-		}
+		if (pop < Integer.MAX_VALUE)
+			if (hasColony () && getColony ().getTagCompound () != null) {
+				ItemStack colony = getColony ();
+				colony.getTagCompound ().setDouble (NBT.POPULATION,pop < maxPopulation ? pop : maxPopulation);
+				addColony (colony);
+			}
 	}
 
 	public int getFood () {
@@ -235,9 +243,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			HashMap <IResearch, Integer> research = ItemSpriteColony.getResearch (colonyItem);
 			if (research == null)
 				research = new HashMap <> ();
-			research.put (r,level);
-			ItemStack colony = ItemSpriteColony.createColony (colonyItem.getTagCompound ().getString (NBT.LINEAGE),getPopulation (),research);
-			addColony (colony);
+			if (ResearchHelper.isValidMove (research,r)) {
+				research.put (r,level);
+				ItemStack colony = ItemSpriteColony.createColony (colonyItem.getTagCompound ().getString (NBT.LINEAGE),getPopulation (),research);
+				addColony (colony);
+			}
 		}
 	}
 

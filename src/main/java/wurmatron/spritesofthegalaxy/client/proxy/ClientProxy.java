@@ -31,11 +31,11 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private static void createModel (Block item) {
-		ModelLoader.setCustomModelResourceLocation (Item.getItemFromBlock (item),0,new ModelResourceLocation (Global.MODID + ":" + item.getUnlocalizedName ().substring (5),"inventory"));
+		ModelLoader.setCustomModelResourceLocation (Registry.blockItems.get (item),0,new ModelResourceLocation (item.getRegistryName (),"inventory"));
 	}
 
 	private static void createModel (Item item) {
-		ModelLoader.setCustomModelResourceLocation (item,0,new ModelResourceLocation (Global.MODID + ":" + item.getUnlocalizedName ().substring (5),"inventory"));
+		ModelLoader.setCustomModelResourceLocation (item,0,new ModelResourceLocation (item.getRegistryName ().toString (),"inventory"));
 	}
 
 	@Override

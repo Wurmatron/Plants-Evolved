@@ -3,31 +3,34 @@ package wurmatron.spritesofthegalaxy.common.research;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ResearchHelper {
 
 	// Argiculture
-	public static final Research land = new Research ("land",100,null,ResearchType.ARGICULTURE);
-	public static final Research greenHouse = new Research ("greenHouse",1000,new HashMap <IResearch, Integer> () {{
+	public static final Research land = new Research ("Land",100,null,ResearchType.ARGICULTURE);
+	public static final Research greenHouse = new Research ("GreenHouse",1000,new HashMap <IResearch, Integer> () {{
 		put (land,3);
 	}},ResearchType.ARGICULTURE);
-	public static final Research underGround = new Research ("underGround",2000,new HashMap <IResearch, Integer> () {{
+	public static final Research underGround = new Research ("UnderGround",2000,new HashMap <IResearch, Integer> () {{
 		put (land,5);
 		put (greenHouse,3);
 	}},ResearchType.ARGICULTURE);
-	public static final Research hydroPonics = new Research ("hydroPonics",100000,new HashMap <IResearch, Integer> () {{
+	public static final Research hydroPonics = new Research ("HydroPonics",100000,new HashMap <IResearch, Integer> () {{
 		put (greenHouse,5);
 	}},ResearchType.ARGICULTURE);
-	public static final Research synchysis = new Research ("synchysis",1000000,new HashMap <IResearch, Integer> () {{
+	public static final Research synthesis = new Research ("Synthesis",1000000,new HashMap <IResearch, Integer> () {{
 		put (hydroPonics,10);
 		put (greenHouse,10);
 		put (underGround,10);
 		put (land,10);
 	}},ResearchType.ARGICULTURE);
-	public static final Research augmentation = new Research ("augmentation",500000,new HashMap <IResearch, Integer> () {{
-		put (synchysis,5);
+	public static final Research augmentation = new Research ("Augmentation",500000,new HashMap <IResearch, Integer> () {{
+		put (synthesis,5);
 		put (hydroPonics,20);
 	}},ResearchType.ARGICULTURE);
 
@@ -129,7 +132,7 @@ public class ResearchHelper {
 		SpritesOfTheGalaxyAPI.register (greenHouse);
 		SpritesOfTheGalaxyAPI.register (underGround);
 		SpritesOfTheGalaxyAPI.register (hydroPonics);
-		SpritesOfTheGalaxyAPI.register (synchysis);
+		SpritesOfTheGalaxyAPI.register (synthesis);
 		SpritesOfTheGalaxyAPI.register (augmentation);
 		SpritesOfTheGalaxyAPI.register (basic);
 		SpritesOfTheGalaxyAPI.register (quarry);
@@ -157,6 +160,34 @@ public class ResearchHelper {
 		SpritesOfTheGalaxyAPI.register (written);
 		SpritesOfTheGalaxyAPI.register (computational);
 		SpritesOfTheGalaxyAPI.register (ai);
+	}
+
+	public static boolean isValidMove (HashMap <IResearch, Integer> currentResearch,IResearch newLevel) {
+		if (newLevel != null && newLevel.getPreReq () != null && newLevel.getPreReq ().size () > 0) {
+			List <IResearch> hasForLevel = new ArrayList <> ();
+			for (IResearch needed : newLevel.getPreReq ().keySet ())
+				for (IResearch has : currentResearch.keySet ())
+					if (has == needed && currentResearch.get (has) >= newLevel.getPreReq ().get (needed))
+						hasForLevel.add (needed);
+			if (newLevel.getPreReq ().size () == hasForLevel.size ())
+				return true;
+			return false;
+		}
+		return true;
+	}
+
+	public static HashMap <IResearch, Integer> getNeededResearch (HashMap <IResearch, Integer> currentResearch,IResearch test) {
+		HashMap <IResearch, Integer> data = new HashMap <> ();
+		if (test.getPreReq ().size () > 0)
+			for (IResearch needed : test.getPreReq ().keySet ())
+				for (IResearch has : currentResearch.keySet ())
+					if (has == needed && currentResearch.get (has) >= test.getPreReq ().get (needed))
+						data.put (needed,test.getPreReq ().get (needed));
+		HashMap <IResearch, Integer> need = new HashMap <> ();
+		for (IResearch res : test.getPreReq ().keySet ())
+			if (!data.containsKey (res) || data.containsKey (res) && data.get (res) < test.getPreReq ().get (res))
+				need.put (res,test.getPreReq ().get (res));
+		return need;
 	}
 }
 
