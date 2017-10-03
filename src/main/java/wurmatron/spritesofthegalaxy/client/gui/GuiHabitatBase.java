@@ -49,11 +49,11 @@ public class GuiHabitatBase extends GuiScreen {
 	public void initGui () {
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
-		buttonList.add(overview = new GuiTexturedButton (0, startWidth + 2, startHeight + 5,63,15, "Overview"));
-		buttonList.add(population = new GuiTexturedButton (1, startWidth + 57, startHeight + 5,46,15,"Pop."));
-		buttonList.add(manage = new GuiTexturedButton (2, startWidth + 95, startHeight + 5,54,15, "Manage"));
-		buttonList.add(storage = new GuiTexturedButton (3, startWidth + 141, startHeight + 5,56,15, "Storage"));
-		buttonList.add(storage = new GuiTexturedButton (3, startWidth + 190, startHeight + 5,62,15, "Research"));
+		buttonList.add (overview = new GuiTexturedButton (0,startWidth + 2,startHeight + 5,63,15,"Overview"));
+		buttonList.add (population = new GuiTexturedButton (1,startWidth + 57,startHeight + 5,46,15,"Pop."));
+		buttonList.add (manage = new GuiTexturedButton (2,startWidth + 95,startHeight + 5,54,15,"Manage"));
+		buttonList.add (storage = new GuiTexturedButton (3,startWidth + 141,startHeight + 5,56,15,"Storage"));
+		buttonList.add (storage = new GuiTexturedButton (4,startWidth + 190,startHeight + 5,62,15,"Research"));
 	}
 
 	@Override
@@ -74,6 +74,9 @@ public class GuiHabitatBase extends GuiScreen {
 				break;
 			case (2):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MANAGE,tile.getPos ()));
+				break;
+			case (3):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.STORAGE,tile.getPos ()));
 				break;
 			case (4):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH,tile.getPos ()));

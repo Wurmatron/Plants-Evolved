@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
@@ -102,6 +103,10 @@ public class MutiBlockHelper {
 		return tile.getMinerals () >= calcMineralsForStructure (structure,currentTier,nextTier,0);
 	}
 
+	public static boolean canBuildStorageType (TileHabitatCore tile,StorageType type,int currentTier,int nextTier) {
+		return tile.getMinerals () >= calcMineralsForStorage (type,currentTier,nextTier,0);
+	}
+
 	public static int calcMineralsForStructure (IStructure structure,int currentTier,int nextTier,int researchLevel) {
 		int amountNeeded = 0;
 		for (int index = currentTier + 1; index <= nextTier; index++)
@@ -109,4 +114,31 @@ public class MutiBlockHelper {
 		return Math.abs (amountNeeded);
 	}
 
+	public static int calcMineralsForStorage (StorageType type,int currentTier,int nextTier,int researchLevel) {
+		int amountNeeded = 0;
+		for (int index = currentTier + 1; index <= nextTier; index++)
+			amountNeeded += type.getMineral () * nextTier;
+		return Math.abs (amountNeeded);
+	}
+
+	public static void addStorageType (TileHabitatCore tile,StorageType type,int tier) {
+		switch (type) {
+			case POPULATION:
+				tile.setMaxPopulation ((tile.getMaxPopulation () + (int) (tier * StorageType.POPULATION.getScale ())));
+				break;
+			case MINERAL:
+				tile.addMaxMinerals ((int) (tier * StorageType.MINERAL.getScale ()));
+		}
+	}
+
+	public static void removeStorageType (TileHabitatCore tile,StorageType type,int tier) {
+		switch (type) {
+			case POPULATION: {
+				tile.removeStorageType (type,tier);
+				break;
+			}
+			case MINERAL:
+				tile.setMaxMinerals (tile.getMaxMinerals () - (int) (tier * StorageType.MINERAL.getScale ()));
+		}
+	}
 }

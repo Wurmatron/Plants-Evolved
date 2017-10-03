@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiAgriculture;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiManage;
 import wurmatron.spritesofthegalaxy.client.gui.overview.GuiOverview;
+import wurmatron.spritesofthegalaxy.client.gui.storage.GuiStorage;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import javax.annotation.Nullable;
@@ -34,6 +35,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int RESEARCH_UNIQUE = 17;
 	public static final int RESEARCH = 18;
 	public static final int POPULATION = 19;
+	public static final int STORAGE = 20;
 
 	@Nullable
 	@Override
@@ -85,6 +87,8 @@ public class GuiHandler implements IGuiHandler {
 				//				return new GuiResearch ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (POPULATION):
 				//				return new GuiPopulation ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+			case (STORAGE):
+				return new GuiStorage ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			default:
 				return null;
 		}

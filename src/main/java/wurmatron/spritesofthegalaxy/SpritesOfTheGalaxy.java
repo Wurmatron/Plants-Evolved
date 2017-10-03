@@ -58,5 +58,4 @@ public class SpritesOfTheGalaxy {
 		ResearchHelper.registerResearch ();
 		StructureHelper.registerStructures ();
 	}
-
 }

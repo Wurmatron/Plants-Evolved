@@ -13,6 +13,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.EnumProductionType;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
@@ -40,7 +41,9 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private ItemStack colonyItem;
 	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	public int mutiBlockSize;
-	private int minerals = 1000;
+	private int minerals = 5000;
+	private int maxMinerals = 5000;
+	private HashMap <StorageType, Integer> storageData = new HashMap <> ();
 
 	@Override
 	public void update () {
@@ -86,6 +89,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		}
 		mutiBlockSize = nbt.getInteger (NBT.SIZE);
 		minerals = nbt.getInteger (NBT.MINERALS);
+		maxMinerals = nbt.getInteger (NBT.MAX_MINERALS);
+		NBTTagList storageList = nbt.getTagList (NBT.STORAGE,8);
+		for (int index = 0; index < storageList.tagCount (); index++) {
+			NBTTagString temp = (NBTTagString) storageList.get (index);
+			StorageType type = Enum.valueOf (StorageType.class,temp.getString ().substring (0,temp.getString ().indexOf (".")));
+			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
+			storageData.put (type,tier);
+		}
 		markDirty ();
 	}
 
@@ -109,9 +120,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		NBTTagList structureList = new NBTTagList ();
 		for (IStructure structure : structures.keySet ())
 			structureList.appendTag (new NBTTagString (structure.getName () + "." + structures.get (structure)));
+		NBTTagList storageList = new NBTTagList ();
+		for (StorageType type : storageData.keySet ())
+			storageList.appendTag (new NBTTagString (type.name () + "." + storageData.get (type)));
 		nbt.setTag (NBT.STRUCTURES,structureList);
 		nbt.setInteger (NBT.SIZE,mutiBlockSize);
 		nbt.setInteger (NBT.MINERALS,minerals);
+		nbt.setInteger (NBT.MAX_MINERALS,maxMinerals);
+		nbt.setTag (NBT.STORAGE,storageList);
 		super.writeToNBT (nbt);
 		return nbt;
 	}
@@ -145,6 +161,15 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public int getMaxPopulation () {
 		return maxPopulation;
+	}
+
+	public void setMaxPopulation (int max) {
+		this.maxPopulation = max;
+		markDirty ();
+	}
+
+	public void addMaxPop (int amount) {
+		setMaxPopulation (getMaxPopulation () + amount);
 	}
 
 	public void growPopulation () {
@@ -216,6 +241,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		return structures;
 	}
 
+	public HashMap <StorageType, Integer> getStorageData () {
+		return storageData;
+	}
+
 	public void addStructure (IStructure structure,int tier) {
 		structures.put (structure,tier);
 		if (structure instanceof IProduction) {
@@ -234,6 +263,17 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			}
 			structures.remove (structure);
 		}
+	}
+
+	public void addStorageType (StorageType type,int tier) {
+		storageData.put (type,tier);
+		MutiBlockHelper.addStorageType (this,type,tier);
+	}
+
+	public void removeStorageType (StorageType type,int tier) {
+		storageData.remove (type);
+		setMaxPopulation (getMaxPopulation () - (int) (tier * type.getScale ()));
+		markDirty ();
 	}
 
 	public void addFood (int food) {
@@ -273,5 +313,23 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	public void eatMinerals (int minerals) {
 		this.minerals -= minerals;
 		markDirty ();
+	}
+
+	public void addMaxMinerals (int amt) {
+		setMaxMinerals (maxMinerals + amt);
+	}
+
+	public void setMaxMinerals (int amt) {
+		this.maxMinerals = amt;
+		markDirty ();
+	}
+
+	public void eatMaxMinerals (int amt) {
+		maxMinerals -= amt;
+		markDirty ();
+	}
+
+	public int getMaxMinerals () {
+		return maxMinerals;
 	}
 }

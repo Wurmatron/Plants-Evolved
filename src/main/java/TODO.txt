@@ -1,10 +1,12 @@
+ - Rework most of the code :p
+
  - Blocks
     - All Block Textures
-    - Add More Blocks Check with Files on Flash or ask Troy
-    *******
-    *******
-    *******
-    *******
+    - Max Pop
+    - Max Food
+    - Mineral (Silo)
+    - Amplifyer
+    - Research Helper / Speed
  - Items
     - Colony Item
     - Info Wand (NonGui Info)
@@ -17,3 +19,13 @@
  - Mod Support
     - Energy Blocks
     - Fluid Blocks
+
+ - Gui
+    - Finish All The Gui's
+
+ - Tile
+    - Fix Code
+    - Improve MutiBlock System
+
+ - Network
+    - Combine the packets......

@@ -17,6 +17,8 @@ public class NBT {
 	public static final String OUTPUT_LOCATION = "output";
 	public static final String SIZE = "size";
 	public static final String MINERALS = "minerals";
+	public static final String MAX_MINERALS = "maxMinerals";
+	public static final String STORAGE = "storage";
 
 	// Item
 	public static final String LINEAGE = "lineage";
