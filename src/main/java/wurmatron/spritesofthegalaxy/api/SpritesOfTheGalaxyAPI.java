@@ -3,6 +3,7 @@ package wurmatron.spritesofthegalaxy.api;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +16,21 @@ public class SpritesOfTheGalaxyAPI {
 	private static HashMap <String, IStructure> structureNames = new HashMap <> ();
 	private static HashMap <String, IResearch> researchNames = new HashMap <> ();
 	private static HashMap <StructureType, List <IStructure>> structureType = new HashMap <> ();
+	private static HashMap <ResearchType, List <IResearch>> researchType = new HashMap <> ();
 
 	public static void register (IResearch res) {
 		if (!research.contains (res)) {
 			research.add (res);
 			researchNames.put (res.getName (),res);
+			if (researchType.get (res.getResearchTab ()) == null || researchType.get (res.getResearchTab ()).size () <= 0) {
+				List <IResearch> researchList = new ArrayList <> ();
+				researchList.add (res);
+				researchType.put (res.getResearchTab (),researchList);
+			} else {
+				List <IResearch> researchList = researchType.get (res.getResearchTab ());
+				researchList.add (res);
+				researchType.put (res.getResearchTab (),researchList);
+			}
 		}
 	}
 
@@ -64,6 +75,12 @@ public class SpritesOfTheGalaxyAPI {
 	public static List <IStructure> getStructuresForType (StructureType type) {
 		if (structureType.containsKey (type))
 			return structureType.get (type);
+		return new ArrayList <> ();
+	}
+
+	public static List <IResearch> getResearchForType (ResearchType type) {
+		if (researchType.containsKey (type))
+			return researchType.get (type);
 		return new ArrayList <> ();
 	}
 }

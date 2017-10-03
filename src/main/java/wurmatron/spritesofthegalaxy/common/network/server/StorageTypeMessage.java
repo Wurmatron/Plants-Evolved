@@ -29,7 +29,7 @@ public class StorageTypeMessage extends CustomMessage.CustomtServerMessage <Stor
 		data.setBoolean (NBT.TYPE,remove);
 	}
 
-	public StorageTypeMessage (StorageType type,int level,BlockPos coreLoc, boolean remove) {
+	public StorageTypeMessage (StorageType type,int level,BlockPos coreLoc,boolean remove) {
 		data = new NBTTagCompound ();
 		data.setString (NBT.STORAGE,type.name ());
 		data.setInteger (NBT.LEVEL,level);

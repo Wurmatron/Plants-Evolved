@@ -6,9 +6,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
+import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiManage;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiStructure;
 import wurmatron.spritesofthegalaxy.client.gui.overview.GuiOverview;
+import wurmatron.spritesofthegalaxy.client.gui.research.GuiDiscover;
+import wurmatron.spritesofthegalaxy.client.gui.research.GuiResearch;
 import wurmatron.spritesofthegalaxy.client.gui.storage.GuiStorage;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
@@ -71,21 +74,21 @@ public class GuiHandler implements IGuiHandler {
 			case (NURSERY):
 				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.NURSERY);
 			case (RESEARCH_ARGICULTURE):
-				//				return new GuiResearhAgriculture ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.ARGICULTURE);
 			case (RESEARCH_INDUSTRY):
-				//				return new GuiResearchIndustry ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.INDUSTRY);
 			case (RESEARCH_ENERGY):
-				//				return new GuiResearchEnergy ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.ENERGY);
 			case (RESEARCH_RESEARCH):
-				//				return new GuiResearchResearch ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.RESEARCH);
 			case (RESEARCH_MAGIC):
-				//				return new GuiResearchMagic ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.MAGIC);
 			case (RESEARCH_UNIQUE):
-				//				return new GuiResearchUnique ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiDiscover ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),ResearchType.UNIQUE);
 			case (MANAGE):
 				return new GuiManage ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (RESEARCH):
-				//				return new GuiResearch ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiResearch ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (POPULATION):
 				//				return new GuiPopulation ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (STORAGE):

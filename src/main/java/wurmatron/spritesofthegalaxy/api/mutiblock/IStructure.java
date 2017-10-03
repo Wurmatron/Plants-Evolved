@@ -20,4 +20,6 @@ public interface IStructure {
 
 	int getCost (int researchLevel,int structureTier);
 
+	int getEnergyUsage(int tier);
+
 }

@@ -57,4 +57,9 @@ public class FarmStructure implements IStructure, IProduction {
 	public EnumProductionType getType () {
 		return EnumProductionType.VALUE;
 	}
+
+	@Override
+	public int getEnergyUsage (int tier) {
+		return tier;
+	}
 }

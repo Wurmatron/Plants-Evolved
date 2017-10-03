@@ -8,6 +8,7 @@ public class Local {
 	public static final String LINEAGE = "stat.lineage.name";
 	public static final String SIZE = "stat.size.name";
 	public static final String MINERALS = "stat.minerals.name";
+	public static final String ENERGY = "stat.energy.name";
 	// Gui
 	public static final String INCOME = "gui.income.name";
 	public static final String STATS = "gui.stats.name";
@@ -32,4 +33,7 @@ public class Local {
 	public static final String PREV_LEVEL = "gui.prevLevel.name";
 	public static final String COST_MINERAL = "gui.costMineral.name";
 	public static final String GIVE_MINERAL = "gui.giveMineral.name";
+	public static final String COST_RESEARCH = "gui.costPoints.name";
+	public static final String GIVE_RESEARCH = "gui.givePoints.name";
+	public static final String NEED_POINTS = "gui.needPoints.name";
 }

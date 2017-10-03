@@ -1,59 +1,59 @@
-package wurmatron.spritesofthegalaxy.common.structure.mine;
+package wurmatron.spritesofthegalaxy.common.structure.agriculture;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import wurmatron.spritesofthegalaxy.api.mutiblock.*;
+import wurmatron.spritesofthegalaxy.api.mutiblock.EnumProductionType;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.HashMap;
 
-public class MineStructure implements IStructure, IProduction, ITickStructure {
+public class GreenhouseStructure implements IStructure, IProduction {
 
 	@Override
 	public String getName () {
-		return "mine";
+		return "greenhouse";
 	}
 
 	@Override
 	public String getDisplayName () {
-		return "Basic Mine";
+		return "Greenhouse";
 	}
 
 	@Override
 	public StructureType getStructureType () {
-		return StructureType.MINE;
+		return StructureType.AGRICULTURE;
 	}
 
 	@Override
 	public HashMap <IResearch, Integer> getRequiredResearch () {
-		return null;
+		HashMap <IResearch, Integer> req= new HashMap <> ();
+		req.put (ResearchHelper.greenHouse,1);
+		return req;
 	}
 
 	@Override
 	public int getCost (int researchLevel,int structureTier) {
 		if (structureTier == 0)
-			return 10;
-		return structureTier * 10;
-	}
-
-	@Override
-	public void tickStructure (TileHabitatCore core,int tier) {
-		core.addMinerals (tier * 5);
+			return 100;
+		return structureTier * 100;
 	}
 
 	@Override
 	public void addProduction (TileHabitatCore core,int structureTier) {
+		core.addFood (structureTier * 10);
 	}
 
 	@Override
 	public void removeProduction (TileHabitatCore core,int structureTier) {
+		core.removeFood (structureTier * 10);
 	}
 
 	@Override
 	public int getAmountPerTier (TileHabitatCore core,int tier) {
-		return tier * 5;
+		return tier * 10;
 	}
 
 	@Override
@@ -63,6 +63,6 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 
 	@Override
 	public int getEnergyUsage (int tier) {
-		return tier;
+		return 2 * tier;
 	}
 }

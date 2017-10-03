@@ -1,8 +1,11 @@
 package wurmatron.spritesofthegalaxy.common.research;
 
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,6 +179,8 @@ public class ResearchHelper {
 	}
 
 	public static HashMap <IResearch, Integer> getNeededResearch (HashMap <IResearch, Integer> currentResearch,IResearch test) {
+		if (test.getPreReq () == null || test.getPreReq ().size () == 0)
+			return new HashMap <> ();
 		HashMap <IResearch, Integer> data = new HashMap <> ();
 		if (test.getPreReq ().size () > 0)
 			for (IResearch needed : test.getPreReq ().keySet ())
@@ -187,6 +192,29 @@ public class ResearchHelper {
 			if (!data.containsKey (res) || data.containsKey (res) && data.get (res) < test.getPreReq ().get (res))
 				need.put (res,test.getPreReq ().get (res));
 		return need;
+	}
+
+	public static boolean hasResearch (TileHabitatCore tile,HashMap <IResearch, Integer> required) {
+		if(required == null || required.size () == 0)
+			return true;
+		for (IResearch research : required.keySet ())
+			if (!hasResearch (tile,research,required.get (research)))
+				return false;
+		return true;
+	}
+
+	public static boolean hasResearch (TileHabitatCore tile,IResearch research,int level) {
+		for (IResearch res : tile.getResearch ().keySet ())
+			if (res == research && level == tile.getResearch ().get (res))
+				return true;
+		return false;
+	}
+
+	public static HashMap <IResearch, Integer> getNeededResearch (HashMap <IResearch, Integer> currentResearch,IStructure structure) {
+		HashMap <IResearch, Integer> data = new HashMap <> ();
+		for (IResearch res : structure.getRequiredResearch ().keySet ())
+			data.putAll (getNeededResearch (currentResearch,res));
+		return data;
 	}
 }
 

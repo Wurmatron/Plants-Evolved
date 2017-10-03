@@ -13,6 +13,7 @@ stat.food.name=Food
 stat.lineage.name=Lineage
 stat.size.name=Size
 stat.minerals.name=Minerals
+stat.energy.name=Energy
 
 # Gui
 gui.agriculture.name=Agriculture
@@ -31,13 +32,17 @@ gui.researchEnergy.name=Energy
 gui.researchResearch.name=Research
 gui.researchMagic.name=Magic
 gui.researchUnique.name=Unique
-gui.missingResearch.name=Require Research 'Research'
+gui.missingResearch.name=Required Research 'Research'
 gui.needMinerals.name=Need 'Minerals' More Minerals!
 gui.currentlyProvide.name=Currently Provides 'PRODUCE'.
 gui.prevLevel.name=Previous Tier Produces 'PRODUCE'
 gui.nextLevel.name=Next Tier Produces 'PRODUCE'
 gui.costMineral.name=Costs 'Minerals' Minerals
 gui.giveMineral.name=Gives 'Minerals' Minerals
+gui.costPoints.name=Costs 'POINTS' Research Points
+gui.givePoints.name=Gives 'POINTS' Research Points
+gui.needPoints.name=Need 'POINTS' More Research Points!.
+gui.energy.name=Energy
 
 # Item
 item.spriteColony.name=Sprite Colony

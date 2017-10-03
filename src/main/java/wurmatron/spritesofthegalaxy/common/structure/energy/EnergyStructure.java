@@ -1,29 +1,26 @@
-package wurmatron.spritesofthegalaxy.common.structure.mine;
+package wurmatron.spritesofthegalaxy.common.structure.energy;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.HashMap;
 
-public class MineStructure implements IStructure, IProduction, ITickStructure {
+public class EnergyStructure implements IStructure, IProduction, IEnergy {
 
 	@Override
 	public String getName () {
-		return "mine";
+		return "fuel";
 	}
 
 	@Override
 	public String getDisplayName () {
-		return "Basic Mine";
+		return "Fuel Power";
 	}
 
 	@Override
 	public StructureType getStructureType () {
-		return StructureType.MINE;
+		return StructureType.ENERGY;
 	}
 
 	@Override
@@ -39,21 +36,18 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 	}
 
 	@Override
-	public void tickStructure (TileHabitatCore core,int tier) {
-		core.addMinerals (tier * 5);
-	}
-
-	@Override
 	public void addProduction (TileHabitatCore core,int structureTier) {
+		core.addEnergy (structureTier);
 	}
 
 	@Override
 	public void removeProduction (TileHabitatCore core,int structureTier) {
+		core.consumeEnergy (structureTier);
 	}
 
 	@Override
 	public int getAmountPerTier (TileHabitatCore core,int tier) {
-		return tier * 5;
+		return tier;
 	}
 
 	@Override
@@ -63,6 +57,6 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 
 	@Override
 	public int getEnergyUsage (int tier) {
-		return tier;
+		return 0;
 	}
 }

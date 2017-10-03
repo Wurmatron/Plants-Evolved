@@ -1,6 +1,7 @@
 package wurmatron.spritesofthegalaxy.common.tileentity;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,9 +10,11 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
@@ -21,20 +24,23 @@ import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	private static final long UPDATE_TIME = 1000;
 	public int mutiBlockSize;
-	private HashMap <String, Integer> items = new HashMap <> ();
 	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	private HashMap <StorageType, Integer> storageData = new HashMap <> ();
+	private HashMap <ResearchType, Integer> researchPoints = new HashMap <> ();
 	private ItemStack colonyItem;
 	private boolean update = false;
 	private long lastUpdate;
 
 	private int food = Settings.populationFoodRequirement * Settings.startPopulation + 100;
+	private int energy = 10;
 	private int minerals = 5000;
 	private int maxPopulation = Settings.startPopulation + 100;
 	private int maxMinerals = 5000;
@@ -50,6 +56,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				if (structures.size () == 0) {
 					addStructure (new FarmStructure (),1);
 					addStorageType (StorageType.POPULATION,1);
+					researchPoints.put (ResearchType.ARGICULTURE,1000);
 				}
 			}
 		}
@@ -64,7 +71,9 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		growPopulation ();
 		if (structures.size () > 0)
 			for (IStructure structure : structures.keySet ())
-				if (structure instanceof ITickStructure)
+				if (structure instanceof ITickStructure && getEnergy () > 0)
+					((ITickStructure) structure).tickStructure (this,structures.get (structure));
+				else if (structure instanceof ITickStructure && structure instanceof IEnergy)
 					((ITickStructure) structure).tickStructure (this,structures.get (structure));
 	}
 
@@ -75,14 +84,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		maxPopulation = nbt.getInteger (NBT.MAX_POPULATION);
 		food = nbt.getInteger (NBT.FOOD);
 		lastUpdate = nbt.getLong (NBT.LASTUPDATE);
-		NBTTagCompound inv = nbt.getCompoundTag (NBT.INVENTORY);
-		for (int index = 0; index < inv.getSize (); index++) {
-			NBTTagCompound temp = inv.getCompoundTag (Integer.toString (index));
-			ItemStack item = new ItemStack (temp.getCompoundTag (NBT.ITEM));
-			int amount = temp.getInteger (NBT.AMOUNT);
-			if (item != ItemStack.EMPTY && item.getItem () != Item.getItemFromBlock (Blocks.AIR))
-				items.put (convertToData (item),amount);
-		}
 		colonyItem = convertToStack (nbt.getString (NBT.COLONY));
 		NBTTagList structureList = nbt.getTagList (NBT.STRUCTURES,8);
 		for (int index = 0; index < structureList.tagCount (); index++) {
@@ -101,6 +102,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
 			storageData.put (type,tier);
 		}
+		NBTTagList researchPointList = nbt.getTagList (NBT.RESEARCH_POINTS,8);
+		for (int index = 0; index < researchPointList.tagCount (); index++) {
+			NBTTagString temp = (NBTTagString) researchPointList.get (index);
+			ResearchType researchType = Enum.valueOf (ResearchType.class,temp.getString ().substring (0,temp.getString ().indexOf (".")));
+			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
+			researchPoints.put (researchType,tier);
+		}
+		energy = nbt.getInteger (NBT.ENERGY);
 	}
 
 	@Override
@@ -109,16 +118,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		nbt.setInteger (NBT.MAX_POPULATION,maxPopulation);
 		nbt.setInteger (NBT.FOOD,food);
 		nbt.setLong (NBT.LASTUPDATE,lastUpdate);
-		NBTTagCompound invList = new NBTTagCompound ();
-		int index = 0;
-		for (String item : items.keySet ()) {
-			index++;
-			NBTTagCompound temp = new NBTTagCompound ();
-			temp.setInteger (NBT.AMOUNT,items.get (item));
-			temp.setTag (NBT.ITEM,convertToStack (item).writeToNBT (new NBTTagCompound ()));
-			invList.setTag (Integer.toString (index),temp);
-		}
-		nbt.setTag (NBT.INVENTORY,invList);
 		nbt.setString (NBT.COLONY,convertToData (colonyItem));
 		NBTTagList structureList = new NBTTagList ();
 		for (IStructure structure : structures.keySet ())
@@ -131,6 +130,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		nbt.setInteger (NBT.MINERALS,minerals);
 		nbt.setInteger (NBT.MAX_MINERALS,maxMinerals);
 		nbt.setTag (NBT.STORAGE,storageList);
+		NBTTagList researchList = new NBTTagList ();
+		for (ResearchType type : researchPoints.keySet ())
+			researchList.appendTag (new NBTTagString (type.name () + "." + researchPoints.get (type)));
+		nbt.setTag (NBT.RESEARCH_POINTS,researchList);
+		nbt.setInteger (NBT.ENERGY,energy);
 		super.writeToNBT (nbt);
 		return nbt;
 	}
@@ -184,22 +188,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			setPopulation (getPopulation () - Math.abs (getFood ()));
 	}
 
-	public void setStack (ItemStack stack,int amount) {
-		if (stack != ItemStack.EMPTY && stack.getItem () != Item.getItemFromBlock (Blocks.AIR))
-			items.put (convertToData (stack),amount);
-	}
-
-	public void addStack (ItemStack stack) {
-		if (items != null && stack != null && !stack.isEmpty ())
-			if (items.containsKey (convertToData (stack))) {
-				stack.setCount (1);
-				setStack (stack,items.get (convertToData (stack)) + stack.getCount ());
-			} else {
-				stack.setCount (1);
-				setStack (stack,stack.getCount ());
-			}
-	}
-
 	private String convertToData (ItemStack item) {
 		if (item != null) {
 			item.setCount (1);
@@ -211,7 +199,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private ItemStack convertToStack (String stack) {
 		return StackHelper.convertToStack (stack);
 	}
-
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket () {
@@ -248,6 +235,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void addStructure (IStructure structure,int tier) {
 		structures.put (structure,tier);
+		consumeEnergy (structure.getEnergyUsage (tier));
 		if (structure instanceof IProduction) {
 			IProduction production = (IProduction) structure;
 			if (production.getType () == EnumProductionType.VALUE)
@@ -260,8 +248,9 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			if (structure instanceof IProduction) {
 				IProduction production = (IProduction) structure;
 				if (production.getType () == EnumProductionType.VALUE)
-					production.removeProduction (this,structures.remove (structure));
+					production.removeProduction (this,structures.get (structure));
 			}
+			addEnergy (structure.getEnergyUsage (structures.get (structure)));
 			structures.remove (structure);
 		}
 	}
@@ -343,6 +332,42 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void setMaxMinerals (int amt) {
 		this.maxMinerals = amt;
+		markDirty ();
+	}
+
+	public int getResearshPoints (ResearchType type) {
+		return researchPoints.getOrDefault (type,0);
+	}
+
+	public void setResearchPoints (ResearchType type,int amount) {
+		researchPoints.put (type,amount);
+		markDirty ();
+	}
+
+	public void addResearchPoint (ResearchType type,int amount) {
+		setResearchPoints (type,getResearshPoints (type) + amount);
+	}
+
+	public void consumeResearchPoints (ResearchType type,int amount) {
+		setResearchPoints (type,getResearshPoints (type) - amount);
+	}
+
+	public int getEnergy () {
+		return energy;
+	}
+
+	public void setEnergy (int energy) {
+		this.energy = energy;
+		markDirty ();
+	}
+
+	public void consumeEnergy (int amount) {
+		this.energy -= amount;
+		markDirty ();
+	}
+
+	public void addEnergy (int amount) {
+		this.energy += amount;
 		markDirty ();
 	}
 }

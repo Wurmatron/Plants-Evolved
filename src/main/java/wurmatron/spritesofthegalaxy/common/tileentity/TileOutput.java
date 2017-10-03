@@ -188,19 +188,19 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 			ItemStack stack = getStackInSlot (s);
 			if (stack != null && stack != ItemStack.EMPTY) {
 				IInventory inv = (IInventory) world.getTileEntity (outputLocation);
-				if (inv != null && addStack (inv,stack))
+				if (inv != null && addStack (stack))
 					setInventorySlotContents (s,ItemStack.EMPTY);
 			}
 		}
 	}
 
-	private boolean addStack (IInventory inventory,ItemStack stack) {
-		for (int index = 0; index < inventory.getSizeInventory (); index++)
-			if (inventory.getStackInSlot (index).isItemEqual (stack) && inventory.getStackInSlot (index).getCount () != inventory.getStackInSlot (index).getMaxStackSize ()) {
-				ItemStack invStack = inventory.getStackInSlot (index);
+	public boolean addStack (ItemStack stack) {
+		for (int index = 0; index < getSizeInventory (); index++)
+			if (getStackInSlot (index).isItemEqual (stack) && getStackInSlot (index).getCount () != getStackInSlot (index).getMaxStackSize ()) {
+				ItemStack invStack = getStackInSlot (index);
 				if (invStack.getCount () + stack.getCount () <= invStack.getMaxStackSize ()) {
 					invStack.setCount (invStack.getCount () + stack.getCount ());
-					inventory.setInventorySlotContents (index,invStack);
+					setInventorySlotContents (index,invStack);
 					return true;
 				} else {
 					int count = invStack.getCount ();
@@ -208,11 +208,11 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 					stack.splitStack (openSpace);
 					markDirty ();
 					invStack.setCount (invStack.getMaxStackSize ());
-					inventory.markDirty ();
+					markDirty ();
 					return true;
 				}
-			} else if (inventory.getStackInSlot (index) == ItemStack.EMPTY) {
-				inventory.setInventorySlotContents (index,stack);
+			} else if (getStackInSlot (index) == ItemStack.EMPTY) {
+				setInventorySlotContents (index,stack);
 				return true;
 			}
 		return false;

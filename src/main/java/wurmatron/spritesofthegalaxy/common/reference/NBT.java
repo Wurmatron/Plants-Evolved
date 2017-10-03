@@ -20,6 +20,8 @@ public class NBT {
 	public static final String MAX_MINERALS = "maxMinerals";
 	public static final String STORAGE = "storage";
 	public static final String TYPE = "type";
+	public static final String RESEARCH_POINTS = "researchPoints";
+	public static final String ENERGY = "energy";
 
 	// Item
 	public static final String LINEAGE = "lineage";
