@@ -188,4 +188,20 @@ public class MutiBlockHelper {
 	public static int calculateSellBack (int price) {
 		return (int) (price * .25);
 	}
+
+	public static BlockPos findOutput (World world,TileHabitatCore tile) {
+		if (isValid (world,tile.getPos (),tile.mutiBlockSize)) {
+			int direction = tile.mutiBlockSize / 2;
+			for (int x = 0; x <= direction; x++)
+				for (int y = 0; y <= direction; y++)
+					for (int z = 0; z <= direction; z++) {
+						if (x == 0 && y == 0 && z == 0)
+							continue;
+						if (world.getTileEntity (tile.getPos ().add (x,y,z)) instanceof TileOutput)
+							return tile.getPos ().add (x,y,z);
+					}
+			return null;
+		}
+		return null;
+	}
 }

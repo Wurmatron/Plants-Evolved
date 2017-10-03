@@ -52,4 +52,25 @@ public class StackHelper {
 		}
 		return null;
 	}
+
+	public static boolean check (ItemStack a,ItemStack b) {
+		return check (a,b,true,false);
+	}
+
+	public static boolean check (ItemStack a,ItemStack b,boolean meta,boolean size) {
+		boolean item = sameItem (a,b);
+		if (!item)
+			return false;
+		boolean metaCheck = a.getItemDamage () == b.getItemDamage ();
+		boolean sizeCheck = a.getCount () == b.getCount ();
+		if (meta && size)
+			return metaCheck && sizeCheck;
+		if (meta)
+			return metaCheck;
+		return size && sizeCheck;
+	}
+
+	private static boolean sameItem (ItemStack a,ItemStack b) {
+		return a.getItem () == b.getItem ();
+	}
 }

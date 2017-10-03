@@ -1,6 +1,7 @@
 package wurmatron.spritesofthegalaxy.common.tileentity;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -369,5 +370,15 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	public void addEnergy (int amount) {
 		this.energy += amount;
 		markDirty ();
+	}
+
+	public boolean addOutput (ItemStack stack) {
+		BlockPos output = MutiBlockHelper.findOutput (world,this);
+		if (output != null && world.getTileEntity (output) instanceof TileOutput) {
+			TileOutput tile = (TileOutput) world.getTileEntity (output);
+			if (tile != null)
+				return tile.addOutput (stack);
+		}
+		return false;
 	}
 }

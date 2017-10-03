@@ -2,12 +2,16 @@ package wurmatron.spritesofthegalaxy.common.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
+import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
 public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 
@@ -17,9 +21,14 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	@Override
 	public void update () {
 		if (getCore () != null)
-			if (outputLocation != null && world.getWorldTime () % 5 == 0)
-				handleOutputItems ();
-			else if (world.getWorldTime () % 20 == 0) {
+			if (outputLocation != null && world.getWorldTime () % 5 == 0) {
+				if (hasItems ()) {
+					for (int index = 0; index < getSizeInventory (); index++)
+						if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY)
+							if (addToStorage (getStackInSlot (index)))
+								setInventorySlotContents (index,ItemStack.EMPTY);
+				}
+			} else if (world.getWorldTime () % 20 == 0) {
 				if (isValidInventory (pos.up ()))
 					outputLocation = pos.up ();
 				else if (isValidInventory (pos.down ()))
@@ -82,14 +91,14 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 
 	@Override
 	public void setInventorySlotContents (int index,ItemStack stack) {
-		if (index >= 0 && index <= getSizeInventory ()) {
-			if (stack != null && stack.getCount () > getInventoryStackLimit ())
-				stack.setCount (getInventoryStackLimit ());
-			if (stack != null && stack.getCount () == 0)
-				stack = null;
-			this.inventory[index] = stack;
-			this.markDirty ();
-		}
+		if (index < 0 || index >= this.getSizeInventory ())
+			return;
+		if (stack != null && stack.getCount () > this.getInventoryStackLimit ())
+			stack.setCount (getInventoryStackLimit ());
+		if (stack != null && stack.getCount () == 0)
+			stack = null;
+		this.inventory[index] = stack;
+		this.markDirty ();
 	}
 
 	@Override
@@ -183,38 +192,67 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 		return world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof IInventory && !(world.getTileEntity (pos) instanceof TileMutiBlock);
 	}
 
-	private void handleOutputItems () {
-		for (int s = 0; s < getSizeInventory (); s++) {
-			ItemStack stack = getStackInSlot (s);
-			if (stack != null && stack != ItemStack.EMPTY) {
-				IInventory inv = (IInventory) world.getTileEntity (outputLocation);
-				if (inv != null && addStack (stack))
-					setInventorySlotContents (s,ItemStack.EMPTY);
-			}
-		}
+	private boolean hasItems () {
+		for (ItemStack item : inventory)
+			if (item != null || item != ItemStack.EMPTY)
+				return true;
+		return false;
 	}
 
-	public boolean addStack (ItemStack stack) {
-		for (int index = 0; index < getSizeInventory (); index++)
-			if (getStackInSlot (index).isItemEqual (stack) && getStackInSlot (index).getCount () != getStackInSlot (index).getMaxStackSize ()) {
-				ItemStack invStack = getStackInSlot (index);
-				if (invStack.getCount () + stack.getCount () <= invStack.getMaxStackSize ()) {
-					invStack.setCount (invStack.getCount () + stack.getCount ());
-					setInventorySlotContents (index,invStack);
+	public boolean addOutput (ItemStack stack) {
+		if (stack != null && stack != ItemStack.EMPTY)
+			for (int index = 0; index < getSizeInventory (); index++)
+				if (getStackInSlot (index) == ItemStack.EMPTY) {
+					setInventorySlotContents (index,stack);
 					return true;
-				} else {
-					int count = invStack.getCount ();
-					int openSpace = invStack.getMaxStackSize () - count;
-					stack.splitStack (openSpace);
-					markDirty ();
-					invStack.setCount (invStack.getMaxStackSize ());
-					markDirty ();
-					return true;
+				} else if (StackHelper.check (stack,getStackInSlot (index),true,false)) {
+					if (getStackInSlot (index).getCount () + stack.getCount () <= 64) {
+						ItemStack item = stack;
+						item.setCount (getStackInSlot (index).getCount () + stack.getCount ());
+						setInventorySlotContents (index,item);
+						return true;
+					} else {
+						int amountLeft = stack.getCount () + getStackInSlot (index).getCount ();
+						if (amountLeft > 64) {
+							ItemStack item = stack.copy ();
+							item.setCount (64);
+							amountLeft -= 64;
+							setInventorySlotContents (index,item);
+							ItemStack item2 = stack.copy ();
+							item2.setCount (amountLeft);
+							return addOutput (item2);
+						}
+					}
 				}
-			} else if (getStackInSlot (index) == ItemStack.EMPTY) {
-				setInventorySlotContents (index,stack);
-				return true;
-			}
+		return false;
+	}
+
+	public boolean addToStorage (ItemStack stack) {
+		IInventory tile = (IInventory) world.getTileEntity (outputLocation);
+		if (stack != null && stack != ItemStack.EMPTY)
+			for (int index = 0; index < tile.getSizeInventory (); index++)
+				if (tile.getStackInSlot (index) == ItemStack.EMPTY) {
+					tile.setInventorySlotContents (index,stack);
+					return true;
+				} else if (StackHelper.check (stack,tile.getStackInSlot (index),true,false)) {
+					if (tile.getStackInSlot (index).getCount () + stack.getCount () <= 64) {
+						ItemStack item = stack;
+						item.setCount (tile.getStackInSlot (index).getCount () + stack.getCount ());
+						tile.setInventorySlotContents (index,item);
+						return true;
+					} else {
+						int amountLeft = stack.getCount () + tile.getStackInSlot (index).getCount ();
+						if (amountLeft > 64) {
+							ItemStack item = stack.copy ();
+							item.setCount (64);
+							amountLeft -= 64;
+							tile.setInventorySlotContents (index,item);
+							ItemStack item2 = stack.copy ();
+							item2.setCount (amountLeft);
+							return addOutput (item2);
+						}
+					}
+				}
 		return false;
 	}
 }
