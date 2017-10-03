@@ -53,9 +53,9 @@ public class GuiStructure extends GuiHabitatBase {
 		super.actionPerformed (butt);
 		for (int index = 0; index < structures.size (); index++)
 			if (index <= 10)
-				if (butt.id % 2 == 0)
+				if ((100 + index) == butt.id)
 					proccessButton (structures.get (index));
-				else
+				else if((101 + index) == butt.id)
 					destroyButton (structures.get (index));
 	}
 
@@ -83,8 +83,7 @@ public class GuiStructure extends GuiHabitatBase {
 	private void displayString (IStructure structure,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
 		String str = I18n.translateToLocal (structure.getDisplayName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getStructureLevel (tile,structure));
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
-		if (structure instanceof IProduction)
-			if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
+			if (structure instanceof IProduction && isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
 				List <String> displayInfo = new ArrayList ();
 				IProduction production = (IProduction) structure;
 				displayInfo.add (I18n.translateToLocal (Local.CURRENT_PROVIDE).replace ("'PRODUCE'",DisplayHelper.formatNum (((IProduction) structure).getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure)))));
@@ -92,7 +91,7 @@ public class GuiStructure extends GuiHabitatBase {
 				displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),MutiBlockHelper.getStructureLevel (tile,structure) + keyAmount (),0))));
 				drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
 			}
-		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
+		if (structure instanceof IProduction && isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
 			List <String> displayInfo = new ArrayList ();
 			IProduction production = (IProduction) structure;
 			displayInfo.add (I18n.translateToLocal (Local.CURRENT_PROVIDE).replace ("'PRODUCE'",DisplayHelper.formatNum (((IProduction) structure).getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure)))));

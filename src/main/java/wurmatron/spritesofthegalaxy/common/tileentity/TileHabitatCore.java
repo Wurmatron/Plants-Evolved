@@ -20,6 +20,7 @@ import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -49,8 +50,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			if (isValid > 0) {
 				MutiBlockHelper.setTilesCore (world,pos,isValid);
 				update = true;
-				if (structures.size () == 0)
+				if (structures.size () == 0) {
 					addStructure (new FarmStructure (),1);
+					addStorageType (StorageType.POPULATION, 1);
+				}
 			}
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
@@ -91,6 +94,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		minerals = nbt.getInteger (NBT.MINERALS);
 		maxMinerals = nbt.getInteger (NBT.MAX_MINERALS);
 		NBTTagList storageList = nbt.getTagList (NBT.STORAGE,8);
+		LogHandler.info ("SL : " + storageList.tagCount ());
 		for (int index = 0; index < storageList.tagCount (); index++) {
 			NBTTagString temp = (NBTTagString) storageList.get (index);
 			StorageType type = Enum.valueOf (StorageType.class,temp.getString ().substring (0,temp.getString ().indexOf (".")));
@@ -142,12 +146,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void setPopulation (double pop) {
-		if (pop < Integer.MAX_VALUE && pop <= getMaxPopulation ())
-			if (hasColony () && getColony ().getTagCompound () != null) {
-				ItemStack colony = getColony ();
-				colony.getTagCompound ().setDouble (NBT.POPULATION,pop < maxPopulation ? pop : maxPopulation);
-				addColony (colony);
-			}
+		if (pop < Integer.MAX_VALUE && pop <= getMaxPopulation () && hasColony () && getColony ().getTagCompound () != null) {
+			ItemStack colony = getColony ();
+			colony.getTagCompound ().setDouble (NBT.POPULATION,pop < maxPopulation ? pop : maxPopulation);
+			addColony (colony);
+		}
 	}
 
 	public int getFood () {
@@ -163,7 +166,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void setMaxPopulation (int max) {
-		this.maxPopulation = max;
+		if (max >= 0)
+			this.maxPopulation = max;
+		else
+			this.maxPopulation = 0;
 		markDirty ();
 	}
 
@@ -277,8 +283,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void reloadStorageType (StorageType type,int currentTier,int newTier) {
+		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 		removeStorageType (type,currentTier);
+		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 		addStorageType (type,newTier);
+		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 	}
 
 	public void addFood (int food) {

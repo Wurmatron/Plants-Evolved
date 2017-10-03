@@ -1,10 +1,7 @@
 package wurmatron.spritesofthegalaxy.common.utils;
 
 import net.minecraft.item.ItemStack;
-import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-
-import java.util.HashMap;
 
 public class DisplayHelper {
 

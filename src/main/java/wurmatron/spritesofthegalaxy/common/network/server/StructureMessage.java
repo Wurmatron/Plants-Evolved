@@ -13,7 +13,6 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class StructureMessage extends CustomMessage.CustomtServerMessage <StructureMessage> {
 
