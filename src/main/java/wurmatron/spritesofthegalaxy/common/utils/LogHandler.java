@@ -8,8 +8,7 @@ import org.apache.logging.log4j.Logger;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 
-public class
-LogHandler {
+public class LogHandler {
 
 	private static final Logger logger = LogManager.getLogger (Global.NAME);
 

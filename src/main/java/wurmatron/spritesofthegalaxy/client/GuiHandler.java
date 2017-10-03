@@ -5,7 +5,8 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import wurmatron.spritesofthegalaxy.client.gui.manage.GuiAgriculture;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
+import wurmatron.spritesofthegalaxy.client.gui.manage.GuiStructure;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiManage;
 import wurmatron.spritesofthegalaxy.client.gui.overview.GuiOverview;
 import wurmatron.spritesofthegalaxy.client.gui.storage.GuiStorage;
@@ -56,7 +57,7 @@ public class GuiHandler implements IGuiHandler {
 			case (INFO):
 				//				return new GuiInfo ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (AGRICULTURE):
-				return new GuiAgriculture ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)), StructureType.AGRICULTURE);
 			case (MINES):
 				//				return new GuiMines ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (ENERGY_PRODUCTION):

@@ -13,12 +13,10 @@ public class GuiFactory implements IModGuiFactory {
 	public void initialize (Minecraft i) {
 	}
 
-
 	@Override
 	public Set <RuntimeOptionCategoryElement> runtimeGuiCategories () {
 		return null;
 	}
-
 
 	@Override
 	public boolean hasConfigGui () {

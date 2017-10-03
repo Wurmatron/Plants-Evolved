@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 public enum StorageType {
 
-	POPULATION ("population",new ResourceLocation ("",""),100, 2000),FOOD ("food",new ResourceLocation ("",""),150,1000),MINERAL ("mineral",new ResourceLocation ("",""),200,500);
+	POPULATION ("population",new ResourceLocation ("",""),100,2000),FOOD ("food",new ResourceLocation ("",""),150,1000),MINERAL ("mineral",new ResourceLocation ("",""),200,500);
 
 	private final String displayKey;
 	private final ResourceLocation icon;

@@ -1,11 +1,9 @@
 package wurmatron.spritesofthegalaxy.api.mutiblock;
 
-import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.util.HashMap;
-import java.util.List;
 
 public interface IStructure {
 
@@ -14,9 +12,9 @@ public interface IStructure {
 	 */
 	String getName ();
 
-	String getDisplayName();
+	String getDisplayName ();
 
-	StructureType getStructureType();
+	StructureType getStructureType ();
 
 	HashMap <IResearch, Integer> getRequiredResearch ();
 

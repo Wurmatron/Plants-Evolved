@@ -5,30 +5,35 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
-import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
-import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
-import java.util.HashMap;
 
-public class BuildStructureMessage extends CustomMessage.CustomtServerMessage <BuildStructureMessage> {
+public class StorageTypeMessage extends CustomMessage.CustomtServerMessage <StorageTypeMessage> {
 
 	private NBTTagCompound data;
 
-	public BuildStructureMessage () {
+	public StorageTypeMessage () {
 	}
 
-	public BuildStructureMessage (IStructure research,int level,BlockPos coreLoc) {
+	public StorageTypeMessage (StorageType type,int level,TileHabitatCore core,boolean remove) {
 		data = new NBTTagCompound ();
-		data.setString (NBT.STRUCTURES,research.getName ());
+		data.setString (NBT.STORAGE,type.name ());
+		data.setInteger (NBT.LEVEL,level);
+		data.setIntArray (NBT.POSITION,new int[] {core.getPos ().getX (),core.getPos ().getY (),core.getPos ().getZ ()});
+		data.setBoolean (NBT.TYPE,remove);
+	}
+
+	public StorageTypeMessage (StorageType type,int level,BlockPos coreLoc, boolean remove) {
+		data = new NBTTagCompound ();
+		data.setString (NBT.STORAGE,type.name ());
 		data.setInteger (NBT.LEVEL,level);
 		data.setIntArray (NBT.POSITION,new int[] {coreLoc.getX (),coreLoc.getY (),coreLoc.getZ ()});
+		data.setBoolean (NBT.TYPE,remove);
 	}
 
 	@Override
@@ -44,25 +49,21 @@ public class BuildStructureMessage extends CustomMessage.CustomtServerMessage <B
 	@Override
 	public void process (EntityPlayer player,Side side) {
 		int[] coreLoc = data.getIntArray (NBT.POSITION);
-		IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURES));
+		StorageType type = Enum.valueOf (StorageType.class,data.getString (NBT.STORAGE));
 		int tier = data.getInteger (NBT.LEVEL);
+		boolean remove = data.getBoolean (NBT.TYPE);
 		BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
 		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
 			TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
 			if (core != null) {
-				core.eatMinerals (MutiBlockHelper.calcMineralsForStructure (structure,getStructureLevel (core,structure),tier,0));
-				core.removeStructure (structure);
-				core.addStructure (structure,tier);
+				if (remove) {
+					core.addMinerals (type.getMineral () * tier);
+					core.removeStorageType (type,MutiBlockHelper.getStorageLevel (core,type));
+				} else {
+					core.consumeMinerals (type.getMineral () * tier);
+					core.reloadStorageType (type,MutiBlockHelper.getStorageLevel (core,type),tier);
+				}
 			}
 		}
-	}
-
-	private int getStructureLevel (TileHabitatCore tile,IStructure structure) {
-		if (structure != null && tile != null) {
-			HashMap <IStructure, Integer> currentStructure = tile.getStructures ();
-			if (currentStructure != null && currentStructure.size () > 0 && currentStructure.containsKey (structure))
-				return currentStructure.get (structure);
-		}
-		return 0;
 	}
 }

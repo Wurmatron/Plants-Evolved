@@ -40,7 +40,7 @@ public class SpritesOfTheGalaxy {
 	@Mod.EventHandler
 	public void onPreInit (FMLPreInitializationEvent e) {
 		ConfigHandler.preInit (e);
-		MinecraftForge.EVENT_BUS.register (new Registry());
+		MinecraftForge.EVENT_BUS.register (new Registry ());
 		SpriteBlocks.registerBlocks ();
 		SpriteItems.registerItems ();
 		SpriteBlocks.registerTiles ();

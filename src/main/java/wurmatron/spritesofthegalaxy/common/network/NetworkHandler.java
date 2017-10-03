@@ -20,10 +20,8 @@ public class NetworkHandler {
 		// Server
 		registerMessage (OpenGuiMessage.class);
 		registerMessage (ResearchUpdateMessage.class);
-		registerMessage (BuildStructureMessage.class);
-		registerMessage (DestroyStructureMessage.class);
-		registerMessage (BuildStorageTypeMessage.class);
-		registerMessage (DestroyStorageTypeMessage.class);
+		registerMessage (StructureMessage.class);
+		registerMessage (StorageTypeMessage.class);
 	}
 
 	private static final <T extends CustomMessage <T> & IMessageHandler <T, IMessage>> void registerMessage (Class <T> clazz) {

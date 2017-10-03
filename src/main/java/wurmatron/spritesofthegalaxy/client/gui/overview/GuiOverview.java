@@ -1,25 +1,17 @@
 package wurmatron.spritesofthegalaxy.client.gui.overview;
 
-import com.sun.imageio.plugins.common.I18N;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
-import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
-import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
-import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
-import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class GuiOverview extends GuiHabitatBase {
 

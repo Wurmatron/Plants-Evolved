@@ -11,11 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
-import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Registry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientProxy extends CommonProxy {
 

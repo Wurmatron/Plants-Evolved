@@ -3,7 +3,6 @@ package wurmatron.spritesofthegalaxy.common.research;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;

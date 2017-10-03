@@ -2,18 +2,16 @@ package wurmatron.spritesofthegalaxy.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class GuiHabitatBase extends GuiScreen {
@@ -82,5 +80,19 @@ public class GuiHabitatBase extends GuiScreen {
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH,tile.getPos ()));
 				break;
 		}
+	}
+
+	protected int keyAmount () {
+		int amt = 1;
+		if (Keyboard.isKeyDown (Keyboard.KEY_LCONTROL))
+			if (Keyboard.isKeyDown (Keyboard.KEY_LSHIFT))
+				amt = 10;
+			else
+				amt = 5;
+		return amt;
+	}
+
+	protected boolean isWithin (int mouseX,int mouseY,int x,int y,int x2,int y2) {
+		return mouseX >= x && mouseX < x2 && mouseY >= y && mouseY < y2;
 	}
 }

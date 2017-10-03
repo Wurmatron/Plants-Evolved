@@ -13,16 +13,8 @@ import java.io.File;
 
 public class ConfigHandler {
 
-
 	public static final File DIRECTORY = new File (Loader.instance ().getConfigDir (),Global.NAME);
 	public static Configuration config;
-	// General
-	private static Property debug;
-	private static Property maxTier;
-	// Habitat Config
-	private static Property maxPopulation;
-	private static Property populationFoodRequirement;
-	private static Property populationGrowth;
 
 	public static void preInit (FMLPreInitializationEvent e) {
 		config = new Configuration (e.getSuggestedConfigurationFile ());
@@ -31,16 +23,16 @@ public class ConfigHandler {
 
 	private static void syncConfig () {
 		// General
-		debug = config.get (Configuration.CATEGORY_GENERAL,"Debug",Defaults.debug,"Enable debug mode");
+		Property debug = config.get (Configuration.CATEGORY_GENERAL,"Debug",Defaults.debug,"Enable debug mode");
 		Settings.debug = debug.getBoolean ();
-		maxTier = config.get (Configuration.CATEGORY_GENERAL,"maxTier",Defaults.maxTier,"Max Tier for Modules",1,16);
+		Property maxTier = config.get (Configuration.CATEGORY_GENERAL,"maxTier",Defaults.maxTier,"Max Tier for Modules",1,16);
 		Settings.maxTier = maxTier.getInt ();
 		// Habitat
-		maxPopulation = config.get (Global.HABITAT,"defaultMaxPopulation",Defaults.maxPopulation,"Max Population for a newly created Habitat",1,Integer.MAX_VALUE);
+		Property maxPopulation = config.get (Global.HABITAT,"defaultMaxPopulation",Defaults.maxPopulation,"Max Population for a newly created Habitat",1,Integer.MAX_VALUE);
 		Settings.startPopulation = maxPopulation.getInt ();
-		populationFoodRequirement = config.get (Global.HABITAT,"populationFoodRequirement",Defaults.foodRequirement,"Amount of food required per population",1,100000);
+		Property populationFoodRequirement = config.get (Global.HABITAT,"populationFoodRequirement",Defaults.foodRequirement,"Amount of food required per population",1,100000);
 		Settings.populationFoodRequirement = populationFoodRequirement.getInt ();
-		populationGrowth = config.get (Global.HABITAT,"populationGrowth",Defaults.populationGrowth,"Rate of population gpopulationGrowthrowth",1.01,100000);
+		Property populationGrowth = config.get (Global.HABITAT,"populationGrowth",Defaults.populationGrowth,"Rate of population gpopulationGrowthrowth",1.01,100000);
 		Settings.populationGrowth = populationGrowth.getDouble ();
 
 		if (!DIRECTORY.exists ())

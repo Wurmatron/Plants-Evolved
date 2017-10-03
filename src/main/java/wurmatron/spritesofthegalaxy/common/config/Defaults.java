@@ -10,5 +10,4 @@ public class Defaults {
 	public static final int maxPopulation = 1;
 	public static final int foodRequirement = 1;
 	public static final double populationGrowth = 1.1;
-
 }

@@ -20,30 +20,26 @@ import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
-import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	private static final long UPDATE_TIME = 1000;
-
-	private boolean update = false;
-	private int maxPopulation = Settings.startPopulation + 100;
-	private int food = Settings.populationFoodRequirement * Settings.startPopulation + 100;
-	private long lastUpdate;
-	private HashMap <String, Integer> items = new HashMap <> ();
-	private ItemStack colonyItem;
-	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	public int mutiBlockSize;
-	private int minerals = 5000;
-	private int maxMinerals = 5000;
+	private HashMap <String, Integer> items = new HashMap <> ();
+	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	private HashMap <StorageType, Integer> storageData = new HashMap <> ();
+	private ItemStack colonyItem;
+	private boolean update = false;
+	private long lastUpdate;
+
+	private int food = Settings.populationFoodRequirement * Settings.startPopulation + 100;
+	private int minerals = 5000;
+	private int maxPopulation = Settings.startPopulation + 100;
+	private int maxMinerals = 5000;
 
 	@Override
 	public void update () {
@@ -62,6 +58,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			lastUpdate = System.currentTimeMillis ();
 			world.markAndNotifyBlock (pos,world.getChunkFromBlockCoords (pos),world.getBlockState (pos),world.getBlockState (pos),3);
 		}
+	}
+
+	public void handleUpdate () {
+		growPopulation ();
 	}
 
 	@Override
@@ -97,7 +97,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
 			storageData.put (type,tier);
 		}
-		markDirty ();
 	}
 
 	@Override
@@ -143,7 +142,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void setPopulation (double pop) {
-		if (pop < Integer.MAX_VALUE)
+		if (pop < Integer.MAX_VALUE && pop <= getMaxPopulation ())
 			if (hasColony () && getColony ().getTagCompound () != null) {
 				ItemStack colony = getColony ();
 				colony.getTagCompound ().setDouble (NBT.POPULATION,pop < maxPopulation ? pop : maxPopulation);
@@ -168,7 +167,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		markDirty ();
 	}
 
-	public void addMaxPop (int amount) {
+	public void addMaxPopulation (int amount) {
 		setMaxPopulation (getMaxPopulation () + amount);
 	}
 
@@ -207,10 +206,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		return StackHelper.convertToStack (stack);
 	}
 
-
-	public void handleUpdate () {
-		growPopulation ();
-	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket () {
@@ -265,6 +260,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		}
 	}
 
+	public void reloadStructure (IStructure structure,int newTier) {
+		removeStructure (structure);
+		addStructure (structure,newTier);
+	}
+
 	public void addStorageType (StorageType type,int tier) {
 		storageData.put (type,tier);
 		MutiBlockHelper.addStorageType (this,type,tier);
@@ -274,6 +274,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		storageData.remove (type);
 		setMaxPopulation (getMaxPopulation () - (int) (tier * type.getScale ()));
 		markDirty ();
+	}
+
+	public void reloadStorageType (StorageType type,int currentTier,int newTier) {
+		removeStorageType (type,currentTier);
+		addStorageType (type,newTier);
 	}
 
 	public void addFood (int food) {
@@ -306,12 +311,14 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void addMinerals (int minerals) {
-		this.minerals += minerals;
+		this.maxMinerals = this.minerals + minerals > maxMinerals ? maxMinerals : this.minerals + minerals;
 		markDirty ();
 	}
 
-	public void eatMinerals (int minerals) {
+	public void consumeMinerals (int minerals) {
 		this.minerals -= minerals;
+		if (this.minerals <= 0)
+			this.minerals = 0;
 		markDirty ();
 	}
 
@@ -319,17 +326,17 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		setMaxMinerals (maxMinerals + amt);
 	}
 
-	public void setMaxMinerals (int amt) {
-		this.maxMinerals = amt;
-		markDirty ();
-	}
-
-	public void eatMaxMinerals (int amt) {
+	public void consumeMaxMinerals (int amt) {
 		maxMinerals -= amt;
 		markDirty ();
 	}
 
 	public int getMaxMinerals () {
 		return maxMinerals;
+	}
+
+	public void setMaxMinerals (int amt) {
+		this.maxMinerals = amt;
+		markDirty ();
 	}
 }

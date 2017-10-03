@@ -27,4 +27,9 @@ public class Local {
 	public static final String RESEARCH_UNIQUE = "gui.researchUnique.name";
 	public static final String MISSING_RESEARCH = "gui.missingResearch.name";
 	public static final String NEED_MINERALS = "gui.needMinerals.name";
+	public static final String CURRENT_PROVIDE = "gui.currentlyProvide.name";
+	public static final String NEXT_LEVEL = "gui.nextLevel.name";
+	public static final String PREV_LEVEL = "gui.prevLevel.name";
+	public static final String COST_MINERAL = "gui.costMineral.name";
+	public static final String GIVE_MINERAL = "gui.giveMineral.name";
 }

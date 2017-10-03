@@ -141,4 +141,26 @@ public class MutiBlockHelper {
 				tile.setMaxMinerals (tile.getMaxMinerals () - (int) (tier * StorageType.MINERAL.getScale ()));
 		}
 	}
+
+	public static int getStructureLevel (TileHabitatCore tile, IStructure structure) {
+		if (structure != null && tile != null) {
+			HashMap <IStructure, Integer> currentStructure = tile.getStructures ();
+			if (currentStructure != null && currentStructure.size () > 0 && currentStructure.containsKey (structure))
+				return currentStructure.get (structure);
+		}
+		return 0;
+	}
+
+	public static int getStorageLevel (TileHabitatCore tile,StorageType type) {
+		if (type != null && tile != null) {
+			HashMap <StorageType, Integer> currentStorage = tile.getStorageData ();
+			if (currentStorage != null && currentStorage.size () > 0 && currentStorage.containsKey (type))
+				return currentStorage.get (type);
+		}
+		return 0;
+	}
+
+	public static int calculateSellBack(int price) {
+		return (int) (price * .25);
+	}
 }

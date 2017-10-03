@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class DisplayHelper {
@@ -23,16 +22,5 @@ public class DisplayHelper {
 			return lineage.substring (0,1).toUpperCase () + lineage.substring (1);
 		}
 		return "none";
-	}
-
-	public static String formatNeededResearch (HashMap <IResearch, Integer> needed) {
-		String temp = "";
-		for (IResearch res : needed.keySet ())
-			temp = temp + res.getName () + ": " + needed.get (res) + ", ";
-		for(IResearch res : needed.keySet ())
-		LogHandler.info ("Temp : " + temp);
-		if (temp.endsWith (", ") && temp.length () > 2)
-			return temp.substring (0,temp.length () - 2);
-		return temp;
 	}
 }

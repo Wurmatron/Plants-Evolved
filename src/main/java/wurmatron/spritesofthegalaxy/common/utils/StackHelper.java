@@ -21,7 +21,7 @@ public class StackHelper {
 				item = "[" + unlocalizedName + "]";
 				item = item + "x" + stackSize;
 				item = item + "@" + meta;
-				if (nbt != null && nbt.length () > 0)
+				if (nbt.length () > 0)
 					item = item + "%" + nbt;
 				return item;
 			}
@@ -52,5 +52,4 @@ public class StackHelper {
 		}
 		return null;
 	}
-
 }

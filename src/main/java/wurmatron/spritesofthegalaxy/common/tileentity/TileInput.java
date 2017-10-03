@@ -22,7 +22,6 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 						tile.addStack (getStackInSlot (index));
 						setInventorySlotContents (index,null);
 					}
-
 		}
 	}
 

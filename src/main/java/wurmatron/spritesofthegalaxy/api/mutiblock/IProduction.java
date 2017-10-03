@@ -8,7 +8,7 @@ public interface IProduction {
 
 	void removeProduction (TileHabitatCore core,int structureTier);
 
-	int getAmountPerTier(TileHabitatCore core, int tier) ;
+	int getAmountPerTier (TileHabitatCore core,int tier);
 
 	EnumProductionType getType ();
 }
