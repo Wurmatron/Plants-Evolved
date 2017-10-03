@@ -128,6 +128,7 @@ public class MutiBlockHelper {
 				break;
 			case MINERAL:
 				tile.addMaxMinerals ((int) (tier * StorageType.MINERAL.getScale ()));
+				break;
 		}
 	}
 
@@ -137,8 +138,10 @@ public class MutiBlockHelper {
 				tile.removeStorageType (type,tier);
 				break;
 			}
-			case MINERAL:
+			case MINERAL: {
 				tile.setMaxMinerals (tile.getMaxMinerals () - (int) (tier * StorageType.MINERAL.getScale ()));
+				break;
+			}
 		}
 	}
 

@@ -10,16 +10,13 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
-import wurmatron.spritesofthegalaxy.api.mutiblock.EnumProductionType;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
-import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
+import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
-import wurmatron.spritesofthegalaxy.common.structure.FarmStructure;
+import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
@@ -52,7 +49,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				update = true;
 				if (structures.size () == 0) {
 					addStructure (new FarmStructure (),1);
-					addStorageType (StorageType.POPULATION, 1);
+					addStorageType (StorageType.POPULATION,1);
 				}
 			}
 		}
@@ -65,6 +62,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void handleUpdate () {
 		growPopulation ();
+		if (structures.size () > 0)
+			for (IStructure structure : structures.keySet ())
+				if (structure instanceof ITickStructure)
+					((ITickStructure) structure).tickStructure (this,structures.get (structure));
 	}
 
 	@Override
@@ -94,7 +95,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		minerals = nbt.getInteger (NBT.MINERALS);
 		maxMinerals = nbt.getInteger (NBT.MAX_MINERALS);
 		NBTTagList storageList = nbt.getTagList (NBT.STORAGE,8);
-		LogHandler.info ("SL : " + storageList.tagCount ());
 		for (int index = 0; index < storageList.tagCount (); index++) {
 			NBTTagString temp = (NBTTagString) storageList.get (index);
 			StorageType type = Enum.valueOf (StorageType.class,temp.getString ().substring (0,temp.getString ().indexOf (".")));
@@ -278,16 +278,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void removeStorageType (StorageType type,int tier) {
 		storageData.remove (type);
-		setMaxPopulation (getMaxPopulation () - (int) (tier * type.getScale ()));
+		MutiBlockHelper.removeStorageType (this,type,tier);
 		markDirty ();
 	}
 
 	public void reloadStorageType (StorageType type,int currentTier,int newTier) {
-		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 		removeStorageType (type,currentTier);
-		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 		addStorageType (type,newTier);
-		LogHandler.serverInfo ("Rem And Add " + storageData.size ());
 	}
 
 	public void addFood (int food) {
@@ -320,7 +317,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void addMinerals (int minerals) {
-		this.maxMinerals = this.minerals + minerals > maxMinerals ? maxMinerals : this.minerals + minerals;
+		this.minerals = this.minerals + minerals > maxMinerals ? maxMinerals : this.minerals + minerals;
 		markDirty ();
 	}
 

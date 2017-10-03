@@ -1,4 +1,4 @@
-package wurmatron.spritesofthegalaxy.common.structure;
+package wurmatron.spritesofthegalaxy.common.structure.agriculture;
 
 import wurmatron.spritesofthegalaxy.api.mutiblock.EnumProductionType;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
@@ -36,10 +36,6 @@ public class FarmStructure implements IStructure, IProduction {
 		if (structureTier == 0)
 			return 10;
 		return structureTier * 10;
-	}
-
-	@Override
-	public void tickStructure (TileHabitatCore core) {
 	}
 
 	@Override

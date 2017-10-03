@@ -5,13 +5,21 @@ import wurmatron.spritesofthegalaxy.common.reference.NBT;
 
 public class DisplayHelper {
 
-	public static String formatNum (double num) {
-		String r = Integer.toString ((int) Math.round (num));
-		r = r.replaceAll ("E[0-9]",new String[] {"","k","m","b","t"}[Character.getNumericValue (r.charAt (r.length () - 1)) / 3]);
-		while (r.length () > 4 || r.matches ("[0-9]+\\.[a-z]"))
-			r = r.substring (0,r.length () - 2) + r.substring (r.length () - 1);
-		return r;
+	public static String formatNum (double count) {
+		if (count < 1000)
+			return "" + (int) count;
+		int exp = (int) (Math.log ((int) count) / Math.log (1000));
+		String format = String.format ("%.1f %c",(count / Math.pow (1000,exp)),"kMGT".charAt (exp - 1));
+		return format.replaceAll (".0","");
 	}
+
+	//	public static String formatNum (double num) {
+	//		String r = Integer.toString ((int) Math.round (num));
+	//		r = r.replaceAll ("E[0-9]",new String[] {"","k","m","b","t"}[Character.getNumericValue (r.charAt (r.length () - 1)) / 3]);
+	//		while (r.length () > 4 || r.matches ("[0-9]+\\.[a-z]"))
+	//			r = r.substring (0,r.length () - 2) + r.substring (r.length () - 1);
+	//		return r;
+	//	}
 
 	public static String formatLineage (ItemStack colony) {
 		if (colony != null && colony.getTagCompound ().hasKey (NBT.LINEAGE)) {

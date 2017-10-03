@@ -20,5 +20,4 @@ public interface IStructure {
 
 	int getCost (int researchLevel,int structureTier);
 
-	void tickStructure (TileHabitatCore core);
 }

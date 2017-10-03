@@ -35,7 +35,7 @@ public class GuiOverview extends GuiHabitatBase {
 		drawString (fontRenderer,I18n.translateToLocal (Local.SIZE) + ":         " + tile.mutiBlockSize + "x",startWidth + 145,startHeight + 30,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ": " + DisplayHelper.formatNum (tile.getPopulation ()) + " / " + DisplayHelper.formatNum (tile.getMaxPopulation ()),startWidth + 145,startHeight + 38,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getFood ()),startWidth + 145,startHeight + 46,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getMinerals ()),startWidth + 145,startHeight + 54,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getMinerals ()) + " / " + DisplayHelper.formatNum (tile.getMaxMinerals ()) ,startWidth + 145,startHeight + 54,Color.white.getRGB ());
 	}
 
 	@Override

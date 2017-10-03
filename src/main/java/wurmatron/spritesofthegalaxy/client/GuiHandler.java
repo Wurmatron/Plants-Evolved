@@ -57,19 +57,19 @@ public class GuiHandler implements IGuiHandler {
 			case (INFO):
 				//				return new GuiInfo ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (AGRICULTURE):
-				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)), StructureType.AGRICULTURE);
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.AGRICULTURE);
 			case (MINES):
-				//				return new GuiMines ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.MINE);
 			case (ENERGY_PRODUCTION):
-				//				return new GuiEnergyProduction ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.ENERGY);
 			case (MAGIC_PRODUCTION):
-				//				return new GuiMagicProduction ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.MAGIC);
 			case (MOB_FARM):
-				//				return new GuiMobFarm ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.MOB);
 			case (LIQUID_FARM):
-				//				return new GuiLiquidFarm ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.lIQUID);
 			case (NURSERY):
-				//				return new GuiNursery ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.NURSERY);
 			case (RESEARCH_ARGICULTURE):
 				//				return new GuiResearhAgriculture ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (RESEARCH_INDUSTRY):

@@ -70,7 +70,6 @@ public class GuiStorage extends GuiHabitatBase {
 	private void destroyButton (StorageType type) {
 		int nextTier = keyAmount ();
 		if (MutiBlockHelper.getStorageLevel (tile,type) - keyAmount () >= 0) {
-			LogHandler.info ("Run");
 			tile.addMinerals (MutiBlockHelper.calcMineralsForStorage (type,nextTier,MutiBlockHelper.getStorageLevel (tile,type),0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,true));
 		}

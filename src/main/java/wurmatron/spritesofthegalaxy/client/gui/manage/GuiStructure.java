@@ -66,7 +66,7 @@ public class GuiStructure extends GuiHabitatBase {
 			tile.consumeMinerals (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
 		} else {
-			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,currentTier,nextTier,0) - tile.getMinerals ())));
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,currentTier,nextTier,0) - tile.getMinerals ()) + TextFormatting.RED));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		}
