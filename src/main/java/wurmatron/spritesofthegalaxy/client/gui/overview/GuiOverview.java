@@ -15,10 +15,9 @@ import java.awt.*;
 
 public class GuiOverview extends GuiHabitatBase {
 
-	// "DropDown"
-	protected GuiButton income;
-	protected GuiButton stats;
-	protected GuiButton info;
+	private GuiButton income;
+	private GuiButton stats;
+	private GuiButton info;
 
 	public GuiOverview (TileHabitatCore tile) {
 		super (tile);
@@ -31,12 +30,12 @@ public class GuiOverview extends GuiHabitatBase {
 		mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/overview.png"));
 		drawTexturedModalRect (startWidth,startHeight,0,0,256,256);
 		GlStateManager.popMatrix ();
-		drawString (fontRenderer,I18n.translateToLocal (Local.LINEAGE) + ":    " + DisplayHelper.formatLineage (tile.getColony ()),startWidth + 145,startHeight + 22,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.SIZE) + ":         " + tile.mutiBlockSize + "x",startWidth + 145,startHeight + 30,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ": " + DisplayHelper.formatNum (tile.getPopulation ()) + " / " + DisplayHelper.formatNum (tile.getMaxPopulation ()),startWidth + 145,startHeight + 38,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getFood ()),startWidth + 145,startHeight + 46,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getMinerals ()) + " / " + DisplayHelper.formatNum (tile.getMaxMinerals ()),startWidth + 145,startHeight + 54,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":" + DisplayHelper.formatNum (tile.getEnergy ()),startWidth + 145,startHeight + 62,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.LINEAGE) + ":    " + DisplayHelper.formatLineage (tile.getColony ()),startWidth + 140,startHeight + 22,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.SIZE) + ":         " + tile.mutiBlockSize + "x",startWidth + 140,startHeight + 30,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ": " + DisplayHelper.formatNum (tile.getPopulation ()) + " / " + DisplayHelper.formatNum (tile.getMaxPopulation ()),startWidth + 140,startHeight + 38,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getFood ()),startWidth + 140,startHeight + 46,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getMinerals ()) + " / " + DisplayHelper.formatNum (tile.getMaxMinerals ()),startWidth + 140,startHeight + 54,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum (tile.getEnergy ()),startWidth + 140,startHeight + 62,Color.white.getRGB ());
 	}
 
 	@Override

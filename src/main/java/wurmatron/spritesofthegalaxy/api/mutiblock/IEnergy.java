@@ -1,5 +1,3 @@
 package wurmatron.spritesofthegalaxy.api.mutiblock;
 
-public interface IEnergy {
-
-}
+public interface IEnergy {}

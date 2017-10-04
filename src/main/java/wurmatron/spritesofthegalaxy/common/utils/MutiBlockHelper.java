@@ -149,6 +149,7 @@ public class MutiBlockHelper {
 		switch (type) {
 			case POPULATION: {
 				tile.removeStorageType (type,tier);
+				tile.setMaxPopulation (tile.getMaxPopulation () - (int) (tier * type.getScale ()));
 				break;
 			}
 			case MINERAL: {
