@@ -40,6 +40,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int RESEARCH = 18;
 	public static final int POPULATION = 19;
 	public static final int STORAGE = 20;
+	public static final int RESEARCH_MANAGE = 21;
 
 	@Nullable
 	@Override
@@ -93,6 +94,8 @@ public class GuiHandler implements IGuiHandler {
 				//				return new GuiPopulation ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (STORAGE):
 				return new GuiStorage ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
+			case (RESEARCH_MANAGE):
+				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.RESEARCH);
 			default:
 				return null;
 		}

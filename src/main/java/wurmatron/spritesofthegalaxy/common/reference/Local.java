@@ -20,6 +20,7 @@ public class Local {
 	public static final String MOB_FARM = "gui.mobFarm.name";
 	public static final String LIQUID_FARM = "gui.liquidFarm.name";
 	public static final String NURSERY = "gui.nursery.name";
+	public static final String RESEARCH = "gui.research.name";
 	public static final String RESEARCH_AGRICLTURE = "gui.researchAgriculture.name";
 	public static final String RESEARCH_INDUSTRY = "gui.researchIndustry.name";
 	public static final String RESEARCH_ENERGY = "gui.researchEnergy.name";

@@ -21,6 +21,7 @@ public class GuiManage extends GuiHabitatBase {
 	protected GuiButton mobFarm;
 	protected GuiButton liquidFarm;
 	protected GuiButton nursery;
+	protected GuiButton research;
 
 	public GuiManage (TileHabitatCore tile) {
 		super (tile);
@@ -36,6 +37,7 @@ public class GuiManage extends GuiHabitatBase {
 		buttonList.add (mobFarm = new GuiTexturedButton (14,startWidth + 95,startHeight + 85,60,15,I18n.translateToLocal (Local.MOB_FARM)));
 		buttonList.add (liquidFarm = new GuiTexturedButton (15,startWidth + 95,startHeight + 101,60,15,I18n.translateToLocal (Local.LIQUID_FARM)));
 		buttonList.add (nursery = new GuiTexturedButton (16,startWidth + 95,startHeight + 117,60,15,I18n.translateToLocal (Local.NURSERY)));
+		buttonList.add (research = new GuiTexturedButton (17,startWidth + 95,startHeight + 133,60,15,I18n.translateToLocal (Local.RESEARCH)));
 	}
 
 	@Override
@@ -62,6 +64,9 @@ public class GuiManage extends GuiHabitatBase {
 				break;
 			case (16):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.NURSERY,tile.getPos ()));
+				break;
+			case (17):
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH_MANAGE,tile.getPos ()));
 				break;
 		}
 	}

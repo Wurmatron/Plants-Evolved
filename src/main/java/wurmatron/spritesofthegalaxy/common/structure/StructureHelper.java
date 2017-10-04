@@ -1,11 +1,13 @@
 package wurmatron.spritesofthegalaxy.common.structure;
 
+import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.GreenhouseStructure;
 import wurmatron.spritesofthegalaxy.common.structure.energy.*;
 import wurmatron.spritesofthegalaxy.common.structure.mine.MineStructure;
+import wurmatron.spritesofthegalaxy.common.structure.research.ResearchStructure;
 
 public class StructureHelper {
 
@@ -27,6 +29,9 @@ public class StructureHelper {
 	public static final IStructure fusionStructure = new FusionStructure ();
 	public static final IStructure extraDimStructure = new ExtraDimStructure ();
 
+	// Research
+	public static final IStructure researchStructure = new ResearchStructure ();
+
 	public static void registerStructures () {
 		SpritesOfTheGalaxyAPI.register (farmStructure);
 		SpritesOfTheGalaxyAPI.register (mineStructure);
@@ -40,5 +45,6 @@ public class StructureHelper {
 		SpritesOfTheGalaxyAPI.register (hydroStructure);
 		SpritesOfTheGalaxyAPI.register (fusionStructure);
 		SpritesOfTheGalaxyAPI.register (extraDimStructure);
+		SpritesOfTheGalaxyAPI.register (researchStructure);
 	}
 }
