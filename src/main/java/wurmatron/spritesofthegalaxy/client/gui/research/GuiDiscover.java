@@ -5,15 +5,11 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
-import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.ResearchUpdateMessage;
-import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
@@ -67,7 +63,7 @@ public class GuiDiscover extends GuiHabitatBase {
 		int currentTier = MutiBlockHelper.getResearchLevel (tile,research);
 		int nextTier = currentTier + keyAmount ();
 		if (MutiBlockHelper.canBuildResearchType (tile,research,currentTier,nextTier) && ResearchHelper.isValidMove (tile.getResearch (),research)) {
-			tile.consumeResearchPoints (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research), nextTier));
+			tile.consumeResearchPoints (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),nextTier));
 			NetworkHandler.sendToServer (new ResearchUpdateMessage (research,nextTier,tile,false));
 		} else {
 			if (!ResearchHelper.isValidMove (tile.getResearch (),research)) {

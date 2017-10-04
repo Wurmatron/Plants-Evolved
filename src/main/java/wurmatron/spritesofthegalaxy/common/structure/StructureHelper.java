@@ -1,6 +1,5 @@
 package wurmatron.spritesofthegalaxy.common.structure;
 
-import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;

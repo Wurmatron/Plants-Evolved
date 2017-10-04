@@ -24,7 +24,7 @@ public class DisplayHelper {
 		return "none";
 	}
 
-	public static String formatNeededResearch (HashMap<IResearch, Integer> needed) {
+	public static String formatNeededResearch (HashMap <IResearch, Integer> needed) {
 		String temp = "";
 		for (IResearch res : needed.keySet ())
 			temp = temp + res.getName () + ": " + needed.get (res) + ", ";

@@ -1,9 +1,5 @@
 package wurmatron.spritesofthegalaxy.common.tileentity;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,6 +32,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private HashMap <IStructure, Integer> structures = new HashMap <> ();
 	private HashMap <StorageType, Integer> storageData = new HashMap <> ();
 	private HashMap <ResearchType, Integer> researchPoints = new HashMap <> ();
+	private List <Object[]> buildQueue = new ArrayList <> ();
 	private ItemStack colonyItem;
 	private boolean update = false;
 	private long lastUpdate;
@@ -76,6 +73,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 					((ITickStructure) structure).tickStructure (this,structures.get (structure));
 				else if (structure instanceof ITickStructure && structure instanceof IEnergy)
 					((ITickStructure) structure).tickStructure (this,structures.get (structure));
+		proccessBuildQueue ();
 	}
 
 	@Override
@@ -257,8 +255,12 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void reloadStructure (IStructure structure,int newTier) {
-		removeStructure (structure);
-		addStructure (structure,newTier);
+		if (getStructures ().containsKey (structure)) {
+			removeStructure (structure);
+			addStructure (structure,newTier);
+		} else {
+			addBuildQueue (structure,newTier);
+		}
 	}
 
 	public void addStorageType (StorageType type,int tier) {
@@ -268,7 +270,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void removeStorageType (StorageType type,int tier) {
 		storageData.remove (type);
-		MutiBlockHelper.removeStorageType (this,type,tier);
 		markDirty ();
 	}
 
@@ -380,5 +381,26 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				return tile.addOutput (stack);
 		}
 		return false;
+	}
+
+	// Supprt for AllReady Existing Structures
+	public void addBuildQueue (IStructure structure,Integer tier) {
+		if (MutiBlockHelper.hasRequiredResearch (this,structure) && structure != null)
+			if (getStructures () != null && getStructures ().get (structure) == null) {
+				LogHandler.info ("Str: " + structure.getName () + " " + tier);
+				buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier)});
+			}
+	}
+
+	public void proccessBuildQueue () {
+		if (buildQueue.size () > 0) {
+			LogHandler.info ("Building Structures");
+			for (int index = 0; index < buildQueue.size (); index++)
+				if (((int) buildQueue.get (index)[2]) <= 0) {
+					addStructure ((IStructure) buildQueue.get (index)[0],(int) buildQueue.get (index)[1]);
+					buildQueue.remove (index);
+				} else
+					buildQueue.set (index,new Object[] {buildQueue.get (index)[0],buildQueue.get (index)[1],((int) buildQueue.get (index)[2]) - 1});
+		}
 	}
 }

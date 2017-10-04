@@ -1,7 +1,6 @@
 package wurmatron.spritesofthegalaxy.api.mutiblock;
 
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.util.HashMap;
 
@@ -20,6 +19,8 @@ public interface IStructure {
 
 	int getCost (int researchLevel,int structureTier);
 
-	int getEnergyUsage(int tier);
+	int getEnergyUsage (int tier);
+
+	int getBaseBuildTime(int tier);
 
 }

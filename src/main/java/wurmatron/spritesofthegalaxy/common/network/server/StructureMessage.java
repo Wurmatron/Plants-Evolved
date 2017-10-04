@@ -59,7 +59,7 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 			if (core != null) {
 				if (remove) {
 					core.addMinerals (MutiBlockHelper.calcMineralsForStructure (structure,tier,MutiBlockHelper.getStructureLevel (core,structure),0));
-					core.reloadStructure (structure,MutiBlockHelper.getStructureLevel (core,structure) - tier);
+					core.removeStructure (structure);
 				} else {
 					core.consumeMinerals (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (core,structure),tier,0));
 					core.reloadStructure (structure,tier);

@@ -62,4 +62,9 @@ public class FarmStructure implements IStructure, IProduction {
 	public int getEnergyUsage (int tier) {
 		return tier;
 	}
+
+	@Override
+	public int getBaseBuildTime (int tier) {
+		return 10 * tier;
+	}
 }

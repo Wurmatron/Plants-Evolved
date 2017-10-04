@@ -29,7 +29,7 @@ public class GreenhouseStructure implements IStructure, IProduction {
 
 	@Override
 	public HashMap <IResearch, Integer> getRequiredResearch () {
-		HashMap <IResearch, Integer> req= new HashMap <> ();
+		HashMap <IResearch, Integer> req = new HashMap <> ();
 		req.put (ResearchHelper.greenHouse,1);
 		return req;
 	}
@@ -64,5 +64,10 @@ public class GreenhouseStructure implements IStructure, IProduction {
 	@Override
 	public int getEnergyUsage (int tier) {
 		return 2 * tier;
+	}
+
+	@Override
+	public int getBaseBuildTime (int tier) {
+		return 10 * tier;
 	}
 }

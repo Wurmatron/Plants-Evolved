@@ -1,6 +1,5 @@
 package wurmatron.spritesofthegalaxy.client.gui.overview;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -15,9 +14,6 @@ import java.awt.*;
 
 public class GuiOverview extends GuiHabitatBase {
 
-	private GuiButton income;
-	private GuiButton stats;
-	private GuiButton info;
 
 	public GuiOverview (TileHabitatCore tile) {
 		super (tile);
@@ -43,9 +39,9 @@ public class GuiOverview extends GuiHabitatBase {
 		super.initGui ();
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
-		buttonList.add (income = new GuiTexturedButton (10,startWidth + 2,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME)));
-		buttonList.add (stats = new GuiTexturedButton (11,startWidth + 2,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS)));
-		buttonList.add (info = new GuiTexturedButton (10,startWidth + 2,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO)));
+		buttonList.add (new GuiTexturedButton (10,startWidth + 2,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME)));
+		buttonList.add (new GuiTexturedButton (11,startWidth + 2,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS)));
+		buttonList.add (new GuiTexturedButton (10,startWidth + 2,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO)));
 	}
 
 	@Override

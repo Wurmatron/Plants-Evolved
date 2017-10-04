@@ -5,7 +5,6 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,9 +170,7 @@ public class ResearchHelper {
 				for (IResearch has : currentResearch.keySet ())
 					if (has == needed && currentResearch.get (has) >= newLevel.getPreReq ().get (needed))
 						hasForLevel.add (needed);
-			if (newLevel.getPreReq ().size () == hasForLevel.size ())
-				return true;
-			return false;
+			return newLevel.getPreReq ().size () == hasForLevel.size ();
 		}
 		return true;
 	}
@@ -195,7 +192,7 @@ public class ResearchHelper {
 	}
 
 	public static boolean hasResearch (TileHabitatCore tile,HashMap <IResearch, Integer> required) {
-		if(required == null || required.size () == 0)
+		if (required == null || required.size () == 0)
 			return true;
 		for (IResearch research : required.keySet ())
 			if (!hasResearch (tile,research,required.get (research)))

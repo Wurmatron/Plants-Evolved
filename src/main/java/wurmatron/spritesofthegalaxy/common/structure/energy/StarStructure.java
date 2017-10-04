@@ -60,4 +60,9 @@ public class StarStructure implements IStructure, IProduction, IEnergy {
 	public int getEnergyUsage (int tier) {
 		return 0;
 	}
+
+	@Override
+	public int getBaseBuildTime (int tier) {
+		return 100 * tier;
+	}
 }

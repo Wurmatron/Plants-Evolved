@@ -5,18 +5,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
-import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
-import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileOutput;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MutiBlockHelper {
 
@@ -204,5 +200,9 @@ public class MutiBlockHelper {
 			return null;
 		}
 		return null;
+	}
+
+	public static int getBuildTime (IStructure structure,int tier) {
+		return structure.getBaseBuildTime (tier);
 	}
 }

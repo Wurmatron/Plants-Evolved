@@ -1,11 +1,8 @@
 package wurmatron.spritesofthegalaxy.common.structure.mine;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.HashMap;
 
@@ -64,5 +61,10 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 	@Override
 	public int getEnergyUsage (int tier) {
 		return tier;
+	}
+
+	@Override
+	public int getBaseBuildTime (int tier) {
+		return 10 * tier;
 	}
 }
