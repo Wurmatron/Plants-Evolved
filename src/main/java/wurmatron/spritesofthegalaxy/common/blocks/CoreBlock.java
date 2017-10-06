@@ -3,7 +3,6 @@ package wurmatron.spritesofthegalaxy.common.blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -20,11 +19,6 @@ public class CoreBlock extends BlockMutiBlock {
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {
 		return new TileHabitatCore ();
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType (IBlockState state) {
-		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override

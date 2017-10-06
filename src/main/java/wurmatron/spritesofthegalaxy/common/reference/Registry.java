@@ -1,8 +1,11 @@
 package wurmatron.spritesofthegalaxy.common.reference;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -40,5 +43,23 @@ public class Registry {
 	public void registerItems (RegistryEvent.Register <Item> e) {
 		e.getRegistry ().registerAll (items.toArray (new Item[0]));
 		e.getRegistry ().registerAll (blockItems.values ().toArray (new Item[0]));
+	}
+
+	@SubscribeEvent
+	public void loadModel (ModelRegistryEvent e) {
+		for (Block block : Registry.blocks)
+			createModel (block);
+		for (Item item : Registry.items)
+			createModel (item);
+		for (Item item : Registry.blockItems.values ())
+			createModel (item);
+	}
+
+	private static void createModel (Block block) {
+		ModelLoader.setCustomModelResourceLocation (Registry.blockItems.get (block),0,new ModelResourceLocation (block.getRegistryName ().toString (),"inventory"));
+	}
+
+	private static void createModel (Item item) {
+		ModelLoader.setCustomModelResourceLocation (item,0,new ModelResourceLocation (item.getRegistryName ().toString (),"inventory"));
 	}
 }
