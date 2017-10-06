@@ -199,7 +199,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	public boolean addOutput (ItemStack stack) {
 		if (stack != null && stack != ItemStack.EMPTY)
 			for (int index = 0; index < getSizeInventory (); index++)
-				if (getStackInSlot (index) == ItemStack.EMPTY) {
+				if (getStackInSlot (index) == ItemStack.EMPTY || getStackInSlot (index) == null) {
 					setInventorySlotContents (index,stack);
 					return true;
 				} else if (StackHelper.check (stack,getStackInSlot (index),true,false)) {
