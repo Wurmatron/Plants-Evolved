@@ -8,11 +8,12 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiManage;
+import wurmatron.spritesofthegalaxy.client.gui.manage.GuiStorage;
 import wurmatron.spritesofthegalaxy.client.gui.manage.GuiStructure;
 import wurmatron.spritesofthegalaxy.client.gui.overview.GuiOverview;
+import wurmatron.spritesofthegalaxy.client.gui.production.GuiProduction;
 import wurmatron.spritesofthegalaxy.client.gui.research.GuiDiscover;
 import wurmatron.spritesofthegalaxy.client.gui.research.GuiResearch;
-import wurmatron.spritesofthegalaxy.client.gui.storage.GuiStorage;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import javax.annotation.Nullable;
@@ -41,6 +42,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int POPULATION = 19;
 	public static final int STORAGE = 20;
 	public static final int RESEARCH_MANAGE = 21;
+	public static final int PRODUCTION = 22;
 
 	@Nullable
 	@Override
@@ -96,6 +98,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiStorage ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			case (RESEARCH_MANAGE):
 				return new GuiStructure ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)),StructureType.RESEARCH);
+			case (PRODUCTION):
+				return new GuiProduction ((TileHabitatCore) world.getTileEntity (new BlockPos (x,y,z)));
 			default:
 				return null;
 		}

@@ -23,7 +23,7 @@ public class GuiHabitatBase extends GuiScreen {
 	protected GuiButton overview;
 	protected GuiButton population;
 	protected GuiButton manage;
-	protected GuiButton storage;
+	protected GuiButton production;
 	protected GuiButton research;
 
 	protected TileHabitatCore tile;
@@ -50,8 +50,8 @@ public class GuiHabitatBase extends GuiScreen {
 		buttonList.add (overview = new GuiTexturedButton (0,startWidth + 2,startHeight + 5,63,15,"Overview"));
 		buttonList.add (population = new GuiTexturedButton (1,startWidth + 57,startHeight + 5,46,15,"Pop."));
 		buttonList.add (manage = new GuiTexturedButton (2,startWidth + 95,startHeight + 5,54,15,"Manage"));
-		buttonList.add (storage = new GuiTexturedButton (3,startWidth + 141,startHeight + 5,56,15,"Storage"));
-		buttonList.add (storage = new GuiTexturedButton (4,startWidth + 190,startHeight + 5,62,15,"Research"));
+		buttonList.add (production = new GuiTexturedButton (3,startWidth + 141,startHeight + 5,56,15,"Production"));
+		buttonList.add (research = new GuiTexturedButton (4,startWidth + 190,startHeight + 5,62,15,"Research"));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class GuiHabitatBase extends GuiScreen {
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.MANAGE,tile.getPos ()));
 				break;
 			case (3):
-				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.STORAGE,tile.getPos ()));
+				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.PRODUCTION,tile.getPos ()));
 				break;
 			case (4):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH,tile.getPos ()));

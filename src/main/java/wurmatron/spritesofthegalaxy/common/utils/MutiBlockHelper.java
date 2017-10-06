@@ -3,6 +3,7 @@ package wurmatron.spritesofthegalaxy.common.utils;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
@@ -178,6 +179,15 @@ public class MutiBlockHelper {
 			HashMap <IResearch, Integer> currentResearch = tile.getResearch ();
 			if (currentResearch != null && currentResearch.size () > 0 && currentResearch.containsKey (research))
 				return currentResearch.get (research);
+		}
+		return 0;
+	}
+
+	public static int getOutputLevel (TileHabitatCore tile,IOutput output) {
+		if (output != null && tile != null) {
+			HashMap <IOutput, Integer> currentOutput = tile.getOutputs ();
+			if (currentOutput != null && currentOutput.size () > 0 && currentOutput.containsKey (output))
+				return currentOutput.get (output);
 		}
 		return 0;
 	}

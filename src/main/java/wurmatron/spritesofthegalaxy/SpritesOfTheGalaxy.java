@@ -9,7 +9,9 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.blocks.SpriteBlocks;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
@@ -20,6 +22,9 @@ import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Registry;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
+import wurmatron.spritesofthegalaxy.common.tileentity.output.OutputJson;
+import wurmatron.spritesofthegalaxy.common.utils.JsonLoader;
+import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
 @Mod (modid = Global.MODID, name = Global.NAME, version = Global.VERSION, guiFactory = Global.GUIFACTORY, dependencies = Global.DEPENDENCIES)
 public class SpritesOfTheGalaxy {
@@ -51,6 +56,7 @@ public class SpritesOfTheGalaxy {
 	public void onInit (FMLInitializationEvent e) {
 		NetworkRegistry.INSTANCE.registerGuiHandler (SpritesOfTheGalaxy.instance,new GuiHandler ());
 		NetworkHandler.registerPackets ();
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("ironIngot",100,StackHelper.convertToString (new ItemStack (Items.IRON_INGOT,1,0))));
 	}
 
 	@Mod.EventHandler
@@ -58,4 +64,10 @@ public class SpritesOfTheGalaxy {
 		ResearchHelper.registerResearch ();
 		StructureHelper.registerStructures ();
 	}
+
+	@Mod.EventHandler
+	public void onServerStarting (FMLServerStartingEvent e) {
+		JsonLoader.loadJsonOutputs ();
+	}
+
 }

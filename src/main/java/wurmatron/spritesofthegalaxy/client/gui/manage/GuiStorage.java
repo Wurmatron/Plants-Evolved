@@ -1,4 +1,4 @@
-package wurmatron.spritesofthegalaxy.client.gui.storage;
+package wurmatron.spritesofthegalaxy.client.gui.manage;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextComponentString;

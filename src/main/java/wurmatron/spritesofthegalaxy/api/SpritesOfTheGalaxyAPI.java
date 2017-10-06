@@ -1,5 +1,7 @@
 package wurmatron.spritesofthegalaxy.api;
 
+import net.minecraft.item.ItemStack;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
@@ -17,6 +19,8 @@ public class SpritesOfTheGalaxyAPI {
 	private static HashMap <String, IResearch> researchNames = new HashMap <> ();
 	private static HashMap <StructureType, List <IStructure>> structureType = new HashMap <> ();
 	private static HashMap <ResearchType, List <IResearch>> researchType = new HashMap <> ();
+	private static ArrayList <IOutput> output = new ArrayList <> ();
+	private static HashMap <String, IOutput> outputTypes = new HashMap <> ();
 
 	public static void register (IResearch res) {
 		if (!research.contains (res)) {
@@ -82,5 +86,27 @@ public class SpritesOfTheGalaxyAPI {
 		if (researchType.containsKey (type))
 			return researchType.get (type);
 		return new ArrayList <> ();
+	}
+
+	public static void register (IOutput out) {
+		if (!output.contains (out) && out.getCost () > 0 && out.getItem () != ItemStack.EMPTY) {
+			output.add (out);
+			outputTypes.put (out.getName (),out);
+		}
+	}
+
+	public static List <IOutput> getOutputTypes () {
+		return output;
+	}
+
+	public static IOutput getOutputFromName (String name) {
+		if (outputTypes.containsKey (name))
+			return outputTypes.get (name);
+		for (IOutput r : output)
+			if (r.getName ().equalsIgnoreCase (name)) {
+				outputTypes.put (name,r);
+				return r;
+			}
+		return null;
 	}
 }

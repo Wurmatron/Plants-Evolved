@@ -33,6 +33,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private HashMap <StorageType, Integer> storageData = new HashMap <> ();
 	private HashMap <ResearchType, Integer> researchPoints = new HashMap <> ();
 	private List <Object[]> buildQueue = new ArrayList <> ();
+	private HashMap <IOutput, Integer> outputs = new HashMap <> ();
 	private ItemStack colonyItem;
 	private boolean update = false;
 	private long lastUpdate;
@@ -42,6 +43,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private int minerals = 5000;
 	private int maxPopulation = Settings.startPopulation + 100;
 	private int maxMinerals = 5000;
+	private int magic;
 
 	@Override
 	public void update () {
@@ -54,6 +56,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				if (structures.size () == 0) {
 					addStructure (new FarmStructure (),1);
 					addStorageType (StorageType.POPULATION,1);
+					addOutputSetting (SpritesOfTheGalaxyAPI.getOutputFromName ("ironIngot"),5);
 					researchPoints.put (ResearchType.ARGICULTURE,1000);
 				}
 			}
@@ -74,6 +77,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				else if (structure instanceof ITickStructure && structure instanceof IEnergy)
 					((ITickStructure) structure).tickStructure (this,structures.get (structure));
 		proccessBuildQueue ();
+		proccessProduction ();
 	}
 
 	@Override
@@ -108,6 +112,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
 			researchPoints.put (researchType,tier);
 		}
+		NBTTagList outputList = nbt.getTagList (NBT.OUTPUT,8);
+		for (int index = 0; index < outputList.tagCount (); index++) {
+			NBTTagString temp = (NBTTagString) outputList.get (index);
+			IOutput output = SpritesOfTheGalaxyAPI.getOutputFromName (temp.getString ().substring (0,temp.getString ().indexOf (".")));
+			int tier = Integer.valueOf (temp.getString ().substring (temp.getString ().indexOf (".") + 1,temp.getString ().length ()));
+			outputs.put (output,tier);
+		}
 		energy = nbt.getInteger (NBT.ENERGY);
 	}
 
@@ -133,6 +144,10 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		for (ResearchType type : researchPoints.keySet ())
 			researchList.appendTag (new NBTTagString (type.name () + "." + researchPoints.get (type)));
 		nbt.setTag (NBT.RESEARCH_POINTS,researchList);
+		NBTTagList outputList = new NBTTagList ();
+		for (IOutput type : outputs.keySet ())
+			outputList.appendTag (new NBTTagString (type.getName () + "." + outputs.get (type)));
+		nbt.setTag (NBT.OUTPUT,outputList);
 		nbt.setInteger (NBT.ENERGY,energy);
 		super.writeToNBT (nbt);
 		return nbt;
@@ -387,7 +402,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	public void addBuildQueue (IStructure structure,Integer tier) {
 		if (MutiBlockHelper.hasRequiredResearch (this,structure) && structure != null)
 			if (getStructures () != null && getStructures ().get (structure) == null) {
-				LogHandler.info ("Str: " + structure.getName () + " " + tier);
 				buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier)});
 			}
 	}
@@ -402,5 +416,28 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				} else
 					buildQueue.set (index,new Object[] {buildQueue.get (index)[0],buildQueue.get (index)[1],((int) buildQueue.get (index)[2]) - 1});
 		}
+	}
+
+	public HashMap <IOutput, Integer> getOutputs () {
+		return outputs;
+	}
+
+	public void addOutputSetting (IOutput output,Integer tier) {
+		if (outputs.containsKey (output))
+			outputs.remove (output);
+		outputs.put (output,tier);
+	}
+
+	public void removeOutputSetting (IOutput output) {
+		outputs.remove (output);
+	}
+
+	public void proccessProduction () {
+		if (outputs.size () > 0)
+			for (IOutput output : outputs.keySet ())
+				for (int index = 0; index < outputs.get (output); index++) {
+					addOutput (output.getItem ());
+					consumeMinerals (output.getCost ());
+				}
 	}
 }

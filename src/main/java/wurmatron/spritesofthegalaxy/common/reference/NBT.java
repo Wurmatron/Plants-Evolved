@@ -22,6 +22,7 @@ public class NBT {
 	public static final String TYPE = "type";
 	public static final String RESEARCH_POINTS = "researchPoints";
 	public static final String ENERGY = "energy";
+	public static final String OUTPUT = "outputSettings";
 
 	// Item
 	public static final String LINEAGE = "lineage";

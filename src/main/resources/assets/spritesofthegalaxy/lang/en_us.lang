@@ -31,6 +31,7 @@ gui.researchAgriculture.name=Agriculture
 gui.researchIndustry.name=Industry
 gui.researchEnergy.name=Energy
 gui.researchResearch.name=Research
+gui.storage.name=Storage
 gui.researchMagic.name=Magic
 gui.researchUnique.name=Unique
 gui.missingResearch.name=Required Research 'Research'
