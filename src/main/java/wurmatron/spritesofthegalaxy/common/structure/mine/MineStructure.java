@@ -2,7 +2,9 @@ package wurmatron.spritesofthegalaxy.common.structure.mine;
 
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import java.util.HashMap;
 
@@ -36,20 +38,20 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 	}
 
 	@Override
-	public void tickStructure (TileHabitatCore core,int tier) {
-		core.addMinerals (tier * 5);
+	public void tickStructure (TileHabitatCore2 core,int tier) {
+		core.addColonyValue (NBT.MINERALS,tier * 5);
 	}
 
 	@Override
-	public void addProduction (TileHabitatCore core,int structureTier) {
+	public void addProduction (TileHabitatCore2 core,int structureTier) {
 	}
 
 	@Override
-	public void removeProduction (TileHabitatCore core,int structureTier) {
+	public void removeProduction (TileHabitatCore2 core,int structureTier) {
 	}
 
 	@Override
-	public int getAmountPerTier (TileHabitatCore core,int tier) {
+	public int getAmountPerTier (TileHabitatCore2 core,int tier) {
 		return tier * 5;
 	}
 
@@ -64,7 +66,7 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 	}
 
 	@Override
-	public int getBaseBuildTime (int tier) {
+	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
 }

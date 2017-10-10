@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.common.utils;
 
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
@@ -72,5 +73,17 @@ public class StackHelper {
 
 	private static boolean sameItem (ItemStack a,ItemStack b) {
 		return a.getItem () == b.getItem ();
+	}
+
+	public static ItemStack mutiStackSize (ItemStack stack,int size) {
+		ItemStack temp = stack.copy ();
+		temp.setCount ((stack.getCount () * size) - 1);
+		return temp;
+	}
+
+	public static ItemStack setStackSize (ItemStack stack,int size) {
+		ItemStack temp = stack.copy ();
+		temp.setCount (stack.getCount () + size);
+		return temp;
 	}
 }

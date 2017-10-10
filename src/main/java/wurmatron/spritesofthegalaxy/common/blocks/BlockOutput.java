@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 public class BlockOutput extends BlockMutiBlock {
 
-
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World world,int meta) {

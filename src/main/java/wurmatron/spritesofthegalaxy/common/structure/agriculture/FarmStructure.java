@@ -5,7 +5,9 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import java.util.HashMap;
 
@@ -39,17 +41,17 @@ public class FarmStructure implements IStructure, IProduction {
 	}
 
 	@Override
-	public void addProduction (TileHabitatCore core,int structureTier) {
-		core.addFood (structureTier);
+	public void addProduction (TileHabitatCore2 core,int structureTier) {
+		core.addColonyValue (NBT.FOOD,structureTier);
 	}
 
 	@Override
-	public void removeProduction (TileHabitatCore core,int structureTier) {
-		core.removeFood (structureTier);
+	public void removeProduction (TileHabitatCore2 core,int structureTier) {
+		core.consumeColonyValue (NBT.FOOD,structureTier);
 	}
 
 	@Override
-	public int getAmountPerTier (TileHabitatCore core,int tier) {
+	public int getAmountPerTier (TileHabitatCore2 core,int tier) {
 		return tier;
 	}
 
@@ -64,7 +66,7 @@ public class FarmStructure implements IStructure, IProduction {
 	}
 
 	@Override
-	public int getBaseBuildTime (int tier) {
+	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
 }

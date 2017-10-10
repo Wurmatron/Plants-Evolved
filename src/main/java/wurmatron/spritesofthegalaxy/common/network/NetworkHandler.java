@@ -7,10 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
-import wurmatron.spritesofthegalaxy.common.network.server.ResearchUpdateMessage;
-import wurmatron.spritesofthegalaxy.common.network.server.StorageTypeMessage;
-import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
+import wurmatron.spritesofthegalaxy.common.network.server.*;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 
 public class NetworkHandler {
@@ -25,6 +22,7 @@ public class NetworkHandler {
 		registerMessage (ResearchUpdateMessage.class);
 		registerMessage (StructureMessage.class);
 		registerMessage (StorageTypeMessage.class);
+		registerMessage (OutputMessage.class);
 	}
 
 	private static final <T extends CustomMessage <T> & IMessageHandler <T, IMessage>> void registerMessage (Class <T> clazz) {

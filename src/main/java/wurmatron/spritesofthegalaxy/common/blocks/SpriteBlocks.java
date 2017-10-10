@@ -3,10 +3,7 @@ package wurmatron.spritesofthegalaxy.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wurmatron.spritesofthegalaxy.common.reference.Registry;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileInput;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileOutput;
+import wurmatron.spritesofthegalaxy.common.tileentity.*;
 
 public class SpriteBlocks {
 
@@ -23,7 +20,7 @@ public class SpriteBlocks {
 	}
 
 	public static void registerTiles () {
-		GameRegistry.registerTileEntity (TileHabitatCore.class,"habitatCore");
+		GameRegistry.registerTileEntity (TileHabitatCore2.class,"habitatCore");
 		GameRegistry.registerTileEntity (TileMutiBlock.class,"mutiblock");
 		GameRegistry.registerTileEntity (TileInput.class,"input");
 		GameRegistry.registerTileEntity (TileOutput.class,"output");

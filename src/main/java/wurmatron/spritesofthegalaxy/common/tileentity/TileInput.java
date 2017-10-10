@@ -14,8 +14,8 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 
 	@Override
 	public void update () {
-		if (getCore () != null && getStackInSlot (0) != ItemStack.EMPTY && world.getTileEntity (getCore ()) != null && world.getTileEntity (getCore ()) instanceof TileHabitatCore) {
-			TileHabitatCore tile = (TileHabitatCore) world.getTileEntity (getCore ());
+		if (getCore () != null && getStackInSlot (0) != ItemStack.EMPTY && world.getTileEntity (getCore ()) != null && world.getTileEntity (getCore ()) instanceof TileHabitatCore2) {
+			TileHabitatCore2 tile = (TileHabitatCore2) world.getTileEntity (getCore ());
 			if (tile != null)
 				for (int index = 0; index < inventory.length; index++)
 					if (getStackInSlot (index) != ItemStack.EMPTY && getStackInSlot (index) != null) {

@@ -21,6 +21,6 @@ public interface IStructure {
 
 	int getEnergyUsage (int tier);
 
-	int getBaseBuildTime (int tier);
+	int getBuildTime (int tier);
 
 }

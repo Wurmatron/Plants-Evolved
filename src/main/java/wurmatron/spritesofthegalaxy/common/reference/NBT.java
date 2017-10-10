@@ -23,6 +23,8 @@ public class NBT {
 	public static final String RESEARCH_POINTS = "researchPoints";
 	public static final String ENERGY = "energy";
 	public static final String OUTPUT = "outputSettings";
+	public static final String GEM = "gem";
+	public static final String MAGIC = "magic";
 
 	// Item
 	public static final String LINEAGE = "lineage";

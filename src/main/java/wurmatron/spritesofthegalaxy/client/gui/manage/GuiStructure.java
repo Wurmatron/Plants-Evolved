@@ -12,9 +12,12 @@ import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -26,7 +29,7 @@ public class GuiStructure extends GuiHabitatBase {
 
 	private List <IStructure> structures;
 
-	public GuiStructure (TileHabitatCore tile,StructureType structureType) {
+	public GuiStructure (TileHabitatCore2 tile,StructureType structureType) {
 		super (tile);
 		structures = SpritesOfTheGalaxyAPI.getStructuresForType (structureType);
 	}
@@ -54,9 +57,9 @@ public class GuiStructure extends GuiHabitatBase {
 		super.actionPerformed (butt);
 		for (int index = 0; index < structures.size (); index++)
 			if (index <= 10)
-				if ((100 + index) == butt.id)
+				if ((100 + index) == butt.id && butt.displayString.equals ("+"))
 					proccessButton (structures.get (index));
-				else if ((101 + index) == butt.id)
+				else if ((101 + index) == butt.id && butt.displayString.equals ("-"))
 					destroyButton (structures.get (index));
 	}
 
@@ -64,14 +67,14 @@ public class GuiStructure extends GuiHabitatBase {
 		int currentTier = MutiBlockHelper.getStructureLevel (tile,structure);
 		int nextTier = currentTier + keyAmount ();
 		if (MutiBlockHelper.canBuildStructure (tile,structure,currentTier,nextTier)) {
-			tile.consumeMinerals (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
+			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
 		} else if (!MutiBlockHelper.hasRequiredResearch (tile,structure)) {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MISSING_RESEARCH).replaceAll ("'Research'",TextFormatting.GOLD + DisplayHelper.formatNeededResearch (ResearchHelper.getNeededResearch (tile.getResearch (),structure))));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		} else {
-			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,currentTier,nextTier,0) - tile.getMinerals ()) + TextFormatting.RED));
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,currentTier,nextTier,0) - tile.getColonyValue (NBT.MINERALS)) + TextFormatting.RED));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		}
@@ -80,7 +83,7 @@ public class GuiStructure extends GuiHabitatBase {
 	private void destroyButton (IStructure structure) {
 		int nextTier = keyAmount ();
 		if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0) {
-			tile.addMinerals (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
+			tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
 		}
 	}

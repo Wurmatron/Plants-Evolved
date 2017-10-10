@@ -14,7 +14,11 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
+import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.Lineages;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -39,7 +43,8 @@ public class ItemSpriteColony extends Item {
 	public void onCreated (ItemStack stack,World world,EntityPlayer player) {
 		NBTTagCompound nbt = new NBTTagCompound ();
 		nbt.setString (NBT.LINEAGE,Lineages.COMMON);
-		nbt.setDouble (NBT.POPULATION,Settings.startPopulation);
+		nbt.setInteger (NBT.POPULATION,Settings.startPopulation);
+		nbt.setInteger (NBT.MINERALS, 10000);
 		stack.setTagCompound (nbt);
 	}
 
@@ -97,5 +102,127 @@ public class ItemSpriteColony extends Item {
 			return research;
 		}
 		return null;
+	}
+
+	public static HashMap <IStructure, Integer> getStructures (ItemStack stack) {
+		if (stack != null && stack != ItemStack.EMPTY && stack.getTagCompound () != null && stack.getTagCompound ().hasKey (NBT.STRUCTURES)) {
+			HashMap <IStructure, Integer> structure = new HashMap <> ();
+			NBTTagList structureList = stack.getTagCompound ().getTagList (NBT.STRUCTURES,10);
+			for (int index = 0; index < structureList.tagCount (); index++) {
+				NBTTagCompound temp = structureList.getCompoundTagAt (index);
+				IStructure structureTemp = SpritesOfTheGalaxyAPI.getStructureFromName (temp.getString (NBT.NAME));
+				if (structureTemp != null)
+					structure.put (structureTemp,temp.getInteger (NBT.LEVEL));
+			}
+			return structure;
+		}
+		return new HashMap <> ();
+	}
+
+	public static HashMap <StorageType, Integer> getStorage (ItemStack stack) {
+		if (stack != null && stack != ItemStack.EMPTY && stack.getTagCompound () != null && stack.getTagCompound ().hasKey (NBT.STORAGE)) {
+			HashMap <StorageType, Integer> storage = new HashMap <> ();
+			NBTTagList storageData = stack.getTagCompound ().getTagList (NBT.STORAGE,10);
+			for (int index = 0; index < storageData.tagCount (); index++) {
+				NBTTagCompound temp = storageData.getCompoundTagAt (index);
+				StorageType storageTemp = Enum.valueOf (StorageType.class,temp.getString (NBT.NAME));
+				storage.put (storageTemp,temp.getInteger (NBT.LEVEL));
+			}
+			return storage;
+		}
+		return null;
+	}
+
+	public static HashMap <IOutput, Integer> getOutputSettings (ItemStack stack) {
+		if (stack != null && stack != ItemStack.EMPTY && stack.getTagCompound () != null && stack.getTagCompound ().hasKey (NBT.OUTPUT)) {
+			HashMap <IOutput, Integer> output = new HashMap <> ();
+			NBTTagList outputData = stack.getTagCompound ().getTagList (NBT.OUTPUT,10);
+			for (int index = 0; index < outputData.tagCount (); index++) {
+				NBTTagCompound temp = outputData.getCompoundTagAt (index);
+				IOutput outputTemp = SpritesOfTheGalaxyAPI.getOutputFromName (temp.getString (NBT.NAME));
+				output.put (outputTemp,temp.getInteger (NBT.LEVEL));
+			}
+			return output;
+		}
+		return null;
+	}
+
+	public static HashMap <ResearchType, Integer> getResearchPoints (ItemStack stack) {
+		if (stack != null && stack != ItemStack.EMPTY && stack.getTagCompound () != null && stack.getTagCompound ().hasKey (NBT.RESEARCH_POINTS)) {
+			HashMap <ResearchType, Integer> researchPoints = new HashMap <> ();
+			NBTTagList pointsData = stack.getTagCompound ().getTagList (NBT.RESEARCH_POINTS,10);
+			for (int index = 0; index < pointsData.tagCount (); index++) {
+				NBTTagCompound temp = pointsData.getCompoundTagAt (index);
+				ResearchType researchPointTemp = Enum.valueOf (ResearchType.class,temp.getString (NBT.NAME));
+				researchPoints.put (researchPointTemp,temp.getInteger (NBT.LEVEL));
+			}
+			return researchPoints;
+		}
+		return null;
+	}
+
+	public static ItemStack saveResearch (ItemStack colony,HashMap <IResearch, Integer> research) {
+		ItemStack newColony = colony.copy ();
+		NBTTagList researchList = new NBTTagList ();
+		for (IResearch r : research.keySet ()) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.NAME,r.getName ());
+			temp.setInteger (NBT.LEVEL,research.get (r));
+			researchList.appendTag (temp);
+		}
+		newColony.getTagCompound ().setTag (NBT.RESEARCH,researchList);
+		return newColony;
+	}
+
+	public static ItemStack saveStorage (ItemStack colony,HashMap <StorageType, Integer> storage) {
+		ItemStack newColony = colony.copy ();
+		NBTTagList storageList = new NBTTagList ();
+		for (StorageType r : storage.keySet ()) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.NAME,r.name ());
+			temp.setInteger (NBT.LEVEL,storage.get (r));
+			storageList.appendTag (temp);
+		}
+		newColony.getTagCompound ().setTag (NBT.STORAGE,storageList);
+		return newColony;
+	}
+
+	public static ItemStack saveOutput (ItemStack colony,HashMap <IOutput, Integer> output) {
+		ItemStack newColony = colony.copy ();
+		NBTTagList outputList = new NBTTagList ();
+		for (IOutput r : output.keySet ()) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.NAME,r.getName ());
+			temp.setInteger (NBT.LEVEL,output.get (r));
+			outputList.appendTag (temp);
+		}
+		newColony.getTagCompound ().setTag (NBT.OUTPUT,outputList);
+		return newColony;
+	}
+
+	public static ItemStack saveResearchPoints (ItemStack colony,HashMap <ResearchType, Integer> output) {
+		ItemStack newColony = colony.copy ();
+		NBTTagList pointsList = new NBTTagList ();
+		for (ResearchType r : output.keySet ()) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.NAME,r.name ());
+			temp.setInteger (NBT.LEVEL,output.get (r));
+			pointsList.appendTag (temp);
+		}
+		newColony.getTagCompound ().setTag (NBT.RESEARCH_POINTS,pointsList);
+		return newColony;
+	}
+
+	public static ItemStack saveStructure (ItemStack colony,HashMap <IStructure, Integer> structures) {
+		ItemStack newColony = colony.copy ();
+		NBTTagList structureList = new NBTTagList ();
+		for (IStructure r : structures.keySet ()) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.NAME,r.getName ());
+			temp.setInteger (NBT.LEVEL,structures.get (r));
+			structureList.appendTag (temp);
+		}
+		newColony.getTagCompound ().setTag (NBT.STRUCTURES,structureList);
+		return newColony;
 	}
 }

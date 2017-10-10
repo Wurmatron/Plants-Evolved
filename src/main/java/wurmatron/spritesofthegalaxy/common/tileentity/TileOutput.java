@@ -90,9 +90,9 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	public void setInventorySlotContents (int index,ItemStack stack) {
 		if (index < 0 || index >= this.getSizeInventory ())
 			return;
-		if (stack != null && stack.getCount () > this.getInventoryStackLimit ())
+		if (stack != ItemStack.EMPTY && stack.getCount () > this.getInventoryStackLimit ())
 			stack.setCount (getInventoryStackLimit ());
-		if (stack != null && stack.getCount () == 0)
+		if (stack != ItemStack.EMPTY && stack.getCount () == 0)
 			stack = null;
 		this.inventory[index] = stack;
 		this.markDirty ();
@@ -208,17 +208,6 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 						item.setCount (getStackInSlot (index).getCount () + stack.getCount ());
 						setInventorySlotContents (index,item);
 						return true;
-					} else {
-						int amountLeft = stack.getCount () + getStackInSlot (index).getCount ();
-						if (amountLeft > 64) {
-							ItemStack item = stack.copy ();
-							item.setCount (64);
-							amountLeft -= 64;
-							setInventorySlotContents (index,item);
-							ItemStack item2 = stack.copy ();
-							item2.setCount (amountLeft);
-							return addOutput (item2);
-						}
 					}
 				}
 		return false;

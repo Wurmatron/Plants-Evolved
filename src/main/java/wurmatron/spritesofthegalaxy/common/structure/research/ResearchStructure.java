@@ -4,6 +4,7 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import java.util.HashMap;
 
@@ -37,21 +38,21 @@ public class ResearchStructure implements IStructure, IProduction, ITickStructur
 	}
 
 	@Override
-	public void tickStructure (TileHabitatCore core,int tier) {
+	public void tickStructure (TileHabitatCore2 core,int tier) {
 		for (ResearchType type : ResearchType.values ())
-			core.addResearchPoint (type,tier);
+			core.setResearchPoints (type,core.getResearchPoints (type) + tier);
 	}
 
 	@Override
-	public void addProduction (TileHabitatCore core,int structureTier) {
+	public void addProduction (TileHabitatCore2 core,int structureTier) {
 	}
 
 	@Override
-	public void removeProduction (TileHabitatCore core,int structureTier) {
+	public void removeProduction (TileHabitatCore2 core,int structureTier) {
 	}
 
 	@Override
-	public int getAmountPerTier (TileHabitatCore core,int tier) {
+	public int getAmountPerTier (TileHabitatCore2 core,int tier) {
 		return tier;
 	}
 
@@ -66,7 +67,7 @@ public class ResearchStructure implements IStructure, IProduction, ITickStructur
 	}
 
 	@Override
-	public int getBaseBuildTime (int tier) {
+	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
 }

@@ -9,7 +9,9 @@ import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StorageTypeMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class GuiStorage extends GuiHabitatBase {
 
-	public GuiStorage (TileHabitatCore tile) {
+	public GuiStorage (TileHabitatCore2 tile) {
 		super (tile);
 	}
 
@@ -57,10 +59,10 @@ public class GuiStorage extends GuiHabitatBase {
 		int currentTier = MutiBlockHelper.getStorageLevel (tile,type);
 		int nextTier = currentTier + keyAmount ();
 		if (MutiBlockHelper.canBuildStorageType (tile,type,currentTier,nextTier)) {
-			tile.consumeMinerals (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),nextTier,0));
+			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),nextTier,0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,false));
 		} else {
-			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStorage (type,currentTier,nextTier,0) - tile.getMinerals ())));
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStorage (type,currentTier,nextTier,0) - tile.getColonyValue (NBT.MINERALS))));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		}
@@ -69,7 +71,7 @@ public class GuiStorage extends GuiHabitatBase {
 	private void destroyButton (StorageType type) {
 		int nextTier = keyAmount ();
 		if (MutiBlockHelper.getStorageLevel (tile,type) - keyAmount () >= 0) {
-			tile.addMinerals (MutiBlockHelper.calcMineralsForStorage (type,nextTier,MutiBlockHelper.getStorageLevel (tile,type),0));
+			tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStorage (type,nextTier,MutiBlockHelper.getStorageLevel (tile,type),0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,true));
 		}
 	}

@@ -6,11 +6,14 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OutputMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -23,7 +26,7 @@ public class GuiProduction extends GuiHabitatBase {
 
 	private List <IOutput> outputs = SpritesOfTheGalaxyAPI.getOutputTypes ();
 
-	public GuiProduction (TileHabitatCore tile) {
+	public GuiProduction (TileHabitatCore2 tile) {
 		super (tile);
 	}
 
@@ -59,20 +62,25 @@ public class GuiProduction extends GuiHabitatBase {
 	private void proccessButton (IOutput output) {
 		int currentTier = MutiBlockHelper.getOutputLevel (tile,output);
 		int nextTier = currentTier + keyAmount ();
-		if (tile.getMinerals () >= (output.getCost () * MutiBlockHelper.getOutputLevel (tile,output))) {
-			tile.consumeMinerals (MutiBlockHelper.getOutputLevel (tile,output) * output.getCost ());
-			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
-		} else {
-			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * output.getCost ()) - tile.getMinerals ()) + TextFormatting.RED));
-			text.getStyle ().setColor (TextFormatting.RED);
-			mc.ingameGUI.getChatGUI ().printChatMessage (text);
-		}
+		for (StorageType st : output.getCost ().keySet ())
+			if (tile.getColonyValue (MutiBlockHelper.getType (st)) >= (tile.getColonyValue (MutiBlockHelper.getType (st)) * MutiBlockHelper.getOutputLevel (tile,output))) {
+				for (StorageType t : output.getCost ().keySet ())
+					tile.consumeColonyValue (MutiBlockHelper.getType (st),MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (t)));
+				NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
+			} else {
+				for (StorageType t : output.getCost ().keySet ()) {
+					TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))) - tile.getColonyValue (MutiBlockHelper.getType (t))) + TextFormatting.RED));
+					text.getStyle ().setColor (TextFormatting.RED);
+					mc.ingameGUI.getChatGUI ().printChatMessage (text);
+				}
+			}
 	}
 
 	private void destroyButton (IOutput output) {
 		int nextTier = keyAmount ();
 		if (MutiBlockHelper.getOutputLevel (tile,output) - keyAmount () >= 0) {
-			tile.addMinerals (MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * output.getCost ()));
+			for (StorageType st : output.getCost ().keySet ())
+				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))));
 			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,true));
 		}
 	}
@@ -82,12 +90,14 @@ public class GuiProduction extends GuiHabitatBase {
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * output.getCost ()) + keyAmount ())));
+			for (StorageType st : output.getCost ().keySet ())
+				displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (((MutiBlockHelper.getOutputLevel (tile,output) + keyAmount ()) * tile.getColonyValue (MutiBlockHelper.getType (st))))));
 			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
 		}
 		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * output.getCost ()))));
+			for (StorageType st : output.getCost ().keySet ())
+				displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))))));
 			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}

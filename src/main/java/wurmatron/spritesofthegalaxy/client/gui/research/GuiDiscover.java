@@ -13,6 +13,7 @@ import wurmatron.spritesofthegalaxy.common.network.server.ResearchUpdateMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -25,7 +26,7 @@ public class GuiDiscover extends GuiHabitatBase {
 
 	private List <IResearch> researchType;
 
-	public GuiDiscover (TileHabitatCore tile,ResearchType researchType) {
+	public GuiDiscover (TileHabitatCore2 tile,ResearchType researchType) {
 		super (tile);
 		this.researchType = SpritesOfTheGalaxyAPI.getResearchForType (researchType);
 	}
@@ -63,7 +64,7 @@ public class GuiDiscover extends GuiHabitatBase {
 		int currentTier = MutiBlockHelper.getResearchLevel (tile,research);
 		int nextTier = currentTier + keyAmount ();
 		if (MutiBlockHelper.canBuildResearchType (tile,research,currentTier,nextTier) && ResearchHelper.isValidMove (tile.getResearch (),research)) {
-			tile.consumeResearchPoints (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),nextTier));
+			tile.setResearchPoints (research.getResearchTab (),tile.getResearchPoints (research.getResearchTab ()) - MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),nextTier));
 			NetworkHandler.sendToServer (new ResearchUpdateMessage (research,nextTier,tile,false));
 		} else {
 			if (!ResearchHelper.isValidMove (tile.getResearch (),research)) {
@@ -71,7 +72,7 @@ public class GuiDiscover extends GuiHabitatBase {
 				text.getStyle ().setColor (TextFormatting.RED);
 				mc.ingameGUI.getChatGUI ().printChatMessage (text);
 			} else {
-				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_POINTS).replaceAll ("'POINTS'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,currentTier,nextTier) - tile.getResearshPoints (research.getResearchTab ())) + TextFormatting.RED));
+				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_POINTS).replaceAll ("'POINTS'",TextFormatting.GOLD + DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,currentTier,nextTier) - tile.getResearchPoints (research.getResearchTab ())) + TextFormatting.RED));
 				text.getStyle ().setColor (TextFormatting.RED);
 				mc.ingameGUI.getChatGUI ().printChatMessage (text);
 			}
@@ -81,7 +82,7 @@ public class GuiDiscover extends GuiHabitatBase {
 	private void destroyButton (IResearch research) {
 		int nextTier = keyAmount ();
 		if (MutiBlockHelper.getResearchLevel (tile,research) - keyAmount () >= 0) {
-			tile.addResearchPoint (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,nextTier,MutiBlockHelper.getResearchLevel (tile,research)));
+			tile.setResearchPoints (research.getResearchTab (),tile.getResearchPoints (research.getResearchTab ()) + MutiBlockHelper.calcPointsForResearch (research,nextTier,MutiBlockHelper.getResearchLevel (tile,research)));
 			NetworkHandler.sendToServer (new ResearchUpdateMessage (research,MutiBlockHelper.getResearchLevel (tile,research) - keyAmount (),tile,true));
 		}
 	}

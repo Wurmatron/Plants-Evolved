@@ -7,9 +7,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
 
@@ -20,7 +22,7 @@ public class OutputMessage extends CustomMessage.CustomtServerMessage <OutputMes
 	public OutputMessage () {
 	}
 
-	public OutputMessage (IOutput type,int level,TileHabitatCore core,boolean remove) {
+	public OutputMessage (IOutput type,int level,TileHabitatCore2 core,boolean remove) {
 		data = new NBTTagCompound ();
 		data.setString (NBT.OUTPUT,type.getName ());
 		data.setInteger (NBT.LEVEL,level);
@@ -53,15 +55,17 @@ public class OutputMessage extends CustomMessage.CustomtServerMessage <OutputMes
 		int tier = data.getInteger (NBT.LEVEL);
 		boolean remove = data.getBoolean (NBT.TYPE);
 		BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
-		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
-			TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
+		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore2) {
+			TileHabitatCore2 core = (TileHabitatCore2) player.world.getTileEntity (coreLocation);
 			if (core != null) {
 				if (remove) {
-					core.addMinerals (type.getCost () * tier);
-					core.removeOutputSetting (type);
+					for (StorageType st : type.getCost ().keySet ())
+						core.addColonyValue (MutiBlockHelper.getType (st),st.getCost () * tier);
+					core.removeOutput (type);
 				} else {
-					core.consumeMinerals (type.getCost () * tier);
-					core.addOutputSetting (type,tier);
+					for (StorageType st : type.getCost ().keySet ())
+						core.consumeColonyValue (MutiBlockHelper.getType (st),st.getCost () * tier);
+					core.setOutput (type,tier);
 				}
 			}
 		}

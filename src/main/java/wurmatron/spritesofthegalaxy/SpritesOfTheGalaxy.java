@@ -57,6 +57,11 @@ public class SpritesOfTheGalaxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler (SpritesOfTheGalaxy.instance,new GuiHandler ());
 		NetworkHandler.registerPackets ();
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("ironIngot",100,StackHelper.convertToString (new ItemStack (Items.IRON_INGOT,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("goldIngot",1000,StackHelper.convertToString (new ItemStack (Items.GOLD_INGOT,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("coal",10,StackHelper.convertToString (new ItemStack (Items.COAL,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("lapis",20,StackHelper.convertToString (new ItemStack (Items.DYE,1,4))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("redstone",5,StackHelper.convertToString (new ItemStack (Items.REDSTONE,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("diamond",5000,StackHelper.convertToString (new ItemStack (Items.DIAMOND,1,0))));
 	}
 
 	@Mod.EventHandler

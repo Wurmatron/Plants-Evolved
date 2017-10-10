@@ -89,7 +89,7 @@ public class SpritesOfTheGalaxyAPI {
 	}
 
 	public static void register (IOutput out) {
-		if (!output.contains (out) && out.getCost () > 0 && out.getItem () != ItemStack.EMPTY) {
+		if (!output.contains (out) && out.getCost ().size () > 0 && out.getItem () != ItemStack.EMPTY) {
 			output.add (out);
 			outputTypes.put (out.getName (),out);
 		}

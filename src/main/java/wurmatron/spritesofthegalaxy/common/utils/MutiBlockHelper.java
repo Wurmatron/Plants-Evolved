@@ -8,8 +8,9 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
+import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileOutput;
 
@@ -20,7 +21,7 @@ public class MutiBlockHelper {
 	private static final int[] validSizes = new int[] {9,7,5,3};
 
 	public static int isValid (World world,BlockPos pos) {
-		if (world != null && pos != null && world.getTileEntity (pos) instanceof TileHabitatCore)
+		if (world != null && pos != null && world.getTileEntity (pos) instanceof TileHabitatCore2)
 			for (int size : validSizes)
 				if (isValid (world,pos,size))
 					return size;
@@ -84,28 +85,28 @@ public class MutiBlockHelper {
 						setCore (world,pos.add (-x,y,-z),null);
 						setCore (world,pos.add (x,-y,z),null);
 					}
-			if (world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof TileHabitatCore) {
-				TileHabitatCore tile = (TileHabitatCore) world.getTileEntity (pos);
+			if (world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof TileHabitatCore2) {
+				TileHabitatCore2 tile = (TileHabitatCore2) world.getTileEntity (pos);
 				if (tile != null)
 					tile.requestUpdate ();
 			}
 		}
 	}
 
-	public static boolean canBuildStructure (TileHabitatCore tile,IStructure structure,int currentTier,int nextTier) {
-		return tile.getMinerals () >= calcMineralsForStructure (structure,currentTier,nextTier,0) && hasRequiredResearch (tile,structure);
+	public static boolean canBuildStructure (TileHabitatCore2 tile,IStructure structure,int currentTier,int nextTier) {
+		return tile.getColonyValue (NBT.MINERALS) >= calcMineralsForStructure (structure,currentTier,nextTier,0) && hasRequiredResearch (tile,structure);
 	}
 
-	public static boolean hasRequiredResearch (TileHabitatCore tile,IStructure structure) {
+	public static boolean hasRequiredResearch (TileHabitatCore2 tile,IStructure structure) {
 		return ResearchHelper.hasResearch (tile,structure.getRequiredResearch ());
 	}
 
-	public static boolean canBuildStorageType (TileHabitatCore tile,StorageType type,int currentTier,int nextTier) {
-		return tile.getMinerals () >= calcMineralsForStorage (type,currentTier,nextTier,0);
+	public static boolean canBuildStorageType (TileHabitatCore2 tile,StorageType type,int currentTier,int nextTier) {
+		return tile.getColonyValue (NBT.MINERALS) >= calcMineralsForStorage (type,currentTier,nextTier,0);
 	}
 
-	public static boolean canBuildResearchType (TileHabitatCore tile,IResearch res,int currentTier,int nextTier) {
-		return tile.getResearshPoints (res.getResearchTab ()) >= calcPointsForResearch (res,currentTier,nextTier);
+	public static boolean canBuildResearchType (TileHabitatCore2 tile,IResearch res,int currentTier,int nextTier) {
+		return tile.getResearchPoints (res.getResearchTab ()) >= calcPointsForResearch (res,currentTier,nextTier);
 	}
 
 	public static int calcMineralsForStructure (IStructure structure,int currentTier,int nextTier,int researchLevel) {
@@ -118,7 +119,7 @@ public class MutiBlockHelper {
 	public static int calcMineralsForStorage (StorageType type,int currentTier,int nextTier,int researchLevel) {
 		int amountNeeded = 0;
 		for (int index = currentTier + 1; index <= nextTier; index++)
-			amountNeeded += type.getMineral () * nextTier;
+			amountNeeded += type.getCost () * nextTier;
 		return Math.abs (amountNeeded);
 	}
 
@@ -131,32 +132,7 @@ public class MutiBlockHelper {
 		return Math.abs (amountNeeded);
 	}
 
-	public static void addStorageType (TileHabitatCore tile,StorageType type,int tier) {
-		switch (type) {
-			case POPULATION:
-				tile.setMaxPopulation ((tile.getMaxPopulation () + (int) (tier * StorageType.POPULATION.getScale ())));
-				break;
-			case MINERAL:
-				tile.addMaxMinerals ((int) (tier * StorageType.MINERAL.getScale ()));
-				break;
-		}
-	}
-
-	public static void removeStorageType (TileHabitatCore tile,StorageType type,int tier) {
-		switch (type) {
-			case POPULATION: {
-				tile.removeStorageType (type,tier);
-				tile.setMaxPopulation (tile.getMaxPopulation () - (int) (tier * type.getScale ()));
-				break;
-			}
-			case MINERAL: {
-				tile.setMaxMinerals (tile.getMaxMinerals () - (int) (tier * StorageType.MINERAL.getScale ()));
-				break;
-			}
-		}
-	}
-
-	public static int getStructureLevel (TileHabitatCore tile,IStructure structure) {
+	public static int getStructureLevel (TileHabitatCore2 tile,IStructure structure) {
 		if (structure != null && tile != null) {
 			HashMap <IStructure, Integer> currentStructure = tile.getStructures ();
 			if (currentStructure != null && currentStructure.size () > 0 && currentStructure.containsKey (structure))
@@ -165,16 +141,16 @@ public class MutiBlockHelper {
 		return 0;
 	}
 
-	public static int getStorageLevel (TileHabitatCore tile,StorageType type) {
+	public static int getStorageLevel (TileHabitatCore2 tile,StorageType type) {
 		if (type != null && tile != null) {
-			HashMap <StorageType, Integer> currentStorage = tile.getStorageData ();
+			HashMap <StorageType, Integer> currentStorage = tile.getStorage ();
 			if (currentStorage != null && currentStorage.size () > 0 && currentStorage.containsKey (type))
 				return currentStorage.get (type);
 		}
 		return 0;
 	}
 
-	public static int getResearchLevel (TileHabitatCore tile,IResearch research) {
+	public static int getResearchLevel (TileHabitatCore2 tile,IResearch research) {
 		if (research != null && tile != null) {
 			HashMap <IResearch, Integer> currentResearch = tile.getResearch ();
 			if (currentResearch != null && currentResearch.size () > 0 && currentResearch.containsKey (research))
@@ -183,9 +159,9 @@ public class MutiBlockHelper {
 		return 0;
 	}
 
-	public static int getOutputLevel (TileHabitatCore tile,IOutput output) {
+	public static int getOutputLevel (TileHabitatCore2 tile,IOutput output) {
 		if (output != null && tile != null) {
-			HashMap <IOutput, Integer> currentOutput = tile.getOutputs ();
+			HashMap <IOutput, Integer> currentOutput = tile.getOutputSettings ();
 			if (currentOutput != null && currentOutput.size () > 0 && currentOutput.containsKey (output))
 				return currentOutput.get (output);
 		}
@@ -196,7 +172,7 @@ public class MutiBlockHelper {
 		return (int) (price * .25);
 	}
 
-	public static BlockPos findOutput (World world,TileHabitatCore tile) {
+	public static BlockPos findOutput (World world,TileHabitatCore2 tile) {
 		if (isValid (world,tile.getPos (),tile.mutiBlockSize)) {
 			int direction = tile.mutiBlockSize / 2;
 			for (int x = 0; x <= direction; x++)
@@ -213,6 +189,15 @@ public class MutiBlockHelper {
 	}
 
 	public static int getBuildTime (IStructure structure,int tier) {
-		return structure.getBaseBuildTime (tier);
+		return structure.getBuildTime (tier);
+	}
+
+
+	public static int getResearchBonus (TileHabitatCore2 tile,IStructure structure) {
+		return 0;
+	}
+
+	public static String getType (StorageType type) {
+		return type.getDisplayKey ();
 	}
 }

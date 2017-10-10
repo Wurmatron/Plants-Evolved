@@ -16,8 +16,9 @@ import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import javax.annotation.Nullable;
 
@@ -59,15 +60,15 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 		TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
 		boolean added = false;
 		if (tile != null && tile.getCore () != null) {
-			if (world.getTileEntity (tile.getCore ()) != null && world.getTileEntity (tile.getCore ()) instanceof TileHabitatCore) {
-				TileHabitatCore core = (TileHabitatCore) world.getTileEntity (tile.getCore ());
-				if (player.getHeldItemMainhand () != ItemStack.EMPTY && player.getHeldItemMainhand ().getItem () == SpriteItems.spriteColony && core != null && !core.hasColony ()) {
-					core.addColony (player.getHeldItemMainhand ());
+			if (world.getTileEntity (tile.getCore ()) != null && world.getTileEntity (tile.getCore ()) instanceof TileHabitatCore2) {
+				TileHabitatCore2 core = (TileHabitatCore2) world.getTileEntity (tile.getCore ());
+				if (player.getHeldItemMainhand () != ItemStack.EMPTY && player.getHeldItemMainhand ().getItem () == SpriteItems.spriteColony) {
+					core.setColony (player.getHeldItemMainhand ());
 					player.inventory.deleteStack (player.getHeldItemMainhand ());
 					added = true;
-				} else if (player.getHeldItemMainhand () == ItemStack.EMPTY && core != null && player.isSneaking () && core.hasColony ()) {
+				} else if (player.getHeldItemMainhand () == ItemStack.EMPTY && core != null && player.isSneaking () && core.getColony () != ItemStack.EMPTY) {
 					player.inventory.addItemStackToInventory (core.getColony ());
-					core.addColony (null);
+					core.setColony (ItemStack.EMPTY);
 				}
 			}
 			if (!player.isSneaking () && !added) {

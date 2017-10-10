@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +19,7 @@ public class CoreBlock extends BlockMutiBlock {
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {
-		return new TileHabitatCore ();
+		return new TileHabitatCore2 ();
 	}
 
 	@Override

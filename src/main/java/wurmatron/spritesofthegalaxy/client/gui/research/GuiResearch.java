@@ -10,6 +10,7 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 
 import java.io.IOException;
@@ -23,19 +24,19 @@ public class GuiResearch extends GuiHabitatBase {
 	protected GuiButton research;
 	protected GuiButton unique;
 
-	public GuiResearch (TileHabitatCore tile) {
+	public GuiResearch (TileHabitatCore2 tile) {
 		super (tile);
 	}
 
 	@Override
 	public void initGui () {
 		super.initGui ();
-		buttonList.add (agriculture = new GuiTexturedButton (10,startWidth + 171,startHeight + 21,60,15,I18n.translateToLocal (Local.RESEARCH_AGRICLTURE) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.ARGICULTURE)) + ")"));
-		buttonList.add (energy = new GuiTexturedButton (11,startWidth + 171,startHeight + 37,60,15,I18n.translateToLocal (Local.RESEARCH_ENERGY) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.ENERGY)) + ")"));
-		buttonList.add (industry = new GuiTexturedButton (12,startWidth + 171,startHeight + 53,60,15,I18n.translateToLocal (Local.RESEARCH_INDUSTRY) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.INDUSTRY)) + ")"));
-		buttonList.add (magic = new GuiTexturedButton (13,startWidth + 171,startHeight + 69,60,15,I18n.translateToLocal (Local.RESEARCH_MAGIC) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.MAGIC)) + ")"));
-		buttonList.add (research = new GuiTexturedButton (14,startWidth + 171,startHeight + 85,60,15,I18n.translateToLocal (Local.RESEARCH_RESEARCH) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.RESEARCH)) + ")"));
-		buttonList.add (unique = new GuiTexturedButton (15,startWidth + 171,startHeight + 101,60,15,I18n.translateToLocal (Local.RESEARCH_UNIQUE) + " (" + DisplayHelper.formatNum (tile.getResearshPoints (ResearchType.UNIQUE)) + ")"));
+		buttonList.add (agriculture = new GuiTexturedButton (10,startWidth + 171,startHeight + 21,60,15,I18n.translateToLocal (Local.RESEARCH_AGRICLTURE) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.ARGICULTURE)) + ")"));
+		buttonList.add (energy = new GuiTexturedButton (11,startWidth + 171,startHeight + 37,60,15,I18n.translateToLocal (Local.RESEARCH_ENERGY) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.ENERGY)) + ")"));
+		buttonList.add (industry = new GuiTexturedButton (12,startWidth + 171,startHeight + 53,60,15,I18n.translateToLocal (Local.RESEARCH_INDUSTRY) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.INDUSTRY)) + ")"));
+		buttonList.add (magic = new GuiTexturedButton (13,startWidth + 171,startHeight + 69,60,15,I18n.translateToLocal (Local.RESEARCH_MAGIC) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.MAGIC)) + ")"));
+		buttonList.add (research = new GuiTexturedButton (14,startWidth + 171,startHeight + 85,60,15,I18n.translateToLocal (Local.RESEARCH_RESEARCH) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.RESEARCH)) + ")"));
+		buttonList.add (unique = new GuiTexturedButton (15,startWidth + 171,startHeight + 101,60,15,I18n.translateToLocal (Local.RESEARCH_UNIQUE) + " (" + DisplayHelper.formatNum (tile.getResearchPoints (ResearchType.UNIQUE)) + ")"));
 	}
 
 	@Override
