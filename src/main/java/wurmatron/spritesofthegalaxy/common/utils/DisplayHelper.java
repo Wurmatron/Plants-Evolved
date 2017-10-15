@@ -17,7 +17,7 @@ public class DisplayHelper {
 	}
 
 	public static String formatLineage (ItemStack colony) {
-		if (colony != null && colony.getTagCompound () != null &&  colony.getTagCompound ().hasKey (NBT.LINEAGE)) {
+		if (colony != null && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (NBT.LINEAGE)) {
 			String lineage = colony.getTagCompound ().getString (NBT.LINEAGE);
 			return lineage.substring (0,1).toUpperCase () + lineage.substring (1);
 		}

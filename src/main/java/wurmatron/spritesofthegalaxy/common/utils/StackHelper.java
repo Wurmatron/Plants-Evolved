@@ -1,6 +1,5 @@
 package wurmatron.spritesofthegalaxy.common.utils;
 
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;

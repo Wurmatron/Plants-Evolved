@@ -44,7 +44,7 @@ public class ItemSpriteColony extends Item {
 		NBTTagCompound nbt = new NBTTagCompound ();
 		nbt.setString (NBT.LINEAGE,Lineages.COMMON);
 		nbt.setInteger (NBT.POPULATION,Settings.startPopulation);
-		nbt.setInteger (NBT.MINERALS, 10000);
+		nbt.setInteger (NBT.MINERALS,10000);
 		stack.setTagCompound (nbt);
 	}
 
@@ -101,7 +101,7 @@ public class ItemSpriteColony extends Item {
 			}
 			return research;
 		}
-		return null;
+		return new HashMap <> ();
 	}
 
 	public static HashMap <IStructure, Integer> getStructures (ItemStack stack) {
@@ -130,7 +130,7 @@ public class ItemSpriteColony extends Item {
 			}
 			return storage;
 		}
-		return null;
+		return new HashMap <> ();
 	}
 
 	public static HashMap <IOutput, Integer> getOutputSettings (ItemStack stack) {
@@ -144,7 +144,7 @@ public class ItemSpriteColony extends Item {
 			}
 			return output;
 		}
-		return null;
+		return new HashMap <> ();
 	}
 
 	public static HashMap <ResearchType, Integer> getResearchPoints (ItemStack stack) {
@@ -158,7 +158,7 @@ public class ItemSpriteColony extends Item {
 			}
 			return researchPoints;
 		}
-		return null;
+		return new HashMap <> ();
 	}
 
 	public static ItemStack saveResearch (ItemStack colony,HashMap <IResearch, Integer> research) {

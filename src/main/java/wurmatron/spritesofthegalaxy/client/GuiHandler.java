@@ -14,7 +14,6 @@ import wurmatron.spritesofthegalaxy.client.gui.overview.GuiOverview;
 import wurmatron.spritesofthegalaxy.client.gui.production.GuiProduction;
 import wurmatron.spritesofthegalaxy.client.gui.research.GuiDiscover;
 import wurmatron.spritesofthegalaxy.client.gui.research.GuiResearch;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import javax.annotation.Nullable;

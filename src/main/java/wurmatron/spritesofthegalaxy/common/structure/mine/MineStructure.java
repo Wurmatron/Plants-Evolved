@@ -3,7 +3,6 @@ package wurmatron.spritesofthegalaxy.common.structure.mine;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 
 	@Override
 	public void tickStructure (TileHabitatCore2 core,int tier) {
-		core.addColonyValue (NBT.MINERALS,tier * 5);
+		core.addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,tier * 5);
 	}
 
 	@Override

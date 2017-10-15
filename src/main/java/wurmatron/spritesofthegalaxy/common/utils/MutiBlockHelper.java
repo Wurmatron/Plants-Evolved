@@ -200,4 +200,12 @@ public class MutiBlockHelper {
 	public static String getType (StorageType type) {
 		return type.getDisplayKey ();
 	}
+
+	public static void recalcStorage (TileHabitatCore2 tile) {
+		if (tile != null && tile.getStorage ().size () > 0) {
+			for (StorageType type : tile.getStorage ().keySet ())
+				if (tile.getStorage ().get (type) != 0)
+					tile.setColonyValue (type.getDisplayKey (),(int) (tile.getStorage ().get (type) * type.getScale ()));
+		}
+	}
 }

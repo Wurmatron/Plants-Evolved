@@ -7,7 +7,6 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 
 import java.util.HashMap;
@@ -50,7 +49,7 @@ public class GreenhouseStructure implements IStructure, IProduction {
 
 	@Override
 	public void removeProduction (TileHabitatCore2 core,int structureTier) {
-		core.consumeColonyValue (NBT.FOOD,structureTier  * 10);
+		core.consumeColonyValue (NBT.FOOD,structureTier * 10);
 	}
 
 	@Override

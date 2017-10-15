@@ -25,6 +25,10 @@ public class NBT {
 	public static final String OUTPUT = "outputSettings";
 	public static final String GEM = "gem";
 	public static final String MAGIC = "magic";
+	public static final String STRUCTURE = "structure";
+	public static final String TIME = "time";
+	public static final String MAX_MAGIC = "maxMagic";
+	public static final String MAX_GEM = "maxGem";
 
 	// Item
 	public static final String LINEAGE = "lineage";

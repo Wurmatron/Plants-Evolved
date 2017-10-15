@@ -2,10 +2,12 @@ package wurmatron.spritesofthegalaxy.common.tileentity;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
@@ -36,14 +38,6 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 
 	@Override
 	public void update () {
-		if (getStructures ().size () == 0) {
-			addStructure (new FarmStructure (),1);
-			addStructure (new MineStructure (),1);
-			addStructure (new EnergyStructure (),5);
-			//			setStorage (StorageType.POPULATION,1);
-			setColonyValue (NBT.MINERALS,10000);
-			//			setResearchPoints (ResearchType.ARGICULTURE,1000);
-		}
 		if (update && world.getWorldTime () % 20 == 0) {
 			int isValid = MutiBlockHelper.isValid (world,pos);
 			mutiBlockSize = isValid;
@@ -53,6 +47,14 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			}
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
+			if (getStructures ().size () == 0) {
+				addStructure (new FarmStructure (),1);
+				addStructure (new MineStructure (),1);
+				addStructure (new EnergyStructure (),5);
+				setStorage (StorageType.POPULATION,1);
+				setStorage (StorageType.MINERAL,1);
+				setColonyValue (NBT.MINERALS,10000);
+			}
 			updateStructures ();
 			proccessBuildQueue ();
 			proccessOutputSettings ();
@@ -70,7 +72,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public void setColonyValue (String nbt,int value) {
-		if (colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
+		if (colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
 			NBTTagCompound nbtData = colony.getTagCompound ();
 			if (nbtData != null && !nbtData.hasNoTags ()) {
 				nbtData.setInteger (nbt,value > 0 ? value : 0);
@@ -90,6 +92,10 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 
 	public void addColonyValue (String nbt,int value) {
 		setColonyValue (nbt,getColonyValue (nbt) + value > 0 ? getColonyValue (nbt) + value : 0);
+	}
+
+	public void addColonyValue (String nbt,String nbtMax,int value) {
+		setColonyValue (nbt,nbtMax,getColonyValue (nbt) + value > 0 ? getColonyValue (nbt) + value : 0);
 	}
 
 	public void setColony (ItemStack colony) {
@@ -147,11 +153,12 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public void setStorage (StorageType storageType,int lvl) {
-		if (colony != ItemStack.EMPTY && colony.hasTagCompound ())
+		if (colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ())
 			if (getStorage () != null && !getStorage ().containsKey (storageType) || getStorage ().getOrDefault (storageType,0) < lvl) {
-				HashMap <StorageType, Integer> currentStorage = ItemSpriteColony.getStorage (colony);
+				HashMap <StorageType, Integer> currentStorage = getStorage ();
 				currentStorage.put (storageType,lvl);
 				setColony (ItemSpriteColony.saveStorage (colony,currentStorage));
+				MutiBlockHelper.recalcStorage (this);
 			}
 	}
 
@@ -186,7 +193,6 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public void setResearchPoints (ResearchType researchType,int lvl) {
-
 		if (colony != ItemStack.EMPTY && colony.hasTagCompound ())
 			if (!getResearchPoints ().containsKey (researchType) || getResearchPoints ().get (researchType) < lvl) {
 				HashMap <ResearchType, Integer> currentResearchPoints = ItemSpriteColony.getResearchPoints (colony);
@@ -201,15 +207,13 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 				return;
 		buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier + 1)});
 		consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (this,structure),tier + 1,MutiBlockHelper.getResearchBonus (this,structure)));
+		markDirty ();
 	}
 
 	public void addStructure (IStructure structure,int lvl) {
-		LogHandler.info ("AddStr " + colony);
 		if (colony != ItemStack.EMPTY && colony != null && colony.getTagCompound () != null && colony.hasTagCompound ()) {
-			LogHandler.info ("Early: ");
 			if (!getStructures ().containsKey (structure) || getStructures ().get (structure) < lvl) {
 				HashMap <IStructure, Integer> currentStructures = ItemSpriteColony.getStructures (colony);
-				LogHandler.info ("Adding Structure");
 				currentStructures.put (structure,lvl);
 				setColony (ItemSpriteColony.saveStructure (colony,currentStructures));
 			}
@@ -243,13 +247,15 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		return false;
 	}
 
+	// TODO ReAdd Energy Support
 	private void updateStructures () {
 		if (getStructures () != null && getStructures ().size () > 0)
-			for (IStructure structure : getStructures ().keySet ())
-				if (structure instanceof ITickStructure && getColonyValue (NBT.ENERGY) > 0)
+			for (IStructure structure : getStructures ().keySet ()) {
+				if (structure instanceof ITickStructure)
 					((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
 				else if (structure instanceof ITickStructure && structure instanceof IEnergy)
 					((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
+			}
 	}
 
 	private void proccessOutputSettings () {
@@ -281,6 +287,14 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		lastUpdate = nbt.getLong (NBT.LASTUPDATE);
 		colony = convertToStack (nbt.getString (NBT.COLONY));
 		mutiBlockSize = nbt.getInteger (NBT.SIZE);
+		NBTTagList structureList = nbt.getTagList (NBT.STRUCTURES,8);
+		for (int index = 0; index < structureList.tagCount (); index++) {
+			NBTTagCompound temp = (NBTTagCompound) structureList.get (index);
+			IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (temp.getString (NBT.STRUCTURE));
+			int tier = temp.getInteger (NBT.LEVEL);
+			int time = temp.getInteger (NBT.TIME);
+			buildQueue.add (new Object[] {structure,tier,time});
+		}
 	}
 
 	@Override
@@ -289,6 +303,15 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		nbt.setLong (NBT.LASTUPDATE,lastUpdate);
 		nbt.setString (NBT.COLONY,convertToData (colony));
 		nbt.setInteger (NBT.SIZE,mutiBlockSize);
+		NBTTagList structureList = new NBTTagList ();
+		for (Object[] obj : buildQueue) {
+			NBTTagCompound temp = new NBTTagCompound ();
+			temp.setString (NBT.STRUCTURE,((IStructure) obj[0]).getName ());
+			temp.setInteger (NBT.LEVEL,((int) obj[1]));
+			temp.setInteger (NBT.TIME,((int) obj[2]));
+			structureList.appendTag (temp);
+		}
+		nbt.setTag (NBT.STRUCTURES,structureList);
 		super.writeToNBT (nbt);
 		return nbt;
 	}

@@ -24,9 +24,5 @@
     - Finish All The Gui's
 
  - Tile
-    - Fix Code
     - Improve MutiBlock System
-
-    Add Energy To Structures Display Tab
   - Input Converts Items into Minerals 1/5
-  - Fix Land Farm And Structures

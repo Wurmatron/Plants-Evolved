@@ -18,7 +18,6 @@ import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import javax.annotation.Nullable;
 

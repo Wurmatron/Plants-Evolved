@@ -8,7 +8,7 @@ public interface IOutput {
 
 	String getName ();
 
-	HashMap<StorageType, Integer> getCost ();
+	HashMap <StorageType, Integer> getCost ();
 
 	ItemStack getItem ();
 }
