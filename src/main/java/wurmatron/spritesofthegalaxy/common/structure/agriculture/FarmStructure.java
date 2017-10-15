@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.util.HashMap;
 

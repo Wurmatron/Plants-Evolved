@@ -55,9 +55,9 @@ public class GuiStructure extends GuiHabitatBase {
 		super.actionPerformed (butt);
 		for (int index = 0; index < structures.size (); index++)
 			if (index <= 10)
-				if ((100 + index) == butt.id && butt.displayString.equals ("+"))
+				if ((100 + index) == butt.id && "+".equals (butt.displayString))
 					proccessButton (structures.get (index));
-				else if ((101 + index) == butt.id && butt.displayString.equals ("-"))
+				else if ((101 + index) == butt.id && "-".equals (butt.displayString))
 					destroyButton (structures.get (index));
 	}
 

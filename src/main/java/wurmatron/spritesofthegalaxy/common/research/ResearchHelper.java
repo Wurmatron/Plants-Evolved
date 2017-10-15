@@ -168,7 +168,7 @@ public class ResearchHelper {
 			List <IResearch> hasForLevel = new ArrayList <> ();
 			for (IResearch needed : newLevel.getPreReq ().keySet ())
 				for (IResearch has : currentResearch.keySet ())
-					if (has == needed && currentResearch.get (has) >= newLevel.getPreReq ().get (needed))
+					if (has.equals (needed) && currentResearch.get (has) >= newLevel.getPreReq ().get (needed))
 						hasForLevel.add (needed);
 			return newLevel.getPreReq ().size () == hasForLevel.size ();
 		}
@@ -202,7 +202,7 @@ public class ResearchHelper {
 
 	public static boolean hasResearch (TileHabitatCore2 tile,IResearch research,int level) {
 		for (IResearch res : tile.getResearch ().keySet ())
-			if (res == research && level <= tile.getResearch ().get (res))
+			if (res.equals (research) && level <= tile.getResearch ().get (res))
 				return true;
 		return false;
 	}

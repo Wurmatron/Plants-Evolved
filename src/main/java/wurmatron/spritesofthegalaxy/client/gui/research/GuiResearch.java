@@ -60,6 +60,8 @@ public class GuiResearch extends GuiHabitatBase {
 			case (15):
 				NetworkHandler.sendToServer (new OpenGuiMessage (GuiHandler.RESEARCH_UNIQUE,tile.getPos ()));
 				break;
+			default:
+				break;
 		}
 	}
 }
