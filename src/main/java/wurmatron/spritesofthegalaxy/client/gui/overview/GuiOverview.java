@@ -32,7 +32,7 @@ public class GuiOverview extends GuiHabitatBase {
 		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ": " + DisplayHelper.formatNum (tile.getColonyValue (NBT.POPULATION)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_POPULATION)),startWidth + 140,startHeight + 38,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getColonyValue (NBT.FOOD) - tile.getPopulationFoodUsage ()),startWidth + 140,startHeight + 46,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MINERALS)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MINERALS)),startWidth + 140,startHeight + 54,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum (tile.getColonyValue (NBT.ENERGY)),startWidth + 140,startHeight + 62,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum ((tile.getColonyValue (NBT.ENERGY) - tile.getPowerUsage ())),startWidth + 140,startHeight + 62,Color.white.getRGB ());
 	}
 
 	@Override
