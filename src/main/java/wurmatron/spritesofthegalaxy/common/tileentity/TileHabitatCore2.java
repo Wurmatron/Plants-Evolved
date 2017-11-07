@@ -255,11 +255,10 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	private void updateStructures () {
 		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY))
 			for (IStructure structure : getStructures ().keySet ()) {
-				if (structure instanceof IProduction) {
+				if (structure instanceof ITickStructure) {
 					if (getPowerUsage () <= getColonyValue (NBT.ENERGY))
 						((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
-				} else
-					((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
+				}
 			}
 	}
 
