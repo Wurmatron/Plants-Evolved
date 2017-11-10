@@ -48,6 +48,9 @@ gui.energy.name=Energy
 
 # Item
 item.spriteColony.name=Sprite Colony
+item.Mineral.name=Mineral Resource
+item.Gem.name=Gem Resource
+item.Magic.name=Magic Resource
 
 # Research
 research.land.name=Farm Land

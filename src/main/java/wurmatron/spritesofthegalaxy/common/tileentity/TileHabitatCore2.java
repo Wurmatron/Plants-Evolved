@@ -1,6 +1,5 @@
 package wurmatron.spritesofthegalaxy.common.tileentity;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,7 +15,6 @@ import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
-import wurmatron.spritesofthegalaxy.common.structure.energy.EnergyStructure;
 import wurmatron.spritesofthegalaxy.common.structure.energy.StarStructure;
 import wurmatron.spritesofthegalaxy.common.structure.mine.MineStructure;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
