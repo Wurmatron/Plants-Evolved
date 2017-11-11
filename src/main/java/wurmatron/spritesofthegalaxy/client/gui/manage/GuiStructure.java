@@ -4,11 +4,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
+import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -16,6 +18,7 @@ import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -37,17 +40,22 @@ public class GuiStructure extends GuiHabitatBase {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 		for (int index = 0; index < structures.size (); index++)
 			if (index <= 10)
-				displayString (structures.get (index),mouseX,mouseY,62,31 + (16 * index),4,29 + (16 * index),106,29 + (16 * index));
+				displayString (structures.get (index),mouseX,mouseY,62,31 + (16 * index),106,29 + (16 * index),6,29 + (16 * index));
 	}
 
 	@Override
 	public void initGui () {
 		super.initGui ();
-		for (int index = 0; index < structures.size (); index++)
+		for (int index = 0; index < structures.size (); index++) {
+			GuiTexturedButton addButt = new GuiTexturedButton (100 + index,startWidth + 108,(startHeight + 29) + (16 * index),12,12,1,"+");
+			GuiTexturedButton negButt = new GuiTexturedButton (101 + index,startWidth + 6,(startHeight + 29) + (16 * index),12,12,1,"-");
 			if (index <= 10) {
-				buttonList.add (new GuiButton (100 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,"+"));
-				buttonList.add (new GuiButton (101 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,"-"));
+				buttonList.add (addButt);
+				buttonList.add (negButt);
 			}
+			if (MutiBlockHelper.getStructureLevel (tile,structures.get (index)) <= 0)
+				negButt.enabled = false;
+		}
 	}
 
 	@Override

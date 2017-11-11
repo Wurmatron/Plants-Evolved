@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
+import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OutputMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -34,7 +35,7 @@ public class GuiProduction extends GuiHabitatBase {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 		for (int index = 0; index < outputs.size (); index++)
 			if (index <= 10)
-				displayString (outputs.get (index),mouseX,mouseY,62,31 + (16 * index),4,29 + (16 * index),106,29 + (16 * index));
+				displayString (outputs.get (index),mouseX,mouseY,62,31 + (16 * index),106,29 + (16 * index),6,29 + (16 * index));
 	}
 
 	@Override
@@ -42,8 +43,8 @@ public class GuiProduction extends GuiHabitatBase {
 		super.initGui ();
 		for (int index = 0; index < outputs.size (); index++)
 			if (index <= 10) {
-				buttonList.add (new GuiButton (100 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,"+"));
-				buttonList.add (new GuiButton (101 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,"-"));
+				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
+				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 6,(startHeight + 29) + (16 * index),12,12,1,"-"));
 			}
 	}
 

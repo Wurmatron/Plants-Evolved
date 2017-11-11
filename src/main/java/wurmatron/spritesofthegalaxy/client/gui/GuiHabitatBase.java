@@ -46,10 +46,10 @@ public class GuiHabitatBase extends GuiScreen {
 	public void initGui () {
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
-		buttonList.add (overview = new GuiTexturedButton (0,startWidth + 2,startHeight + 5,63,15,"Overview"));
-		buttonList.add (manage = new GuiTexturedButton (1,startWidth + 61,startHeight + 5,54,15,"Manage"));
-		buttonList.add (production = new GuiTexturedButton (2,startWidth + 115,startHeight + 5,65,15,"Production"));
-		buttonList.add (research = new GuiTexturedButton (3,startWidth + 171,startHeight + 5,62,15,"Research"));
+		buttonList.add (overview = new GuiTexturedButton (0,startWidth + 4,startHeight + 2,60,15,"Overview"));
+		buttonList.add (manage = new GuiTexturedButton (1,startWidth + 55,startHeight + 2,50,15,"Manage"));
+		buttonList.add (production = new GuiTexturedButton (2,startWidth + 95,startHeight + 2,68,15,"Production"));
+		buttonList.add (research = new GuiTexturedButton (3,startWidth + 153,startHeight + 2,54,15,"Science"));
 	}
 
 	@Override

@@ -40,9 +40,9 @@ public class GuiOverview extends GuiHabitatBase {
 		super.initGui ();
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
-		buttonList.add (new GuiTexturedButton (10,startWidth + 2,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME)));
-		buttonList.add (new GuiTexturedButton (11,startWidth + 2,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS)));
-		buttonList.add (new GuiTexturedButton (10,startWidth + 2,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO)));
+		buttonList.add (new GuiTexturedButton (10,startWidth + 6,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME)));
+		buttonList.add (new GuiTexturedButton (11,startWidth + 6,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS)));
+		buttonList.add (new GuiTexturedButton (10,startWidth + 6,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO)));
 	}
 
 	@Override

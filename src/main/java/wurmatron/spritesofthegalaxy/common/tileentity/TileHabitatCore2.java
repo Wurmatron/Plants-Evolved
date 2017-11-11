@@ -70,7 +70,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getColonyValue (String nbt) {
-		return colony != ItemStack.EMPTY && colony.hasTagCompound () && colony.getTagCompound ().hasKey (nbt) ? colony.getTagCompound ().getInteger (nbt) : 0;
+		return colony != ItemStack.EMPTY && colony.hasTagCompound () && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) ? colony.getTagCompound ().getInteger (nbt) : 0;
 	}
 
 	public void setColonyValue (String nbt,int value) {
@@ -129,9 +129,9 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public void removeStructure (IStructure structure) {
-		if (colony != ItemStack.EMPTY && colony.hasTagCompound () && getStructures ().containsKey (structure)) {
+		if (structure != null && colony != ItemStack.EMPTY && colony.hasTagCompound () && getStructures ().containsKey (structure)) {
 			HashMap <IResearch, Integer> currentStructures = ItemSpriteColony.getResearch (colony);
-			if (structure instanceof IProduction) {
+			if (currentStructures.containsKey (structure) && structure instanceof IProduction) {
 				IProduction production = (IProduction) structure;
 				production.removeProduction (this,currentStructures.get (structure));
 			}
@@ -348,5 +348,9 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			for (IStructure structure : getStructures ().keySet ())
 				energy += structure.getEnergyUsage (getStructures ().get (structure));
 		return energy;
+	}
+
+	public List <Object[]> getBuildQueue () {
+		return buildQueue;
 	}
 }

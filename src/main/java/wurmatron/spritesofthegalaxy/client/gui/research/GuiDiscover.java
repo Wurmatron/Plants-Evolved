@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
+import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.ResearchUpdateMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -35,7 +36,7 @@ public class GuiDiscover extends GuiHabitatBase {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 		for (int index = 0; index < researchType.size (); index++)
 			if (index <= 10)
-				displayString (researchType.get (index),mouseX,mouseY,62,31 + (16 * index),4,29 + (16 * index),106,29 + (16 * index));
+				displayString (researchType.get (index),mouseX,mouseY,62,31 + (16 * index),106,29 + (16 * index),4,29 + (16 * index));
 	}
 
 	@Override
@@ -43,8 +44,8 @@ public class GuiDiscover extends GuiHabitatBase {
 		super.initGui ();
 		for (int index = 0; index < researchType.size (); index++)
 			if (index <= 10) {
-				buttonList.add (new GuiButton (100 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,"+"));
-				buttonList.add (new GuiButton (101 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,"-"));
+				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
+				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,1,"-"));
 			}
 	}
 

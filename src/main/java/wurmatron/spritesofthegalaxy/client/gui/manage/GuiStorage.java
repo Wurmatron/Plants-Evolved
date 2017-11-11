@@ -6,6 +6,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
+import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StorageTypeMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -38,8 +39,8 @@ public class GuiStorage extends GuiHabitatBase {
 		super.initGui ();
 		for (int index = 0; index < StorageType.values ().length; index++)
 			if (index <= 10) {
-				buttonList.add (new GuiButton (100 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,"+"));
-				buttonList.add (new GuiButton (101 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,"-"));
+				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
+				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,1,"-"));
 			}
 	}
 
