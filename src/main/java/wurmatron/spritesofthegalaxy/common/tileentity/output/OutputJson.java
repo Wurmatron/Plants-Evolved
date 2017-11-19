@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.common.tileentity.output;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
@@ -34,7 +35,8 @@ public class OutputJson implements IOutput {
 
 	@Override
 	public ItemStack getItem () {
-		return StackHelper.convertToStack (item);
+		return new ItemStack (Items.DIAMOND);
+//		return StackHelper.convertToStack (item);
 	}
 
 	@Override

@@ -62,11 +62,11 @@ public class GuiProduction extends GuiHabitatBase {
 	private void proccessButton (IOutput output) {
 		int currentTier = MutiBlockHelper.getOutputLevel (tile,output);
 		int nextTier = currentTier + keyAmount ();
+		int valid = 0;
 		for (StorageType st : output.getCost ().keySet ())
 			if (tile.getColonyValue (MutiBlockHelper.getType (st)) >= (tile.getColonyValue (MutiBlockHelper.getType (st)) * MutiBlockHelper.getOutputLevel (tile,output))) {
-				for (StorageType t : output.getCost ().keySet ())
-					tile.consumeColonyValue (MutiBlockHelper.getType (st),MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (t)));
-				NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
+				tile.consumeColonyValue (MutiBlockHelper.getType (st),MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st)));
+				valid++;
 			} else {
 				for (StorageType t : output.getCost ().keySet ()) {
 					TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",TextFormatting.GOLD + DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))) - tile.getColonyValue (MutiBlockHelper.getType (t))) + TextFormatting.RED));
@@ -74,16 +74,18 @@ public class GuiProduction extends GuiHabitatBase {
 					mc.ingameGUI.getChatGUI ().printChatMessage (text);
 				}
 			}
+		if (valid >= output.getCost ().keySet ().size ())
+			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
 	}
 
-	private void destroyButton (IOutput output) {
-		int nextTier = keyAmount ();
-		if (MutiBlockHelper.getOutputLevel (tile,output) - keyAmount () >= 0) {
-			for (StorageType st : output.getCost ().keySet ())
-				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))));
-			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,true));
+		private void destroyButton (IOutput output) {
+			int nextTier = keyAmount ();
+			if (MutiBlockHelper.getOutputLevel (tile,output) - keyAmount () >= 0) {
+				for (StorageType st : output.getCost ().keySet ())
+					tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))));
+				NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,true));
+			}
 		}
-	}
 
 	private void displayString (IOutput output,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
 		String str = I18n.translateToLocal (output.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getOutputLevel (tile,output));

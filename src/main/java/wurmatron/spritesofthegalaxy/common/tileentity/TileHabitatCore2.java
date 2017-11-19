@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.common.tileentity;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,6 +14,7 @@ import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
+import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.structure.energy.StarStructure;
@@ -244,8 +246,10 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		BlockPos output = MutiBlockHelper.findOutput (world,this);
 		if (output != null && world.getTileEntity (output) instanceof TileOutput) {
 			TileOutput tile = (TileOutput) world.getTileEntity (output);
-			if (tile != null)
+			if (tile != null) {
+				LogHandler.info ("Tile != null == " + tile);
 				return tile.addOutput (stack);
+			}
 		}
 		return false;
 	}
@@ -264,17 +268,17 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		if (getOutputSettings () != null && getOutputSettings ().size () > 0)
 			for (IOutput output : getOutputSettings ().keySet ())
 				if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64)
-					if (addOutput (StackHelper.mutiStackSize (output.getItem (),getOutputSettings ().get (output))))
+					if (addOutput (new ItemStack (Items.DIAMOND)))
 						for (StorageType type : output.getCost ().keySet ())
 							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
 					else {
 						int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
 						for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
 							if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
-								if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
+								if (addOutput (new ItemStack (Items.DIAMOND)))
 									for (StorageType type : output.getCost ().keySet ())
 										consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-							} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
+							} else if (addOutput (new ItemStack (Items.DIAMOND))) {
 								amountLeftToAdd -= 64;
 								for (StorageType type : output.getCost ().keySet ())
 									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
@@ -352,5 +356,22 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 
 	public List <Object[]> getBuildQueue () {
 		return buildQueue;
+	}
+
+	public boolean importStack (ItemStack stack) {
+		if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 0)
+			if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
+				addColonyValue (NBT.MINERALS,10 * stack.getCount ());
+				return true;
+			} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 1)
+				if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
+					addColonyValue (NBT.GEM,10 * stack.getCount ());
+					return true;
+				} else if (stack.getItem () == Items.IRON_INGOT)
+					if (getColonyValue (NBT.MAX_MINERALS) >= getColonyValue (NBT.MINERALS) + (100 * stack.getCount ())) {
+						addColonyValue (NBT.MINERALS,100 * stack.getCount ());
+						return true;
+					}
+		return false;
 	}
 }

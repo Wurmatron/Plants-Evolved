@@ -19,8 +19,8 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 			if (tile != null)
 				for (int index = 0; index < inventory.length; index++)
 					if (getStackInSlot (index) != ItemStack.EMPTY && getStackInSlot (index) != null) {
-						//						tile.addStack (getStackInSlot (index));
-						setInventorySlotContents (index,null);
+						if (tile.importStack (getStackInSlot (index)))
+							setInventorySlotContents (index,null);
 					}
 		}
 	}
