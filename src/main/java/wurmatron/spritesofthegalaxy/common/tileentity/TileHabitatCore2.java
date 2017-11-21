@@ -247,8 +247,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		if (output != null && world.getTileEntity (output) instanceof TileOutput) {
 			TileOutput tile = (TileOutput) world.getTileEntity (output);
 			if (tile != null) {
-				LogHandler.info ("Tile != null == " + tile);
-				return tile.addOutput (stack);
+				return tile.addToStorage (stack);
 			}
 		}
 		return false;
@@ -267,23 +266,23 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	private void proccessOutputSettings () {
 		if (getOutputSettings () != null && getOutputSettings ().size () > 0)
 			for (IOutput output : getOutputSettings ().keySet ())
-				if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64)
-					if (addOutput (new ItemStack (Items.DIAMOND)))
+				if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64) {
+					if (addOutput (output.getItem ()))
 						for (StorageType type : output.getCost ().keySet ())
 							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-					else {
-						int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
-						for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
-							if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
-								if (addOutput (new ItemStack (Items.DIAMOND)))
-									for (StorageType type : output.getCost ().keySet ())
-										consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-							} else if (addOutput (new ItemStack (Items.DIAMOND))) {
-								amountLeftToAdd -= 64;
+				} else {
+					int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
+					for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
+						if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
+							if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
 								for (StorageType type : output.getCost ().keySet ())
 									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-							}
+						} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
+						amountLeftToAdd -= 64;
+						for (StorageType type : output.getCost ().keySet ())
+							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
 					}
+				}
 	}
 
 	@Override

@@ -195,21 +195,6 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 		return false;
 	}
 
-	public boolean addOutput (ItemStack stack) {
-		if (stack != null && stack != ItemStack.EMPTY)
-			for (int index = 0; index < getSizeInventory (); index++)
-				if (getStackInSlot (index) == ItemStack.EMPTY || getStackInSlot (index) == null) {
-					setInventorySlotContents (index,stack);
-					return true;
-				} else if (StackHelper.check (stack,getStackInSlot (index),true,false) && getStackInSlot (index).getCount () + stack.getCount () <= 64) {
-					ItemStack item = stack;
-					item.setCount (getStackInSlot (index).getCount () + stack.getCount ());
-					setInventorySlotContents (index,item);
-					return true;
-				}
-		return false;
-	}
-
 	public boolean addToStorage (ItemStack stack) {
 		IInventory tile = (IInventory) world.getTileEntity (outputLocation);
 		if (stack != null && stack != ItemStack.EMPTY)
@@ -232,7 +217,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 							tile.setInventorySlotContents (index,item);
 							ItemStack item2 = stack.copy ();
 							item2.setCount (amountLeft);
-							return addOutput (item2);
+							return addToStorage (item2);
 						}
 					}
 				}
