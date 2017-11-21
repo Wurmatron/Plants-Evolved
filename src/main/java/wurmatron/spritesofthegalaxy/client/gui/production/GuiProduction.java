@@ -53,9 +53,9 @@ public class GuiProduction extends GuiHabitatBase {
 		super.actionPerformed (butt);
 		for (int index = 0; index < outputs.size (); index++)
 			if (index <= 10)
-				if ((100 + index) == butt.id)
+				if ((100 + index) == butt.id && butt.displayString.equalsIgnoreCase ("+"))
 					proccessButton (outputs.get (index));
-				else if ((101 + index) == butt.id)
+				else if ((101 + index) == butt.id && butt.displayString.equalsIgnoreCase ("-"))
 					destroyButton (outputs.get (index));
 	}
 
@@ -78,14 +78,14 @@ public class GuiProduction extends GuiHabitatBase {
 			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
 	}
 
-		private void destroyButton (IOutput output) {
-			int nextTier = keyAmount ();
-			if (MutiBlockHelper.getOutputLevel (tile,output) - keyAmount () >= 0) {
-				for (StorageType st : output.getCost ().keySet ())
-					tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))));
-				NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,true));
-			}
+	private void destroyButton (IOutput output) {
+		int nextTier = keyAmount ();
+		if (MutiBlockHelper.getOutputLevel (tile,output) - keyAmount () >= 0) {
+			for (StorageType st : output.getCost ().keySet ())
+				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))));
+			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,true));
 		}
+	}
 
 	private void displayString (IOutput output,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
 		String str = I18n.translateToLocal (output.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getOutputLevel (tile,output));
