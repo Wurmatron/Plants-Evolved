@@ -15,6 +15,8 @@ import wurmatron.spritesofthegalaxy.api.research.ResearchType;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.ItemSpriteColony;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
+import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
+import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.structure.energy.StarStructure;
@@ -209,8 +211,13 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			if (obj[0].equals (structure))
 				return;
 		buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier + 1)});
+		NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
 		consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (this,structure),tier + 1,MutiBlockHelper.getResearchBonus (this,structure)));
 		markDirty ();
+	}
+
+	public void updateBuildQueue (List <Object[]> buildQueue) {
+		this.buildQueue = buildQueue;
 	}
 
 	public void addStructure (IStructure structure,int lvl) {
@@ -278,10 +285,10 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 								for (StorageType type : output.getCost ().keySet ())
 									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
 						} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
-						amountLeftToAdd -= 64;
-						for (StorageType type : output.getCost ().keySet ())
-							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-					}
+							amountLeftToAdd -= 64;
+							for (StorageType type : output.getCost ().keySet ())
+								consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+						}
 				}
 	}
 

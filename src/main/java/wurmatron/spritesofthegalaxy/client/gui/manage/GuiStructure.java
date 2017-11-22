@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IProduction;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
@@ -18,7 +17,6 @@ import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -55,6 +53,13 @@ public class GuiStructure extends GuiHabitatBase {
 			}
 			if (MutiBlockHelper.getStructureLevel (tile,structures.get (index)) <= 0)
 				negButt.enabled = false;
+			if (tile.getBuildQueue ().size () > 0)
+				for (Object[] queue : tile.getBuildQueue ())
+					if (queue != null && queue.length > 0 && queue[0] instanceof IStructure)
+						if (((IStructure) queue[0]).getName ().equalsIgnoreCase (structures.get (index).getName ())) {
+							negButt.enabled = false;
+							addButt.enabled = false;
+						}
 		}
 	}
 
