@@ -51,8 +51,6 @@ public class GuiStructure extends GuiHabitatBase {
 				buttonList.add (addButt);
 				buttonList.add (negButt);
 			}
-			if (MutiBlockHelper.getStructureLevel (tile,structures.get (index)) <= 0)
-				negButt.enabled = false;
 			if (tile.getBuildQueue ().size () > 0)
 				for (Object[] queue : tile.getBuildQueue ())
 					if (queue != null && queue.length > 0 && queue[0] instanceof IStructure)
@@ -60,6 +58,12 @@ public class GuiStructure extends GuiHabitatBase {
 							negButt.enabled = false;
 							addButt.enabled = false;
 						}
+			if (tile.getBuildQueue ().size () == 0) {
+				negButt.enabled = true;
+				addButt.enabled = true;
+			}
+			if (MutiBlockHelper.getStructureLevel (tile,structures.get (index)) <= 0)
+				negButt.enabled = false;
 		}
 	}
 

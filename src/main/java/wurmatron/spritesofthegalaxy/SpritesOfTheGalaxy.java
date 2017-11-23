@@ -1,6 +1,7 @@
 package wurmatron.spritesofthegalaxy;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -62,6 +63,13 @@ public class SpritesOfTheGalaxy {
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("lapis",20,StackHelper.convertToString (new ItemStack (Items.DYE,1,4))));
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("redstone",5,StackHelper.convertToString (new ItemStack (Items.REDSTONE,1,0))));
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("diamond",5000,StackHelper.convertToString (new ItemStack (Items.DIAMOND,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("emerald",50,StackHelper.convertToString (new ItemStack (Items.EMERALD,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("leather",50,StackHelper.convertToString (new ItemStack (Items.LEATHER,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("string",5000,StackHelper.convertToString (new ItemStack (Items.STRING,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("blaze",5000,StackHelper.convertToString (new ItemStack (Items.BLAZE_ROD,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("wood",5000,StackHelper.convertToString (new ItemStack (Blocks.WOOL,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("glowstone",5000,StackHelper.convertToString (new ItemStack (Items.GLOWSTONE_DUST,1,0))));
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("witherHead",5000,StackHelper.convertToString (new ItemStack (Items.SKULL,1,1))));
 	}
 
 	@Mod.EventHandler
