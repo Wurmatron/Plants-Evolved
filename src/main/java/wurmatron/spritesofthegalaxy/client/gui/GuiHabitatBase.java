@@ -36,6 +36,7 @@ public class GuiHabitatBase extends GuiScreen {
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
 		GlStateManager.pushMatrix ();
+		GlStateManager.enableBlend ();
 		mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/colonyBackground.png"));
 		drawTexturedModalRect (startWidth,startHeight,0,0,256,256);
 		GlStateManager.popMatrix ();
