@@ -74,7 +74,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getColonyValue (String nbt) {
-		return colony != ItemStack.EMPTY && colony.hasTagCompound () && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) ? colony.getTagCompound ().getInteger (nbt) : 0;
+		return colony != null && colony != ItemStack.EMPTY  && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) && colony.getTagCompound ().getInteger (nbt) != -1 ? colony.getTagCompound ().getInteger (nbt) : 0;
 	}
 
 	public void setColonyValue (String nbt,int value) {

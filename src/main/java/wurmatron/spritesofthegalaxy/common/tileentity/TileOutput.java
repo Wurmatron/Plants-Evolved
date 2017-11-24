@@ -196,31 +196,33 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	}
 
 	public boolean addToStorage (ItemStack stack) {
-		IInventory tile = (IInventory) world.getTileEntity (outputLocation);
-		if (stack != null && stack != ItemStack.EMPTY)
-			for (int index = 0; index < tile.getSizeInventory (); index++)
-				if (tile.getStackInSlot (index) == ItemStack.EMPTY) {
-					tile.setInventorySlotContents (index,stack);
-					return true;
-				} else if (StackHelper.check (stack,tile.getStackInSlot (index),true,false)) {
-					if (tile.getStackInSlot (index).getCount () + stack.getCount () <= 64) {
-						ItemStack item = stack;
-						item.setCount (tile.getStackInSlot (index).getCount () + stack.getCount ());
-						tile.setInventorySlotContents (index,item);
+		if (outputLocation != null) {
+			IInventory tile = (IInventory) world.getTileEntity (outputLocation);
+			if (stack != null && stack != ItemStack.EMPTY)
+				for (int index = 0; index < tile.getSizeInventory (); index++)
+					if (tile.getStackInSlot (index) == ItemStack.EMPTY) {
+						tile.setInventorySlotContents (index,stack);
 						return true;
-					} else {
-						int amountLeft = stack.getCount () + tile.getStackInSlot (index).getCount ();
-						if (amountLeft > 64) {
-							ItemStack item = stack.copy ();
-							item.setCount (64);
-							amountLeft -= 64;
+					} else if (StackHelper.check (stack,tile.getStackInSlot (index),true,false)) {
+						if (tile.getStackInSlot (index).getCount () + stack.getCount () <= 64) {
+							ItemStack item = stack;
+							item.setCount (tile.getStackInSlot (index).getCount () + stack.getCount ());
 							tile.setInventorySlotContents (index,item);
-							ItemStack item2 = stack.copy ();
-							item2.setCount (amountLeft);
-							return addToStorage (item2);
+							return true;
+						} else {
+							int amountLeft = stack.getCount () + tile.getStackInSlot (index).getCount ();
+							if (amountLeft > 64) {
+								ItemStack item = stack.copy ();
+								item.setCount (64);
+								amountLeft -= 64;
+								tile.setInventorySlotContents (index,item);
+								ItemStack item2 = stack.copy ();
+								item2.setCount (amountLeft);
+								return addToStorage (item2);
+							}
 						}
 					}
-				}
+		}
 		return false;
 	}
 }
