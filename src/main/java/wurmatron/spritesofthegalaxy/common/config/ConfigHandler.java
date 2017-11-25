@@ -6,10 +6,13 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class ConfigHandler {
 
@@ -34,6 +37,8 @@ public class ConfigHandler {
 		Settings.populationFoodRequirement = populationFoodRequirement.getInt ();
 		Property populationGrowth = config.get (Global.HABITAT,"populationGrowth",Defaults.populationGrowth,"Rate of population gpopulationGrowthrowth",1.01,100000);
 		Settings.populationGrowth = populationGrowth.getDouble ();
+		Property defaultStructures = config.get (Global.HABITAT,"defaultStructures",Defaults.defaultStructures,"Added to newly build habitat's along with setting a min level for each one");
+		Settings.defaultStructures = getDefaultStructures (defaultStructures.getString ());
 
 		if (!DIRECTORY.exists ())
 			DIRECTORY.mkdir ();
@@ -48,6 +53,31 @@ public class ConfigHandler {
 	public void configChanged (ConfigChangedEvent.OnConfigChangedEvent e) {
 		if (e.getModID ().equals (Global.MODID))
 			syncConfig ();
+	}
+
+	private static HashMap <IStructure, Integer> getDefaultStructures (String configLine) {
+		HashMap <IStructure, Integer> defaultStructures = new HashMap <> ();
+		if (configLine != null && configLine.length () > 0 && configLine.contains (";")) {
+			String[] lines = configLine.split (" ");
+			for (String line : lines)
+				if (line.contains (";")) {
+					IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (line.substring (0,line.indexOf (";")));
+					if (structure != null) {
+						try {
+							int lvl = Integer.valueOf (line.substring (line.indexOf (";") + 1,line.length ()));
+							if (lvl > 0)
+								defaultStructures.put (structure,lvl);
+							else
+								throw new NumberFormatException ("Number Must Be Greater Than 0");
+						} catch (NumberFormatException e) {
+							LogHandler.info ("Invalid Structure Tier '#', it must be a number and be greater than 0".replaceAll ("#",line.substring (0,line.indexOf (";"))));
+						}
+					} else
+						LogHandler.info ("Invalid Structure Name '#'".replaceAll ("#",line.substring (0,line.indexOf (";"))));
+				} else
+					LogHandler.info ("Invalid Structure Config line '#', it must follow this format \"structure;level\"".replaceAll ("#",line));
+		}
+		return defaultStructures;
 	}
 
 }

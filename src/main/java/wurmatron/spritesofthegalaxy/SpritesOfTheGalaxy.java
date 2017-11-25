@@ -45,6 +45,7 @@ public class SpritesOfTheGalaxy {
 
 	@Mod.EventHandler
 	public void onPreInit (FMLPreInitializationEvent e) {
+		StructureHelper.registerStructures ();
 		ConfigHandler.preInit (e);
 		MinecraftForge.EVENT_BUS.register (new Registry ());
 		SpriteBlocks.registerBlocks ();
@@ -75,7 +76,6 @@ public class SpritesOfTheGalaxy {
 	@Mod.EventHandler
 	public void onPostInit (FMLPostInitializationEvent e) {
 		ResearchHelper.registerResearch ();
-		StructureHelper.registerStructures ();
 	}
 
 	@Mod.EventHandler

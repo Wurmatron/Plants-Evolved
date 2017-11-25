@@ -18,10 +18,6 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
-import wurmatron.spritesofthegalaxy.common.structure.energy.EnergyStructure;
-import wurmatron.spritesofthegalaxy.common.structure.mine.MineStructure;
-import wurmatron.spritesofthegalaxy.common.structure.research.ResearchStructure;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
@@ -53,13 +49,10 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		}
 		if (lastUpdate + UPDATE_TIME <= System.currentTimeMillis ()) {
 			if (getStructures ().size () == 0 && colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
-				addStructure (new FarmStructure (),1);
-				addStructure (new MineStructure (),1);
-				addStructure (new EnergyStructure (),3);
-				addStructure (new ResearchStructure (),1);
+				for (IStructure defaultStr : Settings.defaultStructures.keySet ())
+					addStructure (defaultStr,Settings.defaultStructures.get (defaultStr));
 				setStorage (StorageType.POPULATION,1);
 				setStorage (StorageType.MINERAL,1);
-				setColonyValue (NBT.MINERALS,10000);
 			}
 			if (canPopulationGrow ())
 				growPopulation ();

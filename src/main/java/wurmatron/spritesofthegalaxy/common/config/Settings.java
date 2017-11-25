@@ -1,5 +1,9 @@
 package wurmatron.spritesofthegalaxy.common.config;
 
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+
+import java.util.HashMap;
+
 public class Settings {
 
 	// General
@@ -10,4 +14,5 @@ public class Settings {
 	public static int startPopulation;
 	public static int populationFoodRequirement;
 	public static double populationGrowth;
+	public static HashMap<IStructure, Integer> defaultStructures;
 }
