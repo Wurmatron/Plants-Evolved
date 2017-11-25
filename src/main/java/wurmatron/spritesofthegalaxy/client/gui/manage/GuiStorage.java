@@ -77,7 +77,7 @@ public class GuiStorage extends GuiHabitatBase {
 	}
 
 	private void displayString (StorageType type,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
-		String str = I18n.translateToLocal (type.getDisplayKey ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getStorageLevel (tile,type));
+		String str = I18n.translateToLocal ("gui." + type.getDisplayKey () + ".name") + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getStorageLevel (tile,type));
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 12,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();

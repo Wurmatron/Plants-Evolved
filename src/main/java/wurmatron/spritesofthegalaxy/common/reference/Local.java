@@ -38,4 +38,5 @@ public class Local {
 	public static final String COST_RESEARCH = "gui.costPoints.name";
 	public static final String GIVE_RESEARCH = "gui.givePoints.name";
 	public static final String NEED_POINTS = "gui.needPoints.name";
+	public static final String MIN_LEVEL_REQ = "gui.minimumLevelRequired.name";
 }

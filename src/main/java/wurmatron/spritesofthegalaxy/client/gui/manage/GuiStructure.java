@@ -10,6 +10,7 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StructureType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
+import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
@@ -96,10 +97,16 @@ public class GuiStructure extends GuiHabitatBase {
 	}
 
 	private void destroyButton (IStructure structure) {
-		int nextTier = keyAmount ();
-		if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0) {
-			tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
-			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
+		int nextTier =  keyAmount ();
+		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && nextTier >= Settings.defaultStructures.get (structure)) {
+			if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0) {
+				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
+				NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
+			}
+		} else {
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));
+			text.getStyle ().setColor (TextFormatting.RED);
+			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		}
 	}
 

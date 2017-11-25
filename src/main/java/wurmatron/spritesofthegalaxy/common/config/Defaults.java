@@ -10,5 +10,5 @@ public class Defaults {
 	public static final int maxPopulation = 1;
 	public static final int foodRequirement = 1;
 	public static final double populationGrowth = 1.1;
-	public static final String defaultStructures = "farm;1 mine;1 research;1 fuel;3";
+	public static final String defaultStructures = "farm;1 mine;1 research;1 fuel;4";
 }

@@ -45,6 +45,11 @@ gui.costPoints.name=Costs 'POINTS' Research Points
 gui.givePoints.name=Gives 'POINTS' Research Points
 gui.needPoints.name=Need 'POINTS' More Research Points!.
 gui.energy.name=Energy
+gui.minimumLevelRequired.name=You Cannot Scrap Any Further (Minimum Level Reached)
+gui.maxPopulation.name=Population
+gui.maxMinerals.name=Minerals
+gui.maxMagic.name=Magic
+gui.maxGem.name=Gem
 
 # Item
 item.spriteColony.name=Sprite Colony
