@@ -99,9 +99,13 @@ public class GuiStructure extends GuiHabitatBase {
 	private void destroyButton (IStructure structure) {
 		int nextTier =  keyAmount ();
 		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && nextTier >= Settings.defaultStructures.get (structure)) {
-			if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0) {
+			if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0 && MutiBlockHelper.getMinimumLevel (structure) <= MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
 				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
 				NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
+			} else if(MutiBlockHelper.getMinimumLevel (structure) > MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
+				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));
+				text.getStyle ().setColor (TextFormatting.RED);
+				mc.ingameGUI.getChatGUI ().printChatMessage (text);
 			}
 		} else {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));

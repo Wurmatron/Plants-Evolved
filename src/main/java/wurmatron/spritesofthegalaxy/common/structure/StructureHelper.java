@@ -6,6 +6,7 @@ import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.GreenhouseStructure;
 import wurmatron.spritesofthegalaxy.common.structure.energy.*;
 import wurmatron.spritesofthegalaxy.common.structure.mine.MineStructure;
+import wurmatron.spritesofthegalaxy.common.structure.mob.ZombieStructure;
 import wurmatron.spritesofthegalaxy.common.structure.research.ResearchStructure;
 
 public class StructureHelper {
@@ -31,6 +32,9 @@ public class StructureHelper {
 	// Research
 	public static final IStructure researchStructure = new ResearchStructure ();
 
+	// Mob
+	public static final IStructure zombieStructure = new ZombieStructure ();
+
 	public static void registerStructures () {
 		SpritesOfTheGalaxyAPI.register (farmStructure);
 		SpritesOfTheGalaxyAPI.register (mineStructure);
@@ -45,5 +49,6 @@ public class StructureHelper {
 		SpritesOfTheGalaxyAPI.register (fusionStructure);
 		SpritesOfTheGalaxyAPI.register (extraDimStructure);
 		SpritesOfTheGalaxyAPI.register (researchStructure);
+		SpritesOfTheGalaxyAPI.register (zombieStructure);
 	}
 }

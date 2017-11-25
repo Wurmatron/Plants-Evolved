@@ -14,6 +14,8 @@ stat.lineage.name=Lineage
 stat.size.name=Size
 stat.minerals.name=Minerals
 stat.energy.name=Energy
+stat.gem.name=Gems
+stat.magic.name=Magic
 
 # Gui
 gui.agriculture.name=Agriculture
@@ -50,6 +52,7 @@ gui.maxPopulation.name=Population
 gui.maxMinerals.name=Minerals
 gui.maxMagic.name=Magic
 gui.maxGem.name=Gem
+gui.queue.name=Queue
 
 # Item
 item.spriteColony.name=Sprite Colony

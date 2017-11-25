@@ -9,6 +9,8 @@ public class Local {
 	public static final String SIZE = "stat.size.name";
 	public static final String MINERALS = "stat.minerals.name";
 	public static final String ENERGY = "stat.energy.name";
+	public static final String GEM = "stat.gem.name";
+	public static final String MAGIC = "stat.magic.name";
 	// Gui
 	public static final String INCOME = "gui.income.name";
 	public static final String STATS = "gui.stats.name";
@@ -39,4 +41,5 @@ public class Local {
 	public static final String GIVE_RESEARCH = "gui.givePoints.name";
 	public static final String NEED_POINTS = "gui.needPoints.name";
 	public static final String MIN_LEVEL_REQ = "gui.minimumLevelRequired.name";
+	public static final String QUEUE = "gui.queue.name";
 }

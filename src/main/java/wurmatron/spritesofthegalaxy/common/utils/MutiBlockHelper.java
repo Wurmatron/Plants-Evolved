@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
+import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
@@ -209,5 +210,14 @@ public class MutiBlockHelper {
 				if (tile.getStorage ().get (type) != 0)
 					tile.setColonyValue (type.getDisplayKey (),(int) (tile.getStorage ().get (type) * type.getScale ()));
 		}
+	}
+
+	public static int getMinimumLevel (IStructure structure) {
+		if (structure != null) {
+			for (IStructure minStr : Settings.defaultStructures.keySet ())
+				if (structure.getName ().equalsIgnoreCase (minStr.getName ()))
+					return Settings.defaultStructures.get (minStr);
+		}
+		return 0;
 	}
 }

@@ -3,6 +3,8 @@ package wurmatron.spritesofthegalaxy.client.gui.overview;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
@@ -33,6 +35,34 @@ public class GuiOverview extends GuiHabitatBase {
 		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getColonyValue (NBT.FOOD) - tile.getPopulationFoodUsage ()),startWidth + 140,startHeight + 46,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MINERALS)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MINERALS)),startWidth + 140,startHeight + 54,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum ((tile.getColonyValue (NBT.ENERGY) - tile.getPowerUsage ())),startWidth + 140,startHeight + 62,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.GEM) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.GEM)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_GEM)),startWidth + 140,startHeight + 70,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.MAGIC) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAGIC)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MAGIC)),startWidth + 140,startHeight + 78,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.QUEUE),startWidth + 15,startHeight + 82,Color.white.getRGB ());
+		if (tile.getBuildQueue ().size () > 0)
+			for (int index = 0; index < tile.getBuildQueue ().size (); index++)
+				if (index <= 8) {
+					GlStateManager.pushMatrix ();
+					mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
+					drawTexturedModalRect (startWidth + 11,startHeight + 106 + (index * 17),0,0,110,15);
+					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " +  tile.getBuildQueue ().get (index)[1]+ " | " + tile.getBuildQueue ().get (index)[2] ,startWidth + 15,startHeight + 109 + (index * 17),Color.white.getRGB ());
+					GlStateManager.popMatrix ();
+				} else {
+
+				}
+
+		//			for(int index = 0; index < 8; index++ ) {
+		//				GlStateManager.pushMatrix ();
+		//				mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
+		//				drawTexturedModalRect (startWidth + 11,startHeight + 106 + (index * 17),0,0,110,15);
+		//				GlStateManager.popMatrix ();
+		//			}
+		//			for(int index = 0; index < 8; index++ ) {
+		//				GlStateManager.pushMatrix ();
+		//				mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
+		//				drawTexturedModalRect (startWidth + 135,startHeight + 106 + (index * 17),0,0,110,15);
+		//				GlStateManager.popMatrix ();
+		//			}
+		//		}
 	}
 
 	@Override
@@ -48,6 +78,14 @@ public class GuiOverview extends GuiHabitatBase {
 	@Override
 	public boolean doesGuiPauseGame () {
 		return false;
+	}
+
+	private String getDisplayName (Object obj) {
+		if (obj instanceof IStructure)
+			return ((IStructure) obj).getName ().substring (0,1).toUpperCase () + ((IStructure) obj).getName ().substring (1,((IStructure) obj).getName ().length ());
+		else if (obj instanceof IResearch)
+			return ((IResearch) obj).getName ();
+		return "Unknown";
 	}
 
 }

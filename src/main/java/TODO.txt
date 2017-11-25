@@ -4,4 +4,5 @@
 - Info Tab
 - Overview Tab
 - Production Display
-- #Default Structure / Locked Default
+- Limited Build Queue
+- Cancel Queue
