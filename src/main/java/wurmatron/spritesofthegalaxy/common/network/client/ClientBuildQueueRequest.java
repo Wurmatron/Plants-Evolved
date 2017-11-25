@@ -25,7 +25,7 @@ public class ClientBuildQueueRequest extends CustomMessage.CustomtServerMessage 
 
 	@Override
 	protected void read (PacketBuffer buff) throws IOException {
-		core =  buff.readBlockPos ();
+		core = buff.readBlockPos ();
 	}
 
 	@Override

@@ -198,7 +198,7 @@ public class MutiBlockHelper {
 	}
 
 	public static String getType (StorageType type) {
-		if(type.equals (NBT.MAX_MINERALS))
+		if (type.getDisplayKey ().equalsIgnoreCase (NBT.MAX_MINERALS))
 			return NBT.MINERALS;
 		return type.getDisplayKey ();
 	}

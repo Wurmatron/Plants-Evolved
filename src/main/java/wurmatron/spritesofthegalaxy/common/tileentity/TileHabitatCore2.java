@@ -19,8 +19,9 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.structure.agriculture.FarmStructure;
-import wurmatron.spritesofthegalaxy.common.structure.energy.StarStructure;
+import wurmatron.spritesofthegalaxy.common.structure.energy.EnergyStructure;
 import wurmatron.spritesofthegalaxy.common.structure.mine.MineStructure;
+import wurmatron.spritesofthegalaxy.common.structure.research.ResearchStructure;
 import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
@@ -54,7 +55,8 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			if (getStructures ().size () == 0 && colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
 				addStructure (new FarmStructure (),1);
 				addStructure (new MineStructure (),1);
-				addStructure (new StarStructure (),5);
+				addStructure (new EnergyStructure (),3);
+				addStructure (new ResearchStructure (),1);
 				setStorage (StorageType.POPULATION,1);
 				setStorage (StorageType.MINERAL,1);
 				setColonyValue (NBT.MINERALS,10000);
@@ -74,7 +76,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getColonyValue (String nbt) {
-		return colony != null && colony != ItemStack.EMPTY  && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) && colony.getTagCompound ().getInteger (nbt) != -1 ? colony.getTagCompound ().getInteger (nbt) : 0;
+		return colony != null && colony != ItemStack.EMPTY && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) && colony.getTagCompound ().getInteger (nbt) != -1 ? colony.getTagCompound ().getInteger (nbt) : 0;
 	}
 
 	public void setColonyValue (String nbt,int value) {
@@ -273,23 +275,24 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	private void proccessOutputSettings () {
 		if (getOutputSettings () != null && getOutputSettings ().size () > 0)
 			for (IOutput output : getOutputSettings ().keySet ())
-				if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64) {
-					if (addOutput (output.getItem ()))
-						for (StorageType type : output.getCost ().keySet ())
-							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-				} else {
-					int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
-					for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
-						if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
-							if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
-								for (StorageType type : output.getCost ().keySet ())
-									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-						} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
-							amountLeftToAdd -= 64;
+				if (canOutput (output.getCost ()))
+					if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64) {
+						if (addOutput (output.getItem ()))
 							for (StorageType type : output.getCost ().keySet ())
 								consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-						}
-				}
+					} else {
+						int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
+						for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
+							if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
+								if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
+									for (StorageType type : output.getCost ().keySet ())
+										consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+							} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
+								amountLeftToAdd -= 64;
+								for (StorageType type : output.getCost ().keySet ())
+									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+							}
+					}
 	}
 
 	@Override
@@ -379,5 +382,12 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 						return true;
 					}
 		return false;
+	}
+
+	private boolean canOutput (HashMap <StorageType, Integer> outputCost) {
+		for (StorageType type : outputCost.keySet ())
+			if (!(getColonyValue (MutiBlockHelper.getType (type)) >= outputCost.get (type)))
+				return false;
+		return true;
 	}
 }

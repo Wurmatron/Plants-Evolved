@@ -1,28 +1,7 @@
- - Rework most of the code :p
-
- - Blocks
-    - All Block Textures
-    - Max Pop
-    - Max Food
-    - Mineral (Silo)
-    - Amplifyer
-    - Research Helper / Speed
- - Items
-    - Colony Item
-    - Info Wand (NonGui Info)
-
- - Colony Item Output
-    - Species
-    - Types of Outputs
-    - Possible Json Based Species System
-
- - Mod Support
-    - Energy Blocks
-    - Fluid Blocks
-
- - Gui
-    - Finish All The Gui's
-
- - Tile
-    - Improve MutiBlock System
-  - Input Converts Items into Minerals 1/5
+- Build Queue Display
+- Income Tab
+- Stats Tab
+- Info Tab
+- Overview Tab
+- Production Display
+- Default Structure / Locked Default
