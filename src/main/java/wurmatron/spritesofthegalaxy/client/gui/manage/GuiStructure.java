@@ -82,11 +82,15 @@ public class GuiStructure extends GuiHabitatBase {
 	private void proccessButton (IStructure structure) {
 		int currentTier = MutiBlockHelper.getStructureLevel (tile,structure);
 		int nextTier = currentTier + keyAmount ();
-		if (MutiBlockHelper.canBuildStructure (tile,structure,currentTier,nextTier)) {
+		if (tile.getColonyValue (NBT.BUILD_QUEUE) > tile.getBuildQueue ().size () && MutiBlockHelper.canBuildStructure (tile,structure,currentTier,nextTier)) {
 			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
 		} else if (!MutiBlockHelper.hasRequiredResearch (tile,structure)) {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MISSING_RESEARCH).replaceAll ("'Research'",TextFormatting.GOLD + DisplayHelper.formatNeededResearch (ResearchHelper.getNeededResearch (tile.getResearch (),structure))));
+			text.getStyle ().setColor (TextFormatting.RED);
+			mc.ingameGUI.getChatGUI ().printChatMessage (text);
+		} else if (tile.getColonyValue (NBT.BUILD_QUEUE) <= tile.getBuildQueue ().size ()) {
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.BUILDQUEUE_FULL));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		} else {
@@ -97,12 +101,12 @@ public class GuiStructure extends GuiHabitatBase {
 	}
 
 	private void destroyButton (IStructure structure) {
-		int nextTier =  keyAmount ();
+		int nextTier = keyAmount ();
 		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && nextTier >= Settings.defaultStructures.get (structure)) {
 			if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0 && MutiBlockHelper.getMinimumLevel (structure) <= MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
 				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
 				NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
-			} else if(MutiBlockHelper.getMinimumLevel (structure) > MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
+			} else if (MutiBlockHelper.getMinimumLevel (structure) > MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
 				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));
 				text.getStyle ().setColor (TextFormatting.RED);
 				mc.ingameGUI.getChatGUI ().printChatMessage (text);

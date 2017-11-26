@@ -53,6 +53,8 @@ gui.maxMinerals.name=Minerals
 gui.maxMagic.name=Magic
 gui.maxGem.name=Gem
 gui.queue.name=Queue
+gui.buildQueueFull.name=The Build Queue Is Full Try Upgrading Its Storage in the Storage Tab!
+gui.buildQueue.name=Build Queue
 
 # Item
 item.spriteColony.name=Sprite Colony

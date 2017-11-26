@@ -4,5 +4,5 @@
 - Info Tab
 - Overview Tab
 - Production Display
-- Limited Build Queue
 - Cancel Queue
+- Population Usage

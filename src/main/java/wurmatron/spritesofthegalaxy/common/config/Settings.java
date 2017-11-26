@@ -14,5 +14,5 @@ public class Settings {
 	public static int startPopulation;
 	public static int populationFoodRequirement;
 	public static double populationGrowth;
-	public static HashMap<IStructure, Integer> defaultStructures;
+	public static HashMap <IStructure, Integer> defaultStructures;
 }

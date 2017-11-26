@@ -17,7 +17,6 @@ import java.awt.*;
 
 public class GuiOverview extends GuiHabitatBase {
 
-
 	public GuiOverview (TileHabitatCore2 tile) {
 		super (tile);
 	}
@@ -37,32 +36,22 @@ public class GuiOverview extends GuiHabitatBase {
 		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum ((tile.getColonyValue (NBT.ENERGY) - tile.getPowerUsage ())),startWidth + 140,startHeight + 62,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.GEM) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.GEM)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_GEM)),startWidth + 140,startHeight + 70,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.MAGIC) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAGIC)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MAGIC)),startWidth + 140,startHeight + 78,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.QUEUE),startWidth + 15,startHeight + 82,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.QUEUE) + " " + DisplayHelper.formatNum (tile.getBuildQueue ().size ()) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.BUILD_QUEUE)),startWidth + 15,startHeight + 71,Color.white.getRGB ());
 		if (tile.getBuildQueue ().size () > 0)
 			for (int index = 0; index < tile.getBuildQueue ().size (); index++)
-				if (index <= 8) {
+				if (index <= 9) {
 					GlStateManager.pushMatrix ();
 					mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
-					drawTexturedModalRect (startWidth + 11,startHeight + 106 + (index * 17),0,0,110,15);
-					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " +  tile.getBuildQueue ().get (index)[1]+ " | " + tile.getBuildQueue ().get (index)[2] ,startWidth + 15,startHeight + 109 + (index * 17),Color.white.getRGB ());
+					drawTexturedModalRect (startWidth + 11,startHeight + 89 + (index * 17),0,0,110,15);
+					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 92 + (index * 17),Color.white.getRGB ());
 					GlStateManager.popMatrix ();
-				} else {
-
+				} else if (index <= 17) {
+					GlStateManager.pushMatrix ();
+					mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
+					drawTexturedModalRect (startWidth + 135,startHeight + 106 + (index * 17),0,0,110,15);
+					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 139 + (index * 17),Color.white.getRGB ());
+					GlStateManager.popMatrix ();
 				}
-
-		//			for(int index = 0; index < 8; index++ ) {
-		//				GlStateManager.pushMatrix ();
-		//				mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
-		//				drawTexturedModalRect (startWidth + 11,startHeight + 106 + (index * 17),0,0,110,15);
-		//				GlStateManager.popMatrix ();
-		//			}
-		//			for(int index = 0; index < 8; index++ ) {
-		//				GlStateManager.pushMatrix ();
-		//				mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
-		//				drawTexturedModalRect (startWidth + 135,startHeight + 106 + (index * 17),0,0,110,15);
-		//				GlStateManager.popMatrix ();
-		//			}
-		//		}
 	}
 
 	@Override

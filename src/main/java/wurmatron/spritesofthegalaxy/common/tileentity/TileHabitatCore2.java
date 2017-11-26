@@ -18,7 +18,6 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -53,6 +52,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 					addStructure (defaultStr,Settings.defaultStructures.get (defaultStr));
 				setStorage (StorageType.POPULATION,1);
 				setStorage (StorageType.MINERAL,1);
+				setStorage (StorageType.BUILD_QUEUE,1);
 			}
 			if (canPopulationGrow ())
 				growPopulation ();
@@ -205,10 +205,12 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		for (Object[] obj : buildQueue)
 			if (obj[0].equals (structure))
 				return;
-		buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier + 1)});
-		NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
-		consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (this,structure),tier + 1,MutiBlockHelper.getResearchBonus (this,structure)));
-		markDirty ();
+		if (getColonyValue (NBT.BUILD_QUEUE) > buildQueue.size ()) {
+			buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier + 1)});
+			NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
+			consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (this,structure),tier + 1,MutiBlockHelper.getResearchBonus (this,structure)));
+			markDirty ();
+		}
 	}
 
 	public void updateBuildQueue (List <Object[]> buildQueue) {
@@ -229,7 +231,6 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 
 	private void proccessBuildQueue () {
 		if (buildQueue.size () > 0) {
-			LogHandler.info ("Building");
 			if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) > 0)
 				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],((int) buildQueue.get (0)[2]) - getProcessingSpeed ()});
 			else if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) <= 0)

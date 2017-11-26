@@ -29,6 +29,7 @@ public class NBT {
 	public static final String TIME = "time";
 	public static final String MAX_MAGIC = "maxMagic";
 	public static final String MAX_GEM = "maxGem";
+	public static final String BUILD_QUEUE = "buildQueue";
 
 	// Item
 	public static final String LINEAGE = "lineage";
@@ -36,4 +37,5 @@ public class NBT {
 	public static final String RESEARCH = "research";
 	public static final String NAME = "name";
 	public static final String LEVEL = "level";
+
 }

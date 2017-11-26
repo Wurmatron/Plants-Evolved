@@ -39,8 +39,8 @@ public class GuiStorage extends GuiHabitatBase {
 		super.initGui ();
 		for (int index = 0; index < StorageType.values ().length; index++)
 			if (index <= 10) {
-				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
-				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,1,"-"));
+				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 4,(startHeight + 29) + (16 * index),12,12,1,"-"));
+				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
 			}
 	}
 
@@ -49,9 +49,9 @@ public class GuiStorage extends GuiHabitatBase {
 		super.actionPerformed (butt);
 		for (int index = 0; index < StorageType.values ().length; index++)
 			if (index <= 10)
-				if ((100 + index) == butt.id)
+				if ((101 + index) == butt.id && butt.displayString.equalsIgnoreCase ("+"))
 					proccessButton (StorageType.values ()[index]);
-				else if ((101 + index) == butt.id)
+				else if ((100 + index) == butt.id && butt.displayString.equalsIgnoreCase ("-"))
 					destroyButton (StorageType.values ()[index]);
 	}
 
@@ -81,12 +81,12 @@ public class GuiStorage extends GuiHabitatBase {
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 12,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),MutiBlockHelper.getStorageLevel (tile,type) + keyAmount (),0)))));
+			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),MutiBlockHelper.getStorageLevel (tile,type) + keyAmount (),0)))));
 			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
 		}
 		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 12,startHeight + buttY2 + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type) - keyAmount (),MutiBlockHelper.getStorageLevel (tile,type),0)))));
+			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type) - keyAmount (),MutiBlockHelper.getStorageLevel (tile,type),0)))));
 			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}
