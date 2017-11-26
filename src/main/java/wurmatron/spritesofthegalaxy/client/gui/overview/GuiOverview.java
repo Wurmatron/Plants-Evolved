@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.client.gui.overview;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -7,6 +8,9 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
+import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
+import wurmatron.spritesofthegalaxy.common.network.client.CancelQueueRequest;
+import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
@@ -14,8 +18,14 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GuiOverview extends GuiHabitatBase {
+
+	private HashMap <IStructure, Integer> cancelButtons = new HashMap <> ();
 
 	public GuiOverview (TileHabitatCore2 tile) {
 		super (tile);
@@ -37,6 +47,13 @@ public class GuiOverview extends GuiHabitatBase {
 		drawString (fontRenderer,I18n.translateToLocal (Local.GEM) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.GEM)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_GEM)),startWidth + 140,startHeight + 70,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.MAGIC) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAGIC)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MAGIC)),startWidth + 140,startHeight + 78,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.QUEUE) + " " + DisplayHelper.formatNum (tile.getBuildQueue ().size ()) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.BUILD_QUEUE)),startWidth + 15,startHeight + 71,Color.white.getRGB ());
+		if (buttonList.size () > 3) {
+			List <GuiButton> temp = new ArrayList <> ();
+			for (GuiButton button : buttonList)
+				if (button.id >= 100)
+					temp.add (button);
+			buttonList.removeAll (temp);
+		}
 		if (tile.getBuildQueue ().size () > 0)
 			for (int index = 0; index < tile.getBuildQueue ().size (); index++)
 				if (index <= 9) {
@@ -45,6 +62,9 @@ public class GuiOverview extends GuiHabitatBase {
 					drawTexturedModalRect (startWidth + 11,startHeight + 89 + (index * 17),0,0,110,15);
 					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 92 + (index * 17),Color.white.getRGB ());
 					GlStateManager.popMatrix ();
+					int id = cancelButtons.size () + 100;
+					buttonList.add (new GuiTexturedButton (id,startWidth + 123,startHeight + 90 + (index * 17),15,15,1,"X"));
+					cancelButtons.put ((IStructure) tile.getBuildQueue ().get (index)[0],id);
 				} else if (index <= 17) {
 					GlStateManager.pushMatrix ();
 					mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
@@ -77,4 +97,15 @@ public class GuiOverview extends GuiHabitatBase {
 		return "Unknown";
 	}
 
+	@Override
+	protected void actionPerformed (GuiButton butt) throws IOException {
+		super.actionPerformed (butt);
+		if (butt.id >= 100) {
+			for (IStructure structure : cancelButtons.keySet ())
+				if (cancelButtons.get (structure) == butt.id) {
+					NetworkHandler.sendToServer (new CancelQueueRequest (tile.getPos (),structure));
+					NetworkHandler.sendToServer (new ClientBuildQueueRequest (tile.getPos ()));
+				}
+		}
+	}
 }

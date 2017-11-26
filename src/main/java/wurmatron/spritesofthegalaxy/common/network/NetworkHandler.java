@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import wurmatron.spritesofthegalaxy.common.network.client.CancelQueueRequest;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.network.server.*;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
@@ -25,6 +26,7 @@ public class NetworkHandler {
 		registerMessage (OutputMessage.class);
 		registerMessage (BuildQueueUpdateMessage.class);
 		registerMessage (ClientBuildQueueRequest.class);
+		registerMessage (CancelQueueRequest.class);
 	}
 
 	private static final <T extends CustomMessage <T> & IMessageHandler <T, IMessage>> void registerMessage (Class <T> clazz) {

@@ -361,6 +361,19 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		return buildQueue;
 	}
 
+	public void removeFromBuildQueue (IStructure structure) {
+		if (buildQueue.size () > 0) {
+			Object[] markForRemoval = new Object[0];
+			for (Object[] bq : buildQueue)
+				if (((IStructure) bq[0]).getName ().equalsIgnoreCase (structure.getName ()))
+					markForRemoval = bq;
+			if (markForRemoval.length > 0) {
+				addColonyValue (NBT.MINERALS, NBT.MAX_MINERALS, MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]), getStructures ().get (((IStructure) markForRemoval[0])), ((int) markForRemoval[1]),0));
+				buildQueue.remove (markForRemoval);
+			}
+		}
+	}
+
 	public boolean importStack (ItemStack stack) {
 		if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 0)
 			if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
