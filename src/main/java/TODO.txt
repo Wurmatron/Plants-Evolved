@@ -1,8 +1,6 @@
-- Build Queue Display
 - Income Tab
 - Stats Tab
 - Info Tab
 - Overview Tab
 - Production Display
-- Cancel Queue
 - Population Usage

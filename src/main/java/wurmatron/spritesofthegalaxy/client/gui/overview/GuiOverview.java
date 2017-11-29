@@ -63,7 +63,7 @@ public class GuiOverview extends GuiHabitatBase {
 					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 92 + (index * 17),Color.white.getRGB ());
 					GlStateManager.popMatrix ();
 					int id = cancelButtons.size () + 100;
-					buttonList.add (new GuiTexturedButton (id,startWidth + 123,startHeight + 90 + (index * 17),15,15,1,"X"));
+					buttonList.add (new GuiTexturedButton (id,startWidth + 121,startHeight + 90 + (index * 17),15,15,3,"X"));
 					cancelButtons.put ((IStructure) tile.getBuildQueue ().get (index)[0],id);
 				} else if (index <= 17) {
 					GlStateManager.pushMatrix ();
