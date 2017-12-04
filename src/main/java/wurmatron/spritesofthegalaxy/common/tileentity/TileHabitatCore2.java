@@ -18,6 +18,7 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -69,7 +70,13 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getColonyValue (String nbt) {
+		if (nbt.equalsIgnoreCase (NBT.POPULATION))
+			return (int) getColonyValue (nbt,null);
 		return colony != null && colony != ItemStack.EMPTY && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) && colony.getTagCompound ().getInteger (nbt) != -1 ? colony.getTagCompound ().getInteger (nbt) : 0;
+	}
+
+	public double getColonyValue (String nbt,Void empty) {
+		return colony != null && colony != ItemStack.EMPTY && colony.getTagCompound () != null && colony.getTagCompound ().hasKey (nbt) && colony.getTagCompound ().getDouble (nbt) != -1 ? colony.getTagCompound ().getDouble (nbt) : 0;
 	}
 
 	public void setColonyValue (String nbt,int value) {
@@ -77,6 +84,17 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			NBTTagCompound nbtData = colony.getTagCompound ();
 			if (nbtData != null && !nbtData.hasNoTags ()) {
 				nbtData.setInteger (nbt,value > 0 ? value : 0);
+				colony.setTagCompound (nbtData);
+				setColony (colony);
+			}
+		}
+	}
+
+	public void setColonyValue (String nbt,double value) {
+		if (colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
+			NBTTagCompound nbtData = colony.getTagCompound ();
+			if (nbtData != null && !nbtData.hasNoTags ()) {
+				nbtData.setDouble (nbt,value > 0 ? value : 0);
 				colony.setTagCompound (nbtData);
 				setColony (colony);
 			}
@@ -109,18 +127,18 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getPopulationFoodUsage () {
-		return getColonyValue (NBT.POPULATION) * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1);
+		return (int) (getColonyValue (NBT.POPULATION, null) * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1));
 	}
 
 	public boolean canPopulationGrow () {
-		return getColonyValue (NBT.MAX_POPULATION) >= getPopulationFoodUsage ();
+		return ((int)getColonyValue (NBT.POPULATION, null)) < getColonyValue (NBT.MAX_POPULATION) && (getColonyValue (NBT.FOOD) - getPopulationFoodUsage ()) > 0;
 	}
 
 	private void growPopulation () {
-		if (canPopulationGrow () && getColonyValue (NBT.POPULATION) < getColonyValue (NBT.MAX_POPULATION))
-			setColonyValue (NBT.POPULATION,(int) (getColonyValue (NBT.POPULATION) * Settings.populationGrowth));
+		if (canPopulationGrow () && getColonyValue (NBT.POPULATION,null) < getColonyValue (NBT.MAX_POPULATION))
+			setColonyValue (NBT.POPULATION,(getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
 		else if (getPopulationFoodUsage () > getColonyValue (NBT.FOOD) + (int) (getColonyValue (NBT.FOOD) * starvationPercentage))
-			setColonyValue (NBT.POPULATION,(int) (getColonyValue (NBT.POPULATION) - (getColonyValue (NBT.POPULATION) * Settings.populationGrowth)));
+			setColonyValue (NBT.POPULATION,(getColonyValue (NBT.POPULATION,null) - (getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
 	}
 
 	public HashMap <IStructure, Integer> getStructures () {
@@ -368,7 +386,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 				if (((IStructure) bq[0]).getName ().equalsIgnoreCase (structure.getName ()))
 					markForRemoval = bq;
 			if (markForRemoval.length > 0) {
-				addColonyValue (NBT.MINERALS, NBT.MAX_MINERALS, MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]), getStructures ().get (((IStructure) markForRemoval[0])), ((int) markForRemoval[1]),0));
+				addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]),getStructures ().get (((IStructure) markForRemoval[0])),((int) markForRemoval[1]),0));
 				buildQueue.remove (markForRemoval);
 			}
 		}
