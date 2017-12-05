@@ -15,6 +15,11 @@ import javax.annotation.Nullable;
 
 public class CoreBlock extends BlockMutiBlock {
 
+	public CoreBlock () {
+		super();
+		setUnlocalizedName ("habitat");
+	}
+
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {

@@ -2,7 +2,7 @@
 itemGroup.tabSprites=Sprites Of The Galaxy
 
 # Block
-tile.core.name=Habitat Core
+tile.habitat.name=Habitat Core
 tile.casing.name=Habitat Casing
 tile.output.name=Habitat Output
 tile.input.name=Habitat Input
@@ -55,6 +55,7 @@ gui.maxGem.name=Gem
 gui.queue.name=Queue
 gui.buildQueueFull.name=The Build Queue Is Full Try Upgrading Its Storage in the Storage Tab!
 gui.buildQueue.name=Build Queue
+gui.populationCost.name=Costs 'POPULATION' Population
 
 # Item
 item.spriteColony.name=Sprite Colony

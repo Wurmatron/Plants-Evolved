@@ -16,10 +16,10 @@ public class SpriteBlocks {
 	public static Block habitatInput;
 
 	public static void registerBlocks () {
-		register (habitatController = new CoreBlock ().setUnlocalizedName ("core"));
-		register (habitatCasing = new BlockMutiBlock ().setUnlocalizedName ("casing"));
-		register (habitatOutput = new BlockOutput ().setUnlocalizedName ("output"));
-		register (habitatInput = new BlockInput ().setUnlocalizedName ("input"));
+		register (habitatController = new CoreBlock ());
+		register (habitatCasing = new BlockCasing ());
+		register (habitatOutput = new BlockOutput ());
+		register (habitatInput = new BlockInput ());
 	}
 
 	public static void registerTiles () {

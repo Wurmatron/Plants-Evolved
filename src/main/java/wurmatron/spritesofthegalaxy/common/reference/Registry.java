@@ -21,14 +21,15 @@ public class Registry {
 
 	public static void registerItem (Item item,String registryName) {
 		item.setRegistryName (registryName);
-		item.setUnlocalizedName (item.getRegistryName ().toString ());
+		item.setUnlocalizedName (registryName);
 		items.add (item);
 	}
 
 	public static void registerBlock (Block block,String registryName) {
 		block.setRegistryName (registryName);
-		block.setUnlocalizedName (block.getRegistryName ().toString ());
+		block.setUnlocalizedName (registryName);
 		ItemBlock itemBlock = new ItemBlock (block);
+		itemBlock.setUnlocalizedName (registryName);
 		itemBlock.setRegistryName (registryName);
 		blocks.add (block);
 		blockItems.put (block,itemBlock);

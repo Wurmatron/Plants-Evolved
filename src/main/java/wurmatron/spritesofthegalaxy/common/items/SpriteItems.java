@@ -14,6 +14,6 @@ public class SpriteItems {
 	}
 
 	public static void register (Item item) {
-		Registry.registerItem (item,item.getUnlocalizedName ());
+		Registry.registerItem (item,item.getUnlocalizedName ().substring (5));
 	}
 }
