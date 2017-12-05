@@ -42,7 +42,7 @@ public class FarmStructure implements IStructure, IProduction {
 
 	@Override
 	public void addProduction (TileHabitatCore2 core,int structureTier) {
-		core.addColonyValue (NBT.FOOD,structureTier * Settings.populationFoodRequirement);
+		core.addColonyValue (NBT.FOOD,structureTier * 4 * Settings.populationFoodRequirement);
 	}
 
 	@Override
@@ -68,5 +68,10 @@ public class FarmStructure implements IStructure, IProduction {
 	@Override
 	public int getBuildTime (int tier) {
 		return 10 * tier;
+	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 1;
 	}
 }

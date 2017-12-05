@@ -68,4 +68,9 @@ public class MineStructure implements IStructure, IProduction, ITickStructure {
 	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 4;
+	}
 }

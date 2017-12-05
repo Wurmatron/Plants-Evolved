@@ -23,4 +23,6 @@ public interface IStructure {
 
 	int getBuildTime (int tier);
 
+	double getPopulationRequirment();
+
 }

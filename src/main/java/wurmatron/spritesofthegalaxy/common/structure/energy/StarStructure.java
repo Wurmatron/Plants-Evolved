@@ -66,4 +66,9 @@ public class StarStructure implements IStructure, IProduction, IEnergy {
 	public int getBuildTime (int tier) {
 		return 100 * tier;
 	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 1;
+	}
 }

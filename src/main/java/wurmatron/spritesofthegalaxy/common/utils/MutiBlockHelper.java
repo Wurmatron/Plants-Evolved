@@ -220,4 +220,8 @@ public class MutiBlockHelper {
 		}
 		return 0;
 	}
+
+	public static int getRequiredPopulation (IStructure structure,int tier) {
+		return (int) (structure.getPopulationRequirment () * tier * Settings.structurePopulationRequirement);
+	}
 }

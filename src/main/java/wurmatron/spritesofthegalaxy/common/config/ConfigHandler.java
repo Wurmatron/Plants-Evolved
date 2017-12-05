@@ -39,6 +39,12 @@ public class ConfigHandler {
 		Settings.populationGrowth = populationGrowth.getDouble ();
 		Property defaultStructures = config.get (Global.HABITAT,"defaultStructures",Defaults.defaultStructures,"Added to newly build habitat's along with setting a min level for each one");
 		Settings.defaultStructures = getDefaultStructures (defaultStructures.getString ());
+		Property workerPercentage = config.get (Global.HABITAT,"workerPercentage",Defaults.workerPercentage,"The amount of population that is able to work");
+		Settings.workerPercentage = workerPercentage.getDouble ();
+		Property structurePopulationRequirement = config.get (Global.HABITAT,"structurePopulationRequirement",Defaults.structurePopulationRequirement,"The amount of population per tier of structure required for it to function");
+		Settings.structurePopulationRequirement = structurePopulationRequirement.getDouble ();
+
+
 
 		if (!DIRECTORY.exists ())
 			DIRECTORY.mkdir ();

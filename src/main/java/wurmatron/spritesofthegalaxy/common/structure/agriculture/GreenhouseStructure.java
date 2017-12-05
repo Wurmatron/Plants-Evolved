@@ -71,4 +71,9 @@ public class GreenhouseStructure implements IStructure, IProduction {
 	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 1;
+	}
 }

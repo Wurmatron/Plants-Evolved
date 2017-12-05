@@ -66,4 +66,9 @@ public class FusionStructure implements IStructure, IProduction, IEnergy {
 	public int getBuildTime (int tier) {
 		return 10 * tier;
 	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 1;
+	}
 }

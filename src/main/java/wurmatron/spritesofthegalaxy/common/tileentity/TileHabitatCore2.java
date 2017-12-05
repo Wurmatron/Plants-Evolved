@@ -18,7 +18,6 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -29,7 +28,7 @@ import java.util.List;
 public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 
 	private static final long UPDATE_TIME = 1000;
-	private static final double starvationPercentage = .05;
+	private static final double starvationPercentage = .01;
 
 	public int mutiBlockSize;
 	private long lastUpdate;
@@ -101,6 +100,17 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		}
 	}
 
+	public void setColonyValue (String nbt,String maxNBT,double value) {
+		if (colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
+			NBTTagCompound nbtData = colony.getTagCompound ();
+			if (nbtData != null && !nbtData.hasNoTags ()) {
+				nbtData.setDouble (nbt,value > 0 ? value <= getColonyValue (maxNBT) ? value : getColonyValue (maxNBT) : 0);
+				colony.setTagCompound (nbtData);
+				setColony (colony);
+			}
+		}
+	}
+
 	public void setColonyValue (String nbt,String nbtMax,int value) {
 		setColonyValue (nbt,value > getColonyValue (nbtMax) ? getColonyValue (nbtMax) : value);
 	}
@@ -127,18 +137,19 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	public int getPopulationFoodUsage () {
-		return (int) (getColonyValue (NBT.POPULATION, null) * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1));
+		return (int) (getColonyValue (NBT.POPULATION,null) * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1));
 	}
 
 	public boolean canPopulationGrow () {
-		return ((int)getColonyValue (NBT.POPULATION, null)) < getColonyValue (NBT.MAX_POPULATION) && (getColonyValue (NBT.FOOD) - getPopulationFoodUsage ()) > 0;
+		return ((int) getColonyValue (NBT.POPULATION,null)) < getColonyValue (NBT.MAX_POPULATION) && (getColonyValue (NBT.FOOD) - getPopulationFoodUsage ()) > 0;
 	}
 
 	private void growPopulation () {
 		if (canPopulationGrow () && getColonyValue (NBT.POPULATION,null) < getColonyValue (NBT.MAX_POPULATION))
-			setColonyValue (NBT.POPULATION,(getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
-		else if (getPopulationFoodUsage () > getColonyValue (NBT.FOOD) + (int) (getColonyValue (NBT.FOOD) * starvationPercentage))
-			setColonyValue (NBT.POPULATION,(getColonyValue (NBT.POPULATION,null) - (getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
+			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,(getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
+		if (getPopulationFoodUsage () > getColonyValue (NBT.FOOD) + ((int) (getColonyValue (NBT.FOOD) * starvationPercentage))) {
+			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,(getColonyValue (NBT.POPULATION,null) - (getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
+		}
 	}
 
 	public HashMap <IStructure, Integer> getStructures () {
@@ -275,7 +286,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 	}
 
 	private void updateStructures () {
-		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY))
+		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY) && hasWorkers ())
 			for (IStructure structure : getStructures ().keySet ()) {
 				if (structure instanceof ITickStructure) {
 					if (getPowerUsage () <= getColonyValue (NBT.ENERGY))
@@ -413,6 +424,20 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		for (StorageType type : outputCost.keySet ())
 			if (!(getColonyValue (MutiBlockHelper.getType (type)) >= outputCost.get (type)))
 				return false;
+		return true;
+	}
+
+	private int getAmountOfWorkers () {
+		return (int) (getColonyValue (NBT.POPULATION,null) * Settings.workerPercentage);
+	}
+
+	private boolean hasWorkers () {
+		if (getStructures ().size () > 0) {
+			int amountRequired = 0;
+			for (IStructure structure : getStructures ().keySet ())
+				amountRequired += MutiBlockHelper.getRequiredPopulation (structure,getStructures ().get (structure));
+			return getAmountOfWorkers () >= amountRequired;
+		}
 		return true;
 	}
 }

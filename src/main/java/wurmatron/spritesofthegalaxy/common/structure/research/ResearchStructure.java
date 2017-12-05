@@ -60,6 +60,9 @@ public class ResearchStructure implements IStructure, IProduction, ITickStructur
 		return EnumProductionType.VALUE;
 	}
 
+
+
+
 	@Override
 	public int getEnergyUsage (int tier) {
 		return tier;
@@ -68,5 +71,10 @@ public class ResearchStructure implements IStructure, IProduction, ITickStructur
 	@Override
 	public int getBuildTime (int tier) {
 		return 10 * tier;
+	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 8;
 	}
 }

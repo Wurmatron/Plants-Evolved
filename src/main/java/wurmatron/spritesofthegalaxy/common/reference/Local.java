@@ -43,4 +43,5 @@ public class Local {
 	public static final String MIN_LEVEL_REQ = "gui.minimumLevelRequired.name";
 	public static final String QUEUE = "gui.queue.name";
 	public static final String BUILDQUEUE_FULL = "gui.buildQueueFull.name";
+	public static final String POPULATION_COST = "gui.populationCost.name";
 }

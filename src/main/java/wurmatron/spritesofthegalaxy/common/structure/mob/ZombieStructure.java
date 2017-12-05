@@ -42,4 +42,9 @@ public class ZombieStructure implements IStructure {
 	public int getBuildTime (int tier) {
 		return tier * 100;
 	}
+
+	@Override
+	public double getPopulationRequirment () {
+		return 1;
+	}
 }

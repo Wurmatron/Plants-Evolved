@@ -127,6 +127,7 @@ public class GuiStructure extends GuiHabitatBase {
 			displayInfo.add (I18n.translateToLocal (Local.CURRENT_PROVIDE).replace ("'PRODUCE'",DisplayHelper.formatNum (((IProduction) structure).getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure)))));
 			displayInfo.add (I18n.translateToLocal (Local.CURRENT_PROVIDE).replace ("'PRODUCE'",DisplayHelper.formatNum (production.getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure) + keyAmount ()))));
 			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),MutiBlockHelper.getStructureLevel (tile,structure) + keyAmount (),0))));
+			displayInfo.add (I18n.translateToLocal (Local.POPULATION_COST).replace ("'POPULATION'",DisplayHelper.formatNum (MutiBlockHelper.getRequiredPopulation (structure,MutiBlockHelper.getStructureLevel (tile,structure)))));
 			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
 		}
 		if (structure instanceof IProduction && isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
@@ -135,6 +136,7 @@ public class GuiStructure extends GuiHabitatBase {
 			displayInfo.add (I18n.translateToLocal (Local.CURRENT_PROVIDE).replace ("'PRODUCE'",DisplayHelper.formatNum (((IProduction) structure).getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure)))));
 			displayInfo.add (I18n.translateToLocal (Local.PREV_LEVEL).replace ("'PRODUCE'",DisplayHelper.formatNum (production.getAmountPerTier (tile,MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()))));
 			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount (),MutiBlockHelper.getStructureLevel (tile,structure),0))));
+			displayInfo.add (I18n.translateToLocal (Local.POPULATION_COST).replace ("'POPULATION'",DisplayHelper.formatNum (MutiBlockHelper.getRequiredPopulation (structure,MutiBlockHelper.getStructureLevel (tile,structure)))));
 			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}
