@@ -18,6 +18,7 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -83,17 +84,6 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 			NBTTagCompound nbtData = colony.getTagCompound ();
 			if (nbtData != null && !nbtData.hasNoTags ()) {
 				nbtData.setInteger (nbt,value > 0 ? value : 0);
-				colony.setTagCompound (nbtData);
-				setColony (colony);
-			}
-		}
-	}
-
-	public void setColonyValue (String nbt,double value) {
-		if (colony != null && colony != ItemStack.EMPTY && colony.hasTagCompound ()) {
-			NBTTagCompound nbtData = colony.getTagCompound ();
-			if (nbtData != null && !nbtData.hasNoTags ()) {
-				nbtData.setDouble (nbt,value > 0 ? value : 0);
 				colony.setTagCompound (nbtData);
 				setColony (colony);
 			}
@@ -427,7 +417,7 @@ public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
 		return true;
 	}
 
-	private int getAmountOfWorkers () {
+	public int getAmountOfWorkers () {
 		return (int) (getColonyValue (NBT.POPULATION,null) * Settings.workerPercentage);
 	}
 

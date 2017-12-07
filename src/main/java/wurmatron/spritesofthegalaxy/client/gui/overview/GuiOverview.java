@@ -8,6 +8,7 @@ import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
+import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.CancelQueueRequest;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
@@ -16,6 +17,8 @@ import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
+import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -38,14 +41,22 @@ public class GuiOverview extends GuiHabitatBase {
 		mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/overview.png"));
 		drawTexturedModalRect (startWidth,startHeight,0,0,256,256);
 		GlStateManager.popMatrix ();
-		drawString (fontRenderer,I18n.translateToLocal (Local.LINEAGE) + ":    " + DisplayHelper.formatLineage (tile.getColony ()),startWidth + 140,startHeight + 22,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.SIZE) + ":         " + tile.mutiBlockSize + "x",startWidth + 140,startHeight + 30,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ": " + DisplayHelper.formatNum ((int) tile.getColonyValue (NBT.POPULATION,null)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_POPULATION)),startWidth + 140,startHeight + 38,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":        " + DisplayHelper.formatNum (tile.getColonyValue (NBT.FOOD) - tile.getPopulationFoodUsage ()),startWidth + 140,startHeight + 46,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":   " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MINERALS)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MINERALS)),startWidth + 140,startHeight + 54,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":    " + DisplayHelper.formatNum ((tile.getColonyValue (NBT.ENERGY) - tile.getPowerUsage ())),startWidth + 140,startHeight + 62,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.GEM) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.GEM)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_GEM)),startWidth + 140,startHeight + 70,Color.white.getRGB ());
-		drawString (fontRenderer,I18n.translateToLocal (Local.MAGIC) + ":       " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAGIC)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MAGIC)),startWidth + 140,startHeight + 78,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.LINEAGE) + ": ",startWidth + 140,startHeight + 22,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatLineage (tile.getColony ()),startWidth + 200,startHeight + 22,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.SIZE) + ":",startWidth + 140,startHeight + 30,Color.white.getRGB ());
+		drawString (fontRenderer,tile.mutiBlockSize + "x",startWidth + 200,startHeight + 30,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.POPULATION) + ":",startWidth + 140,startHeight + 38,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum ((int) tile.getColonyValue (NBT.POPULATION,null)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_POPULATION)),startWidth + 200,startHeight + 38,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.FOOD) + ":",startWidth + 140,startHeight + 46,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum (tile.getColonyValue (NBT.FOOD) - tile.getPopulationFoodUsage ()),startWidth + 200,startHeight + 46,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.MINERALS) + ":",startWidth + 140,startHeight + 54,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum (tile.getColonyValue (NBT.MINERALS)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MINERALS)),startWidth + 200,startHeight + 54,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.ENERGY) + ":",startWidth + 140,startHeight + 62,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum ((tile.getColonyValue (NBT.ENERGY) - tile.getPowerUsage ())),startWidth + 200,startHeight + 62,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.GEM) + ":",startWidth + 140,startHeight + 70,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum (tile.getColonyValue (NBT.GEM)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_GEM)),startWidth + 200,startHeight + 70,Color.white.getRGB ());
+		drawString (fontRenderer,I18n.translateToLocal (Local.MAGIC) + ":",startWidth + 140,startHeight + 78,Color.white.getRGB ());
+		drawString (fontRenderer,DisplayHelper.formatNum (tile.getColonyValue (NBT.MAGIC)) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.MAX_MAGIC)),startWidth + 200,startHeight + 78,Color.white.getRGB ());
 		drawString (fontRenderer,I18n.translateToLocal (Local.QUEUE) + " " + DisplayHelper.formatNum (tile.getBuildQueue ().size ()) + " / " + DisplayHelper.formatNum (tile.getColonyValue (NBT.BUILD_QUEUE)),startWidth + 15,startHeight + 71,Color.white.getRGB ());
 		if (buttonList.size () > 3) {
 			List <GuiButton> temp = new ArrayList <> ();
@@ -72,6 +83,19 @@ public class GuiOverview extends GuiHabitatBase {
 					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 139 + (index * 17),Color.white.getRGB ());
 					GlStateManager.popMatrix ();
 				}
+		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 38,startWidth + 180,startHeight + 44)) {
+			List <String> text = new ArrayList <> ();
+			text.add ("Workers: " + tile.getAmountOfWorkers ());
+			text.add ("Growth: " + (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
+			drawHoveringText (text,startWidth + 200,startHeight + 46);
+
+		}
+		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 46,startWidth + 180,startHeight + 50))
+			drawHoveringText ("Usage: " + tile.getPopulationFoodUsage (),startWidth + 200,startHeight + 52);
+		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 54,startWidth + 180,startHeight + 60))
+			drawHoveringText ("+" + DisplayHelper.formatNum (MutiBlockHelper.getMineralIncome (tile)),startWidth + 200,startHeight + 62);
+		if(isWithin (mouseX, mouseY, startWidth + 140, startHeight + 62, startWidth + 180, startHeight + 70))
+			drawHoveringText ("Produces: " + DisplayHelper.formatNum (tile.getColonyValue (NBT.ENERGY)), startWidth+200, + 72);
 	}
 
 	@Override

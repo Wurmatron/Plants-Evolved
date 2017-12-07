@@ -1,0 +1,13 @@
+{
+    "__comment": "Model for when three adjacent sides connected sides in a T shape.",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "spritesofthegalaxy:blocks/casing/casing0C",
+        "down": "spritesofthegalaxy:blocks/casing/casing2C_we",
+		"up": "spritesofthegalaxy:blocks/casing/casing4C",
+		"north": "spritesofthegalaxy:blocks/casing/casing3C_uwe",
+		"south": "spritesofthegalaxy:blocks/casing/casing3C_uwe",
+		"west": "spritesofthegalaxy:blocks/casing/casing4C",
+		"east": "spritesofthegalaxy:blocks/casing/casing4C"
+    }
+}

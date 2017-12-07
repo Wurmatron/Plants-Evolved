@@ -1,0 +1,13 @@
+{
+    "__comment": "Model for when three adjacent sides are connected.",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "spritesofthegalaxy:blocks/casing/casing0C",
+        "down": "spritesofthegalaxy:blocks/casing/casing2C_ue",
+		"up": "spritesofthegalaxy:blocks/casing/casing4C",
+		"north": "spritesofthegalaxy:blocks/casing/casing2C_uw",
+		"south": "spritesofthegalaxy:blocks/casing/casing4C",
+		"west": "spritesofthegalaxy:blocks/casing/casing2C_ue",
+		"east": "spritesofthegalaxy:blocks/casing/casing4C"
+    }
+}

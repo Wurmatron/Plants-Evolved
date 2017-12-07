@@ -1,0 +1,13 @@
+{
+    "__comment": "Model for when four connected sides at an angle.",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "spritesofthegalaxy:blocks/casing/casing0C",
+        "down": "spritesofthegalaxy:blocks/casing/casing4C",
+		"up": "spritesofthegalaxy:blocks/casing/casing4C",
+		"north": "spritesofthegalaxy:blocks/casing/casing4C",
+		"south": "spritesofthegalaxy:blocks/casing/casing3C_uwd",
+		"west": "spritesofthegalaxy:blocks/casing/casing4C",
+		"east": "spritesofthegalaxy:blocks/casing/casing3C_ued"
+    }
+}

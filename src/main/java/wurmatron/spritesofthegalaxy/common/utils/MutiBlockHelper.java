@@ -3,9 +3,7 @@ package wurmatron.spritesofthegalaxy.common.utils;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
-import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
-import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
+import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
@@ -222,6 +220,15 @@ public class MutiBlockHelper {
 	}
 
 	public static int getRequiredPopulation (IStructure structure,int tier) {
-		return (int) (structure.getPopulationRequirment () * tier * Settings.structurePopulationRequirement);
+		return (int) ((structure.getPopulationRequirment () * tier) * Settings.structurePopulationRequirement);
+	}
+
+	// TODO Gem / Magic Support
+	public static int getMineralIncome (TileHabitatCore2 tile) {
+		int amount = 0;
+		for (IStructure structure : tile.getStructures ().keySet ())
+			if (structure.getStructureType ().equals (StructureType.MINE) && structure instanceof IProduction)
+				amount += ((IProduction) structure).getAmountPerTier (tile,tile.getStructures ().get (structure));
+		return amount;
 	}
 }
