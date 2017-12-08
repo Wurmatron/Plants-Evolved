@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.client.gui.manage;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -16,7 +17,7 @@ import wurmatron.spritesofthegalaxy.common.network.server.StructureMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -29,7 +30,7 @@ public class GuiStructure extends GuiHabitatBase {
 
 	private List <IStructure> structures;
 
-	public GuiStructure (TileHabitatCore2 tile,StructureType structureType) {
+	public GuiStructure (TileHabitatCore tile,StructureType structureType) {
 		super (tile);
 		structures = SpritesOfTheGalaxyAPI.getStructuresForType (structureType);
 	}
@@ -84,6 +85,8 @@ public class GuiStructure extends GuiHabitatBase {
 		int nextTier = currentTier + keyAmount ();
 		if (tile.getColonyValue (NBT.BUILD_QUEUE) > tile.getBuildQueue ().size () && MutiBlockHelper.canBuildStructure (tile,structure,currentTier,nextTier)) {
 			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
+			if (tile.getColonyValue (NBT.ENERGY) < (tile.getPowerUsage () + structure.getEnergyUsage (nextTier)))
+				Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.RED + I18n.translateToLocal (Local.ENERGY_OVERLOAD).replaceAll ("%STRUCTURE%",structure.getDisplayName ())),false);
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
 		} else if (!MutiBlockHelper.hasRequiredResearch (tile,structure)) {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MISSING_RESEARCH).replaceAll ("'Research'",TextFormatting.GOLD + DisplayHelper.formatNeededResearch (ResearchHelper.getNeededResearch (tile.getResearch (),structure))));

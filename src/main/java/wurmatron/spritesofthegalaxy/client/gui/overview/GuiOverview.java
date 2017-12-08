@@ -15,9 +15,8 @@ import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueReques
 import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -30,7 +29,7 @@ public class GuiOverview extends GuiHabitatBase {
 
 	private HashMap <IStructure, Integer> cancelButtons = new HashMap <> ();
 
-	public GuiOverview (TileHabitatCore2 tile) {
+	public GuiOverview (TileHabitatCore tile) {
 		super (tile);
 	}
 
@@ -86,7 +85,7 @@ public class GuiOverview extends GuiHabitatBase {
 		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 38,startWidth + 180,startHeight + 44)) {
 			List <String> text = new ArrayList <> ();
 			text.add ("Workers: " + tile.getAmountOfWorkers ());
-			text.add ("Growth: " + (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
+			text.add ("Growth: " + (int) (tile.getColonyValue (NBT.POPULATION,null) - (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
 			drawHoveringText (text,startWidth + 200,startHeight + 46);
 
 		}
@@ -94,8 +93,8 @@ public class GuiOverview extends GuiHabitatBase {
 			drawHoveringText ("Usage: " + tile.getPopulationFoodUsage (),startWidth + 200,startHeight + 52);
 		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 54,startWidth + 180,startHeight + 60))
 			drawHoveringText ("+" + DisplayHelper.formatNum (MutiBlockHelper.getMineralIncome (tile)),startWidth + 200,startHeight + 62);
-		if(isWithin (mouseX, mouseY, startWidth + 140, startHeight + 62, startWidth + 180, startHeight + 70))
-			drawHoveringText ("Produces: " + DisplayHelper.formatNum (tile.getColonyValue (NBT.ENERGY)), startWidth+200, + 72);
+		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 62,startWidth + 180,startHeight + 70))
+			drawHoveringText ("Produces: " + DisplayHelper.formatNum (tile.getColonyValue (NBT.ENERGY)),startWidth + 200,startHeight + 72);
 	}
 
 	@Override

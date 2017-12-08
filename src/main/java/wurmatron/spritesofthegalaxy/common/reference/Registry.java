@@ -8,6 +8,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import wurmatron.spritesofthegalaxy.common.items.ItemTooltip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,16 @@ public class Registry {
 		block.setRegistryName (registryName);
 		block.setUnlocalizedName (registryName);
 		ItemBlock itemBlock = new ItemBlock (block);
+		itemBlock.setUnlocalizedName (registryName);
+		itemBlock.setRegistryName (registryName);
+		blocks.add (block);
+		blockItems.put (block,itemBlock);
+	}
+
+	public static void registerBlock (Block block,String registryName,ArrayList <String> tooltip) {
+		block.setRegistryName (registryName);
+		block.setUnlocalizedName (registryName);
+		ItemTooltip itemBlock = new ItemTooltip (block,tooltip);
 		itemBlock.setUnlocalizedName (registryName);
 		itemBlock.setRegistryName (registryName);
 		blocks.add (block);

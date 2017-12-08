@@ -9,7 +9,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 	public StructureMessage () {
 	}
 
-	public StructureMessage (IStructure research,int level,TileHabitatCore2 core,boolean remove) {
+	public StructureMessage (IStructure research,int level,TileHabitatCore core,boolean remove) {
 		data = new NBTTagCompound ();
 		data.setString (NBT.STRUCTURES,research.getName ());
 		data.setInteger (NBT.LEVEL,level);
@@ -54,8 +54,8 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 		int tier = data.getInteger (NBT.LEVEL);
 		boolean remove = data.getBoolean (NBT.TYPE);
 		BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
-		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore2) {
-			TileHabitatCore2 core = (TileHabitatCore2) player.world.getTileEntity (coreLocation);
+		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
+			TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
 			if (core != null) {
 				if (remove) {
 					core.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,tier,MutiBlockHelper.getStructureLevel (core,structure),0));

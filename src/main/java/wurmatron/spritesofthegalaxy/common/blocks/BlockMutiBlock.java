@@ -11,12 +11,16 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.reference.Local;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileMutiBlock;
 
 import javax.annotation.Nullable;
@@ -41,9 +45,8 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 	public void onNeighborChange (IBlockAccess world,BlockPos pos,BlockPos neighbor) {
 		super.onNeighborChange (world,pos,neighbor);
 		TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
-		if (tile != null) {
+		if (tile != null)
 			tile.checkIfValid ();
-		}
 	}
 
 	@Override
@@ -59,8 +62,8 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 		TileMutiBlock tile = (TileMutiBlock) world.getTileEntity (pos);
 		boolean added = false;
 		if (tile != null && tile.getCore () != null) {
-			if (world.getTileEntity (tile.getCore ()) != null && world.getTileEntity (tile.getCore ()) instanceof TileHabitatCore2) {
-				TileHabitatCore2 core = (TileHabitatCore2) world.getTileEntity (tile.getCore ());
+			if (world.getTileEntity (tile.getCore ()) != null && world.getTileEntity (tile.getCore ()) instanceof TileHabitatCore) {
+				TileHabitatCore core = (TileHabitatCore) world.getTileEntity (tile.getCore ());
 				if (player.getHeldItemMainhand () != ItemStack.EMPTY && player.getHeldItemMainhand ().getItem () == SpriteItems.spriteColony) {
 					core.setColony (player.getHeldItemMainhand ());
 					player.inventory.deleteStack (player.getHeldItemMainhand ());
@@ -69,10 +72,13 @@ public class BlockMutiBlock extends Block implements ITileEntityProvider {
 					player.inventory.addItemStackToInventory (core.getColony ());
 					core.setColony (ItemStack.EMPTY);
 				}
-			}
-			if (!player.isSneaking () && !added) {
-				BlockPos loc = tile.getCore () != null ? tile.getCore () : pos;
-				player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,loc.getX (),loc.getY (),loc.getZ ());
+				if (!player.isSneaking () && !added) {
+					BlockPos loc = tile.getCore () != null ? tile.getCore () : pos;
+					TileHabitatCore habitat = (TileHabitatCore) world.getTileEntity (loc);
+					if (habitat.getColony ().isEmpty () && !world.isRemote)
+						player.sendMessage (new TextComponentString (TextFormatting.RED + I18n.translateToLocal (Local.COLONY_INVALID)));
+					player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,loc.getX (),loc.getY (),loc.getZ ());
+				}
 			}
 			return true;
 		}

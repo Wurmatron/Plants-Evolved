@@ -11,7 +11,7 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.StorageTypeMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GuiStorage extends GuiHabitatBase {
 
-	public GuiStorage (TileHabitatCore2 tile) {
+	public GuiStorage (TileHabitatCore tile) {
 		super (tile);
 	}
 

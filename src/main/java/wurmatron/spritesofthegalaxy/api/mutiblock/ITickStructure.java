@@ -1,8 +1,8 @@
 package wurmatron.spritesofthegalaxy.api.mutiblock;
 
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 public interface ITickStructure {
 
-	void tickStructure (TileHabitatCore2 core,int tier);
+	void tickStructure (TileHabitatCore core,int tier);
 }

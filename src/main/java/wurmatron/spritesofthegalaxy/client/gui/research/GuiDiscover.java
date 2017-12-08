@@ -13,7 +13,7 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.ResearchUpdateMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
@@ -26,7 +26,7 @@ public class GuiDiscover extends GuiHabitatBase {
 
 	private List <IResearch> researchType;
 
-	public GuiDiscover (TileHabitatCore2 tile,ResearchType researchType) {
+	public GuiDiscover (TileHabitatCore tile,ResearchType researchType) {
 		super (tile);
 		this.researchType = SpritesOfTheGalaxyAPI.getResearchForType (researchType);
 	}

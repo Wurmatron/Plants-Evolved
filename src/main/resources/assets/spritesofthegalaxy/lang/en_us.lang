@@ -55,7 +55,9 @@ gui.maxGem.name=Gem
 gui.queue.name=Queue
 gui.buildQueueFull.name=The Build Queue Is Full Try Upgrading Its Storage in the Storage Tab!
 gui.buildQueue.name=Build Queue
-gui.populationCost.name=Costs 'POPULATION' Population
+gui.populationCost.name=Requires 'POPULATION' Population
+gui.mutiBlockInfo_1.name=Requires a Minimum of 3 x 3 x 3 Casing!
+gui.mutiBlockInfo_2.name=Multi-Block: 3, 5, 7, 9
 
 # Item
 item.spriteColony.name=Sprite Colony
@@ -65,4 +67,11 @@ item.Magic.name=Magic Resource
 
 # Research
 research.land.name=Farm Land
+
+# Tooltip
+tip.worth.name=Worth %WORTH% Units
+
+# Info
+info.colonyInvalid.name=This habitat does not have a valid colony!
+info.energyOverload.name=%STRUCTURE% will overLoad your energy system, either  build more energy production or stop it from building.
 

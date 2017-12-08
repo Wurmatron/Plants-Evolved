@@ -9,7 +9,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class BuildQueueUpdateMessage extends CustomMessage.CustomClientMessage <
 	@Override
 	public void process (EntityPlayer player,Side side) {
 		BlockPos tilePos = new BlockPos (data.getIntArray (NBT.POSITION)[0],data.getIntArray (NBT.POSITION)[1],data.getIntArray (NBT.POSITION)[2]);
-		TileHabitatCore2 tile = (TileHabitatCore2) player.world.getTileEntity (tilePos);
+		TileHabitatCore tile = (TileHabitatCore) player.world.getTileEntity (tilePos);
 		if (tile != null) {
 			List <Object[]> buildQueue = new ArrayList <> ();
 			for (int index = 0; index < data.getSize () - 1; index++) {

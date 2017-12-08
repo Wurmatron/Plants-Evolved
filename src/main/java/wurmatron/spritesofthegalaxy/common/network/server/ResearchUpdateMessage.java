@@ -9,7 +9,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class ResearchUpdateMessage extends CustomMessage.CustomtServerMessage <R
 		data.setBoolean (NBT.TYPE,remove);
 	}
 
-	public ResearchUpdateMessage (IResearch research,int level,TileHabitatCore2 tile,boolean remove) {
+	public ResearchUpdateMessage (IResearch research,int level,TileHabitatCore tile,boolean remove) {
 		data = new NBTTagCompound ();
 		data.setString (NBT.RESEARCH,research.getName ());
 		data.setInteger (NBT.LEVEL,level);
@@ -54,8 +54,8 @@ public class ResearchUpdateMessage extends CustomMessage.CustomtServerMessage <R
 		int level = data.getInteger (NBT.LEVEL);
 		boolean remove = data.getBoolean (NBT.TYPE);
 		BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
-		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore2) {
-			TileHabitatCore2 core = (TileHabitatCore2) player.world.getTileEntity (coreLocation);
+		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
+			TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
 			if (core != null) {
 				if (remove) {
 					core.setResearchPoints (research.getResearchTab (),core.getResearchPoints (research.getResearchTab ()) + MutiBlockHelper.calcPointsForResearch (research,level,MutiBlockHelper.getResearchLevel (core,research)));

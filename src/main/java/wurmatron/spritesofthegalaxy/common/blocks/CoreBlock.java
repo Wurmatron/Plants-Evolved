@@ -6,32 +6,38 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.reference.Local;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import javax.annotation.Nullable;
 
 public class CoreBlock extends BlockMutiBlock {
 
 	public CoreBlock () {
-		super();
+		super ();
 		setUnlocalizedName ("habitat");
 	}
 
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity (World worldIn,int meta) {
-		return new TileHabitatCore2 ();
+		return new TileHabitatCore ();
 	}
 
 	@Override
 	public boolean onBlockActivated (World world,BlockPos pos,IBlockState state,EntityPlayer player,EnumHand hand,EnumFacing facing,float hitX,float hitY,float hitZ) {
-		if (!world.isRemote) {
-			player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,pos.getX (),pos.getY (),pos.getZ ());
+		if (!world.isRemote && world.getTileEntity (pos) != null && world.getTileEntity (pos) instanceof TileHabitatCore) {
+			TileHabitatCore tile = (TileHabitatCore) world.getTileEntity (pos);
+			if (tile.mutiBlockSize > 0)
+				player.openGui (SpritesOfTheGalaxy.instance,GuiHandler.OVERVIEW,world,pos.getX (),pos.getY (),pos.getZ ());
 			return true;
-		}
+		} else if (world.isRemote)
+			player.sendMessage (new TextComponentString (I18n.translateToLocal (Local.MUTIBLOCK_INFO1)));
 		return false;
 	}
 }

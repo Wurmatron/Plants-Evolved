@@ -18,7 +18,6 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TileHabitatCore2 extends TileMutiBlock implements ITickable {
+public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	private static final long UPDATE_TIME = 1000;
 	private static final double starvationPercentage = .01;

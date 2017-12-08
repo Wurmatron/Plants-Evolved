@@ -10,7 +10,7 @@ import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 
@@ -25,9 +25,9 @@ public class GuiHabitatBase extends GuiScreen {
 	protected GuiButton production;
 	protected GuiButton research;
 
-	protected TileHabitatCore2 tile;
+	protected TileHabitatCore tile;
 
-	public GuiHabitatBase (TileHabitatCore2 tile) {
+	public GuiHabitatBase (TileHabitatCore tile) {
 		this.tile = tile;
 	}
 

@@ -45,7 +45,6 @@ public class ConfigHandler {
 		Settings.structurePopulationRequirement = structurePopulationRequirement.getDouble ();
 
 
-
 		if (!DIRECTORY.exists ())
 			DIRECTORY.mkdir ();
 		LogHandler.info ("Config Loaded");

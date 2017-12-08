@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.BuildQueueUpdateMessage;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ public class ClientBuildQueueRequest extends CustomMessage.CustomtServerMessage 
 
 	@Override
 	public void process (EntityPlayer player,Side side) {
-		TileHabitatCore2 tile = (TileHabitatCore2) player.world.getTileEntity (core);
+		TileHabitatCore tile = (TileHabitatCore) player.world.getTileEntity (core);
 		NetworkHandler.sendTo (new BuildQueueUpdateMessage (core,tile.getBuildQueue ()),(EntityPlayerMP) player);
 	}
 }

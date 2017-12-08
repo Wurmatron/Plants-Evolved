@@ -9,7 +9,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
-import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore2;
+import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public class CancelQueueRequest extends CustomMessage.CustomtServerMessage <Canc
 
 	@Override
 	public void process (EntityPlayer player,Side side) {
-		TileHabitatCore2 tile = (TileHabitatCore2) player.world.getTileEntity (new BlockPos (data.getIntArray (NBT.POSITION)[0],data.getIntArray (NBT.POSITION)[1],data.getIntArray (NBT.POSITION)[2]));
+		TileHabitatCore tile = (TileHabitatCore) player.world.getTileEntity (new BlockPos (data.getIntArray (NBT.POSITION)[0],data.getIntArray (NBT.POSITION)[1],data.getIntArray (NBT.POSITION)[2]));
 		if (tile != null)
 			tile.removeFromBuildQueue (SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURE)));
 	}

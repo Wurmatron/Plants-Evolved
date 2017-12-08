@@ -44,4 +44,11 @@ public class Local {
 	public static final String QUEUE = "gui.queue.name";
 	public static final String BUILDQUEUE_FULL = "gui.buildQueueFull.name";
 	public static final String POPULATION_COST = "gui.populationCost.name";
+	public static final String MUTIBLOCK_INFO1 = "gui.mutiBlockInfo_1.name";
+	public static final String MUTIBLOCK_INFO2 = "gui.mutiBlockInfo_2.name";
+	// Tooltip
+	public static final String TOOLTIP_WORTH = "tip.worth.name";
+	// Tile
+	public static final String COLONY_INVALID = "info.colonyInvalid.name";
+	public static final String ENERGY_OVERLOAD = "info.energyOverload.name";
 }

@@ -1,12 +1,18 @@
 package wurmatron.spritesofthegalaxy.common.items;
 
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.SpritesOfTheGalaxy;
+import wurmatron.spritesofthegalaxy.common.reference.Local;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemResource extends Item {
 
@@ -28,5 +34,10 @@ public class ItemResource extends Item {
 	@Override
 	public String getItemStackDisplayName (ItemStack stack) {
 		return I18n.translateToLocal ("item." + minerals[stack.getItemDamage () < minerals.length ? stack.getItemDamage () : 0] + ".name");
+	}
+
+	@Override
+	public void addInformation (ItemStack stack,@Nullable World world,List <String> tip,ITooltipFlag flag) {
+		tip.add (I18n.translateToLocal (Local.TOOLTIP_WORTH).replaceAll ("%WORTH%",10 + ""));
 	}
 }
