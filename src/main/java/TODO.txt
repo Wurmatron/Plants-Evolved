@@ -1,5 +1,4 @@
 - Income Tab
 - Stats Tab
 - Info Tab
-- Overview Tab
 - Production Display

@@ -39,7 +39,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	@Override
 	public void update () {
 		if (update && world.getWorldTime () % 20 == 0) {
-			int isValid = MutiBlockHelper.isValid (world,pos);
+			int isValid = MutiBlockHelper.getSize (world,pos);
 			mutiBlockSize = isValid;
 			if (isValid > 0) {
 				MutiBlockHelper.setTilesCore (world,pos,isValid);
@@ -58,7 +58,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				growPopulation ();
 			updateStructures ();
 			proccessBuildQueue ();
-			proccessOutputSettings ();
+			processOutputSettings ();
 			lastUpdate = System.currentTimeMillis ();
 			world.markAndNotifyBlock (pos,world.getChunkFromBlockCoords (pos),world.getBlockState (pos),world.getBlockState (pos),3);
 		}
@@ -162,12 +162,11 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	public void setResearch (IResearch research,int lvl) {
-		if (colony != ItemStack.EMPTY && colony.hasTagCompound ())
-			if (!getResearch ().containsKey (research) || getResearch ().get (research) < lvl) {
-				HashMap <IResearch, Integer> currentResearch = ItemSpriteColony.getResearch (colony);
-				currentResearch.put (research,lvl);
-				setColony (ItemSpriteColony.saveResearch (colony,currentResearch));
-			}
+		if (colony != ItemStack.EMPTY && colony.hasTagCompound () && !getResearch ().containsKey (research) || getResearch ().get (research) < lvl) {
+			HashMap <IResearch, Integer> currentResearch = ItemSpriteColony.getResearch (colony);
+			currentResearch.put (research,lvl);
+			setColony (ItemSpriteColony.saveResearch (colony,currentResearch));
+		}
 	}
 
 	public HashMap <StorageType, Integer> getStorage () {
@@ -239,10 +238,8 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		if (colony != ItemStack.EMPTY && colony != null && colony.getTagCompound () != null && colony.hasTagCompound () && !getStructures ().containsKey (structure) || colony != ItemStack.EMPTY && colony != null && colony.getTagCompound () != null && colony.hasTagCompound () && getStructures ().get (structure) < lvl) {
 			HashMap <IStructure, Integer> currentStructures = ItemSpriteColony.getStructures (colony);
 			currentStructures.put (structure,lvl);
-			if (structure instanceof IProduction) {
-				IProduction production = (IProduction) structure;
-				production.addProduction (this,lvl);
-			}
+			if (structure instanceof IProduction)
+				((IProduction) structure).addProduction (this,lvl);
 			setColony (ItemSpriteColony.saveStructure (colony,currentStructures));
 		}
 	}
@@ -276,35 +273,36 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	private void updateStructures () {
 		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY) && hasWorkers ())
-			for (IStructure structure : getStructures ().keySet ()) {
-				if (structure instanceof ITickStructure) {
-					if (getPowerUsage () <= getColonyValue (NBT.ENERGY))
-						((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
-				}
-			}
+			for (IStructure structure : getStructures ().keySet ())
+				if (structure instanceof ITickStructure && getPowerUsage () <= getColonyValue (NBT.ENERGY))
+					((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
 	}
 
-	private void proccessOutputSettings () {
+	private void processOutputSettings () {
 		if (getOutputSettings () != null && getOutputSettings ().size () > 0)
 			for (IOutput output : getOutputSettings ().keySet ())
 				if (canOutput (output.getCost ()))
-					if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64) {
-						if (addOutput (output.getItem ()))
-							for (StorageType type : output.getCost ().keySet ())
-								consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-					} else {
-						int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
-						for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
-							if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
-								if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
-									for (StorageType type : output.getCost ().keySet ())
-										consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-							} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
-								amountLeftToAdd -= 64;
-								for (StorageType type : output.getCost ().keySet ())
-									consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
-							}
-					}
+					handleOutput (output);
+	}
+
+	private void handleOutput (IOutput output) {
+		if (getOutputSettings ().get (output) * output.getItem ().getCount () <= 64) {
+			if (addOutput (output.getItem ()))
+				for (StorageType type : output.getCost ().keySet ())
+					consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+		} else {
+			int amountLeftToAdd = getOutputSettings ().get (output) * output.getItem ().getCount ();
+			for (int times = 0; times < (getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64; times++)
+				if (((getOutputSettings ().get (output) * output.getItem ().getCount ()) % 64) - 1 == times) {
+					if (addOutput (StackHelper.setStackSize (output.getItem (),amountLeftToAdd)))
+						for (StorageType type : output.getCost ().keySet ())
+							consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+				} else if (addOutput (StackHelper.setStackSize (output.getItem (),64))) {
+					amountLeftToAdd -= 64;
+					for (StorageType type : output.getCost ().keySet ())
+						consumeColonyValue (MutiBlockHelper.getType (type),output.getCost ().get (type));
+				}
+		}
 	}
 
 	@Override
@@ -386,7 +384,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				if (((IStructure) bq[0]).getName ().equalsIgnoreCase (structure.getName ()))
 					markForRemoval = bq;
 			if (markForRemoval.length > 0) {
-				addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]),getStructures ().get (((IStructure) markForRemoval[0])),((int) markForRemoval[1]),0));
+				addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]),getStructures ().get (markForRemoval[0]),((int) markForRemoval[1]),0));
 				buildQueue.remove (markForRemoval);
 			}
 		}

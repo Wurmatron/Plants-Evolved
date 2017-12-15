@@ -13,8 +13,8 @@ import java.util.List;
 
 public class SpritesOfTheGalaxyAPI {
 
-	public static ArrayList <IResearch> research = new ArrayList <> ();
-	public static ArrayList <IStructure> structures = new ArrayList <> ();
+	private static ArrayList <IResearch> research = new ArrayList <> ();
+	private static ArrayList <IStructure> structures = new ArrayList <> ();
 	private static HashMap <String, IStructure> structureNames = new HashMap <> ();
 	private static HashMap <String, IResearch> researchNames = new HashMap <> ();
 	private static HashMap <StructureType, List <IStructure>> structureType = new HashMap <> ();

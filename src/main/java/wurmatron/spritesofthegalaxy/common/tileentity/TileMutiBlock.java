@@ -35,10 +35,10 @@ public class TileMutiBlock extends TileEntity {
 	}
 
 	public void checkIfValid () {
-		int isValid = MutiBlockHelper.isValid (world,getCore ());
-		if (isValid <= 0)
+		int mutiBlockSize = MutiBlockHelper.getSize (world,getCore ());
+		if (mutiBlockSize <= 0)
 			MutiBlockHelper.delTilesCore (world,getCore (),9);
 		else
-			MutiBlockHelper.setTilesCore (world,getCore (),isValid);
+			MutiBlockHelper.setTilesCore (world,getCore (),mutiBlockSize);
 	}
 }

@@ -4,15 +4,25 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Keyboard;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
+import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.server.OpenGuiMessage;
 import wurmatron.spritesofthegalaxy.common.reference.Global;
+import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
+import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
+import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiHabitatBase extends GuiScreen {
 
@@ -90,5 +100,53 @@ public class GuiHabitatBase extends GuiScreen {
 
 	protected boolean isWithin (int mouseX,int mouseY,int x,int y,int x2,int y2) {
 		return mouseX >= x && mouseX < x2 && mouseY >= y && mouseY < y2;
+	}
+
+	protected void displayString (IOutput output,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
+		String str = I18n.translateToLocal (output.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getOutputLevel (tile,output));
+		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
+		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			for (StorageType st : output.getCost ().keySet ())
+				displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (((MutiBlockHelper.getOutputLevel (tile,output) + keyAmount ()) * tile.getColonyValue (MutiBlockHelper.getType (st))))));
+			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
+		}
+		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			for (StorageType st : output.getCost ().keySet ())
+				displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))))));
+			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
+		}
+	}
+
+	protected void displayString (IResearch research,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
+		String str = I18n.translateToLocal (research.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getResearchLevel (tile,research));
+		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
+		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			displayInfo.add (I18n.translateToLocal (Local.COST_RESEARCH).replace ("'POINTS'",DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),MutiBlockHelper.getResearchLevel (tile,research) + keyAmount ()))));
+			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
+		}
+		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			displayInfo.add (I18n.translateToLocal (Local.GIVE_RESEARCH).replace ("'POINTS'",DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research) - keyAmount (),MutiBlockHelper.getResearchLevel (tile,research)))));
+			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
+		}
+	}
+
+
+	protected void displayString (StorageType type,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
+		String str = I18n.translateToLocal ("gui." + type.getDisplayKey () + ".name") + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getStorageLevel (tile,type));
+		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
+		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 12,startHeight + buttY + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),MutiBlockHelper.getStorageLevel (tile,type) + keyAmount (),0)))));
+			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
+		}
+		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 12,startHeight + buttY2 + 12)) {
+			List <String> displayInfo = new ArrayList ();
+			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type) - keyAmount (),MutiBlockHelper.getStorageLevel (tile,type),0)))));
+			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
+		}
 	}
 }

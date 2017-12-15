@@ -55,11 +55,10 @@ public class GuiStructure extends GuiHabitatBase {
 			}
 			if (tile.getBuildQueue ().size () > 0)
 				for (Object[] queue : tile.getBuildQueue ())
-					if (queue != null && queue.length > 0 && queue[0] instanceof IStructure)
-						if (((IStructure) queue[0]).getName ().equalsIgnoreCase (structures.get (index).getName ())) {
-							negButt.enabled = false;
-							addButt.enabled = false;
-						}
+					if (queue != null && queue.length > 0 && queue[0] instanceof IStructure && ((IStructure) queue[0]).getName ().equalsIgnoreCase (structures.get (index).getName ())) {
+						negButt.enabled = false;
+						addButt.enabled = false;
+					}
 			if (tile.getBuildQueue ().size () == 0) {
 				negButt.enabled = true;
 				addButt.enabled = true;

@@ -15,10 +15,7 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiStorage extends GuiHabitatBase {
 
@@ -73,21 +70,6 @@ public class GuiStorage extends GuiHabitatBase {
 		if (MutiBlockHelper.getStorageLevel (tile,type) - keyAmount () >= 0) {
 			tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStorage (type,nextTier,MutiBlockHelper.getStorageLevel (tile,type),0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,true));
-		}
-	}
-
-	private void displayString (StorageType type,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
-		String str = I18n.translateToLocal ("gui." + type.getDisplayKey () + ".name") + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getStorageLevel (tile,type));
-		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
-		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 12,startHeight + buttY + 12)) {
-			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),MutiBlockHelper.getStorageLevel (tile,type) + keyAmount (),0)))));
-			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
-		}
-		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 12,startHeight + buttY2 + 12)) {
-			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type) - keyAmount (),MutiBlockHelper.getStorageLevel (tile,type),0)))));
-			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}
 }

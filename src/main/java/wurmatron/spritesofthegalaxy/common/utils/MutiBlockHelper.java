@@ -19,15 +19,15 @@ public class MutiBlockHelper {
 
 	private static final int[] validSizes = new int[] {9,7,5,3};
 
-	public static int isValid (World world,BlockPos pos) {
+	public static int getSize (World world,BlockPos pos) {
 		if (world != null && pos != null && world.getTileEntity (pos) instanceof TileHabitatCore)
 			for (int size : validSizes)
-				if (isValid (world,pos,size))
+				if (getSize (world,pos,size))
 					return size;
 		return 0;
 	}
 
-	private static boolean isValid (World world,BlockPos pos,int size) {
+	private static boolean getSize (World world,BlockPos pos,int size) {
 		int direction = size / 2;
 		for (int x = 0; x <= direction; x++)
 			for (int y = 0; y <= direction; y++)
@@ -172,7 +172,7 @@ public class MutiBlockHelper {
 	}
 
 	public static BlockPos findOutput (World world,TileHabitatCore tile) {
-		if (isValid (world,tile.getPos (),tile.mutiBlockSize)) {
+		if (getSize (world,tile.getPos (),tile.mutiBlockSize)) {
 			int direction = tile.mutiBlockSize / 2;
 			for (int x = 0; x <= direction; x++)
 				for (int y = 0; y <= direction; y++)

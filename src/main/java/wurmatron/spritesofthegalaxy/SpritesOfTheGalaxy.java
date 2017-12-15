@@ -39,7 +39,7 @@ public class SpritesOfTheGalaxy {
 	public static CreativeTabs tabSprites = new CreativeTabs ("tabSprites") {
 		@Override
 		public ItemStack getTabIconItem () {
-			return new ItemStack (Items.APPLE);
+			return new ItemStack (SpriteItems.spriteColony);
 		}
 	};
 

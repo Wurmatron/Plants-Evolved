@@ -18,26 +18,13 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	@Override
 	public void update () {
 		if (getCore () != null)
-			if (outputLocation != null && world.getWorldTime () % 5 == 0) {
-				if (hasItems ()) {
+			if (outputLocation != null && world.getWorldTime () % 5 == 0 && hasItems ())
+				if (hasItems ())
 					for (int index = 0; index < getSizeInventory (); index++)
 						if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index)))
 							setInventorySlotContents (index,ItemStack.EMPTY);
-				}
-			} else if (world.getWorldTime () % 20 == 0) {
-				if (isValidInventory (pos.up ()))
-					outputLocation = pos.up ();
-				else if (isValidInventory (pos.down ()))
-					outputLocation = pos.down ();
-				else if (isValidInventory (pos.east ()))
-					outputLocation = pos.east ();
-				else if (isValidInventory (pos.west ()))
-					outputLocation = pos.west ();
-				else if (isValidInventory (pos.north ()))
-					outputLocation = pos.north ();
-				else if (isValidInventory (pos.south ()))
-					outputLocation = pos.south ();
-			}
+						else if (world.getWorldTime () % 20 == 0)
+							updateOutputLocation ();
 	}
 
 	@Override
@@ -198,31 +185,51 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	public boolean addToStorage (ItemStack stack) {
 		if (outputLocation != null) {
 			IInventory tile = (IInventory) world.getTileEntity (outputLocation);
-			if (stack != null && stack != ItemStack.EMPTY)
+			if (stack != null && stack != ItemStack.EMPTY && tile != null)
 				for (int index = 0; index < tile.getSizeInventory (); index++)
-					if (tile.getStackInSlot (index) == ItemStack.EMPTY) {
-						tile.setInventorySlotContents (index,stack);
-						return true;
-					} else if (StackHelper.check (stack,tile.getStackInSlot (index),true,false)) {
-						if (tile.getStackInSlot (index).getCount () + stack.getCount () <= 64) {
-							ItemStack item = stack;
-							item.setCount (tile.getStackInSlot (index).getCount () + stack.getCount ());
-							tile.setInventorySlotContents (index,item);
-							return true;
-						} else {
-							int amountLeft = stack.getCount () + tile.getStackInSlot (index).getCount ();
-							if (amountLeft > 64) {
-								ItemStack item = stack.copy ();
-								item.setCount (64);
-								amountLeft -= 64;
-								tile.setInventorySlotContents (index,item);
-								ItemStack item2 = stack.copy ();
-								item2.setCount (amountLeft);
-								return addToStorage (item2);
-							}
-						}
-					}
+					return addToInventory (tile,index,stack);
 		}
 		return false;
+	}
+
+	private boolean addToInventory (IInventory tile,int index,ItemStack stack) {
+		if (tile.getStackInSlot (index) == ItemStack.EMPTY) {
+			tile.setInventorySlotContents (index,stack);
+			return true;
+		} else if (StackHelper.check (stack,tile.getStackInSlot (index),true,false)) {
+			if (tile.getStackInSlot (index).getCount () + stack.getCount () <= 64) {
+				ItemStack item = stack;
+				item.setCount (tile.getStackInSlot (index).getCount () + stack.getCount ());
+				tile.setInventorySlotContents (index,item);
+				return true;
+			} else {
+				int amountLeft = stack.getCount () + tile.getStackInSlot (index).getCount ();
+				if (amountLeft > 64) {
+					ItemStack item = stack.copy ();
+					item.setCount (64);
+					amountLeft -= 64;
+					tile.setInventorySlotContents (index,item);
+					ItemStack item2 = stack.copy ();
+					item2.setCount (amountLeft);
+					return addToStorage (item2);
+				}
+			}
+		}
+		return false;
+	}
+
+	public void updateOutputLocation () {
+		if (isValidInventory (pos.up ()))
+			outputLocation = pos.up ();
+		else if (isValidInventory (pos.down ()))
+			outputLocation = pos.down ();
+		else if (isValidInventory (pos.east ()))
+			outputLocation = pos.east ();
+		else if (isValidInventory (pos.west ()))
+			outputLocation = pos.west ();
+		else if (isValidInventory (pos.north ()))
+			outputLocation = pos.north ();
+		else if (isValidInventory (pos.south ()))
+			outputLocation = pos.south ();
 	}
 }

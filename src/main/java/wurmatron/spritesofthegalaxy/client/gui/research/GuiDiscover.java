@@ -17,9 +17,7 @@ import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiDiscover extends GuiHabitatBase {
@@ -84,21 +82,6 @@ public class GuiDiscover extends GuiHabitatBase {
 		if (MutiBlockHelper.getResearchLevel (tile,research) - keyAmount () >= 0) {
 			tile.setResearchPoints (research.getResearchTab (),tile.getResearchPoints (research.getResearchTab ()) + MutiBlockHelper.calcPointsForResearch (research,nextTier,MutiBlockHelper.getResearchLevel (tile,research)));
 			NetworkHandler.sendToServer (new ResearchUpdateMessage (research,MutiBlockHelper.getResearchLevel (tile,research) - keyAmount (),tile,true));
-		}
-	}
-
-	private void displayString (IResearch research,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
-		String str = I18n.translateToLocal (research.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getResearchLevel (tile,research));
-		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
-		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
-			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.COST_RESEARCH).replace ("'POINTS'",DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),MutiBlockHelper.getResearchLevel (tile,research) + keyAmount ()))));
-			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
-		}
-		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
-			List <String> displayInfo = new ArrayList ();
-			displayInfo.add (I18n.translateToLocal (Local.GIVE_RESEARCH).replace ("'POINTS'",DisplayHelper.formatNum (MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research) - keyAmount (),MutiBlockHelper.getResearchLevel (tile,research)))));
-			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}
 }
