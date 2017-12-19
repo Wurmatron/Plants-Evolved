@@ -46,6 +46,8 @@ public class Local {
 	public static final String POPULATION_COST = "gui.populationCost.name";
 	public static final String MUTIBLOCK_INFO1 = "gui.mutiBlockInfo_1.name";
 	public static final String MUTIBLOCK_INFO2 = "gui.mutiBlockInfo_2.name";
+	public static final String SEND_TO_BUILDQUEUE = "gui.sendToBuildQueue.name";
+	public static final String MISSING_STRUCTURE = "gui.missingStructure.name";
 	// Tooltip
 	public static final String TOOLTIP_WORTH = "tip.worth.name";
 	// Tile

@@ -27,6 +27,8 @@ import wurmatron.spritesofthegalaxy.common.tileentity.output.OutputJson;
 import wurmatron.spritesofthegalaxy.common.utils.JsonLoader;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
+import java.util.HashMap;
+
 @Mod (modid = Global.MODID, name = Global.NAME, version = Global.VERSION, guiFactory = Global.GUIFACTORY, dependencies = Global.DEPENDENCIES)
 public class SpritesOfTheGalaxy {
 
@@ -70,7 +72,9 @@ public class SpritesOfTheGalaxy {
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("blaze",5000,StackHelper.convertToString (new ItemStack (Items.BLAZE_ROD,1,0))));
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("wood",5000,StackHelper.convertToString (new ItemStack (Blocks.WOOL,1,0))));
 		SpritesOfTheGalaxyAPI.register (new OutputJson ("glowstone",5000,StackHelper.convertToString (new ItemStack (Items.GLOWSTONE_DUST,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("witherHead",5000,StackHelper.convertToString (new ItemStack (Items.SKULL,1,1))));
+		HashMap <String, Integer> zombieStructure = new HashMap <> ();
+		zombieStructure.put (StructureHelper.zombieStructure.getName (),1);
+		SpritesOfTheGalaxyAPI.register (new OutputJson ("witherHead",5000,StackHelper.convertToString (new ItemStack (Items.SKULL,1,1)),zombieStructure));
 	}
 
 	@Mod.EventHandler

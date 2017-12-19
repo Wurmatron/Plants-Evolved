@@ -6,6 +6,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
+import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
 import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
@@ -18,6 +19,7 @@ import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class GuiProduction extends GuiHabitatBase {
@@ -32,7 +34,7 @@ public class GuiProduction extends GuiHabitatBase {
 	public void drawScreen (int mouseX,int mouseY,float partialTicks) {
 		super.drawScreen (mouseX,mouseY,partialTicks);
 		for (int index = 0; index < outputs.size (); index++)
-			if (index <= 10)
+			if (index <= 12)
 				displayString (outputs.get (index),mouseX,mouseY,62,31 + (16 * index),106,29 + (16 * index),6,29 + (16 * index));
 	}
 
@@ -40,7 +42,7 @@ public class GuiProduction extends GuiHabitatBase {
 	public void initGui () {
 		super.initGui ();
 		for (int index = 0; index < outputs.size (); index++)
-			if (index <= 10) {
+			if (index <= 12) {
 				buttonList.add (new GuiTexturedButton (100 + index,startWidth + 106,(startHeight + 29) + (16 * index),12,12,1,"+"));
 				buttonList.add (new GuiTexturedButton (101 + index,startWidth + 6,(startHeight + 29) + (16 * index),12,12,1,"-"));
 			}
@@ -50,7 +52,7 @@ public class GuiProduction extends GuiHabitatBase {
 	protected void actionPerformed (GuiButton butt) throws IOException {
 		super.actionPerformed (butt);
 		for (int index = 0; index < outputs.size (); index++)
-			if (index <= 10)
+			if (index <= 12)
 				if ((100 + index) == butt.id && butt.displayString.equalsIgnoreCase ("+"))
 					proccessButton (outputs.get (index));
 				else if ((101 + index) == butt.id && butt.displayString.equalsIgnoreCase ("-"))
@@ -72,8 +74,16 @@ public class GuiProduction extends GuiHabitatBase {
 					mc.ingameGUI.getChatGUI ().printChatMessage (text);
 				}
 			}
-		if (valid >= output.getCost ().keySet ().size ())
+		boolean hasRequiredStructures = MutiBlockHelper.isOutputRunning (output,tile);
+		if (hasRequiredStructures && valid >= output.getCost ().keySet ().size ())
 			NetworkHandler.sendToServer (new OutputMessage (output,nextTier,tile,false));
+		if (!hasRequiredStructures) {
+			StringBuilder requiredStructures = new StringBuilder ();
+			HashMap <IStructure, Integer> missingStructures = MutiBlockHelper.outputRunningRequirments (output,tile);
+			for (IStructure structure : missingStructures.keySet ())
+				requiredStructures.append (structure.getDisplayName ()).append (" lvl ").append (missingStructures.get (structure)).append ("; ");
+			mc.ingameGUI.getChatGUI ().printChatMessage (new TextComponentString (TextFormatting.RED + I18n.translateToLocal (Local.MISSING_STRUCTURE).replaceAll ("'STRUCTURE'",requiredStructures.toString ())));
+		}
 	}
 
 	private void destroyButton (IOutput output) {

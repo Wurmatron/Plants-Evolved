@@ -231,4 +231,23 @@ public class MutiBlockHelper {
 				amount += ((IProduction) structure).getAmountPerTier (tile,tile.getStructures ().get (structure));
 		return amount;
 	}
+
+	public static boolean isOutputRunning (IOutput output,TileHabitatCore tile) {
+		if (output.getRequiredStructures ().size () > 0)
+			for (IStructure structure : output.getRequiredStructures ().keySet ())
+				if (getStructureLevel (tile,structure) < output.getRequiredStructures ().get (structure))
+					return false;
+		return true;
+	}
+
+	public static HashMap <IStructure, Integer> outputRunningRequirments (IOutput output,TileHabitatCore tile) {
+		if (output.getRequiredStructures ().size () > 0) {
+			HashMap <IStructure, Integer> requiredStructures = new HashMap <> ();
+			for (IStructure structure : output.getRequiredStructures ().keySet ())
+				if (getStructureLevel (tile,structure) < output.getRequiredStructures ().get (structure))
+					requiredStructures.put (structure,output.getRequiredStructures ().get (structure));
+			return requiredStructures;
+		}
+		return new HashMap <> ();
+	}
 }

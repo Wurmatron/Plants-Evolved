@@ -79,6 +79,11 @@ public class GuiStructure extends GuiHabitatBase {
 					destroyButton (structures.get (index));
 	}
 
+	private void reloadButtons () {
+		buttonList.clear ();
+		initGui ();
+	}
+
 	private void proccessButton (IStructure structure) {
 		int currentTier = MutiBlockHelper.getStructureLevel (tile,structure);
 		int nextTier = currentTier + keyAmount ();
@@ -87,6 +92,7 @@ public class GuiStructure extends GuiHabitatBase {
 			if (tile.getColonyValue (NBT.ENERGY) < (tile.getPowerUsage () + structure.getEnergyUsage (nextTier)))
 				Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.RED + I18n.translateToLocal (Local.ENERGY_OVERLOAD).replaceAll ("%STRUCTURE%",structure.getDisplayName ())),false);
 			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
+			Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.GOLD + I18n.translateToLocal (Local.SEND_TO_BUILDQUEUE).replaceAll ("'STRUCTURE'",structure.getDisplayName ())),false);
 		} else if (!MutiBlockHelper.hasRequiredResearch (tile,structure)) {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MISSING_RESEARCH).replaceAll ("'Research'",TextFormatting.GOLD + DisplayHelper.formatNeededResearch (ResearchHelper.getNeededResearch (tile.getResearch (),structure))));
 			text.getStyle ().setColor (TextFormatting.RED);

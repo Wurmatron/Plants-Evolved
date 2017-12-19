@@ -11,4 +11,6 @@ public interface IOutput {
 	HashMap <StorageType, Integer> getCost ();
 
 	ItemStack getItem ();
+
+	HashMap <IStructure, Integer> getRequiredStructures ();
 }

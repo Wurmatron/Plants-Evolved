@@ -281,7 +281,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private void processOutputSettings () {
 		if (getOutputSettings () != null && getOutputSettings ().size () > 0)
 			for (IOutput output : getOutputSettings ().keySet ())
-				if (canOutput (output.getCost ()))
+				if (MutiBlockHelper.isOutputRunning (output,this) && canOutput (output.getCost ()))
 					handleOutput (output);
 	}
 
