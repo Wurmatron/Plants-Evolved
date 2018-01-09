@@ -264,9 +264,8 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		BlockPos output = MutiBlockHelper.findOutput (world,this);
 		if (output != null && world.getTileEntity (output) instanceof TileOutput) {
 			TileOutput tile = (TileOutput) world.getTileEntity (output);
-			if (tile != null) {
+			if (tile != null)
 				return tile.addToStorage (stack);
-			}
 		}
 		return false;
 	}

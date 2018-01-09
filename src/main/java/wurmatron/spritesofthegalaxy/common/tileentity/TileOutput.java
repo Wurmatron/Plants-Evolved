@@ -23,8 +23,8 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 					for (int index = 0; index < getSizeInventory (); index++)
 						if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index)))
 							setInventorySlotContents (index,ItemStack.EMPTY);
-						else if (world.getWorldTime () % 20 == 0)
-							updateOutputLocation ();
+		if (world.getWorldTime () % 20 == 0)
+			updateOutputLocation ();
 	}
 
 	@Override
