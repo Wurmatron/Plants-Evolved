@@ -272,10 +272,19 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	private void updateStructures () {
-		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY) && hasWorkers ())
-			for (IStructure structure : getStructures ().keySet ())
-				if (structure instanceof ITickStructure && getPowerUsage () <= getColonyValue (NBT.ENERGY))
-					((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
+		if (getStructures () != null && getStructures ().size () > 0 && getPowerUsage () <= getColonyValue (NBT.ENERGY))
+			if (hasWorkers ()) {
+				for (IStructure structure : getStructures ().keySet ())
+					if (structure instanceof ITickStructure && getPowerUsage () <= getColonyValue (NBT.ENERGY))
+						((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
+			} else {
+				int popLeft = getColonyValue (NBT.POPULATION);
+				for (IStructure structure : getStructures ().keySet ())
+					if (structure instanceof ITickStructure && getPowerUsage () <= getColonyValue (NBT.ENERGY) && (structure.getPopulationRequirment () * getStructures ().get (structure)) <= popLeft) {
+						((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
+						popLeft = -(int) (structure.getPopulationRequirment () * getStructures ().get (structure));
+					}
+			}
 	}
 
 	private void processOutputSettings () {
@@ -426,5 +435,15 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 			return getAmountOfWorkers () >= amountRequired;
 		}
 		return true;
+	}
+
+	public int getRequiredWorkers () {
+		if (getStructures ().size () > 0) {
+			int amountRequired = 0;
+			for (IStructure structure : getStructures ().keySet ())
+				amountRequired += MutiBlockHelper.getRequiredPopulation (structure,getStructures ().get (structure));
+			return amountRequired;
+		}
+		return 0;
 	}
 }

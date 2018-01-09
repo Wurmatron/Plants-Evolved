@@ -84,7 +84,7 @@ public class GuiOverview extends GuiHabitatBase {
 				}
 		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 38,startWidth + 180,startHeight + 44)) {
 			List <String> text = new ArrayList <> ();
-			text.add ("Workers: " + tile.getAmountOfWorkers ());
+			text.add ("Workers: " + tile.getRequiredWorkers () + " / " + tile.getAmountOfWorkers ());
 			text.add ("Growth: " + (int) (tile.getColonyValue (NBT.POPULATION,null) - (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
 			drawHoveringText (text,startWidth + 200,startHeight + 46);
 
