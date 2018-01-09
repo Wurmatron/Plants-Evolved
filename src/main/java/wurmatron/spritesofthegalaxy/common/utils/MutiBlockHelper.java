@@ -2,6 +2,7 @@ package wurmatron.spritesofthegalaxy.common.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
@@ -181,6 +182,8 @@ public class MutiBlockHelper {
 							continue;
 						if (world.getTileEntity (tile.getPos ().add (x,y,z)) instanceof TileOutput)
 							return tile.getPos ().add (x,y,z);
+						else if (world.getTileEntity (tile.getPos ().subtract (new Vec3i (x,y,z))) instanceof TileOutput)
+							return tile.getPos ().subtract (new Vec3i (x,y,z));
 					}
 			return null;
 		}
