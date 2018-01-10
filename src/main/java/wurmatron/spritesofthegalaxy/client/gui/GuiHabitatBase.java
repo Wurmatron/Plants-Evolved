@@ -103,7 +103,7 @@ public class GuiHabitatBase extends GuiScreen {
 	}
 
 	protected void displayString (IOutput output,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
-		String str = I18n.translateToLocal (output.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getOutputLevel (tile,output));
+		String str = I18n.translateToLocal ("output." + output.getName () + ".name") + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getOutputLevel (tile,output));
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();
@@ -120,7 +120,7 @@ public class GuiHabitatBase extends GuiScreen {
 	}
 
 	protected void displayString (IResearch research,int mouseX,int mouseY,int startX,int startH,int buttX,int buttY,int buttX2,int buttY2) {
-		String str = I18n.translateToLocal (research.getName ()) + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getResearchLevel (tile,research));
+		String str = I18n.translateToLocal ("research." + research.getName () + ".name") + " lvl " + DisplayHelper.formatNum (MutiBlockHelper.getResearchLevel (tile,research));
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();

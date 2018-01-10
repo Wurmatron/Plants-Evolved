@@ -77,3 +77,32 @@ tip.worth.name=Worth %WORTH% Units
 info.colonyInvalid.name=This habitat does not have a valid colony!
 info.energyOverload.name=%STRUCTURE% will overLoad your energy system, either  build more energy production or stop it from building.
 
+# Output
+output.ironIngot.name=Iron Ingot
+output.goldIngot.name=Gold Ingot
+output.coal.name=Coal
+output.lapis.name=Lapis
+output.redstone.name=Redstone
+output.diamond.name=Diamond
+output.emerald.name=Emerald
+output.leather.name=Leather
+output.string.name=String
+output.blaze.name=Blaze
+output.wood.name=Wood
+output.glowstone.name=Glowstone
+output.witherHead.name=Wither Head
+
+# Research
+research.Land.name=Land
+research.GreenHouse.name=Greenhouse
+research.UnderGround.name=Underground
+research.HydroPonics.name=Hydroponics
+research.Synthesis.name=Synthesis
+research.Augmentation.name=Augmentation
+research.steam.name=Steam
+research.mass.name=Mass
+research.robotic.name=Robotic
+research.atomicAssembly.name=Atomic Assembly
+research.written.name=Written
+research.computational.name=Computational
+research.ai.name=A.I.
