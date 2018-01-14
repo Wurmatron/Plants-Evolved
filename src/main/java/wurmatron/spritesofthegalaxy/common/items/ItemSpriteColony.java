@@ -84,9 +84,11 @@ public class ItemSpriteColony extends Item {
 
 	@Override
 	public void getSubItems (CreativeTabs tab,NonNullList <ItemStack> sub) {
-		HashMap <IResearch, Integer> temp = new HashMap <> ();
-		temp.put (ResearchHelper.land,1);
-		sub.add (createColony (Lineages.COMMON,Settings.startPopulation,temp));
+		if (tab == SpritesOfTheGalaxy.tabSprites) {
+			HashMap <IResearch, Integer> temp = new HashMap <> ();
+			temp.put (ResearchHelper.land,1);
+			sub.add (createColony (Lineages.COMMON,Settings.startPopulation,temp));
+		}
 	}
 
 	public static HashMap <IResearch, Integer> getResearch (ItemStack stack) {
