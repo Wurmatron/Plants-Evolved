@@ -59,7 +59,7 @@ public class GuiStorage extends GuiHabitatBase {
 			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),nextTier,0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,false));
 		} else {
-			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStorage (type,currentTier,nextTier,0) - tile.getColonyValue (NBT.MINERALS))));
+			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStorage (type,currentTier,nextTier,0))));
 			text.getStyle ().setColor (TextFormatting.RED);
 			mc.ingameGUI.getChatGUI ().printChatMessage (text);
 		}

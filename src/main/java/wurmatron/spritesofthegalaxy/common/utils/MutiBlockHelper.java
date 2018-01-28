@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 import wurmatron.spritesofthegalaxy.api.mutiblock.*;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.common.blocks.BlockMutiBlock;
+import wurmatron.spritesofthegalaxy.common.blocks.BlockSpecial;
+import wurmatron.spritesofthegalaxy.common.blocks.SpriteBlocks;
 import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
@@ -188,6 +190,25 @@ public class MutiBlockHelper {
 			return null;
 		}
 		return null;
+	}
+
+	public static int countAccelerators (World world,TileHabitatCore tile) {
+		int count = 0;
+		if (getSize (world,tile.getPos (),tile.mutiBlockSize)) {
+			int direction = tile.mutiBlockSize / 2;
+			for (int x = 0; x <= direction; x++)
+				for (int y = 0; y <= direction; y++)
+					for (int z = 0; z <= direction; z++) {
+						if (x == 0 && y == 0 && z == 0)
+							continue;
+						if (world.getBlockState (tile.getPos ().add (x,y,z)).getBlock () == SpriteBlocks.habitatSpecial && world.getBlockState (tile.getPos ().add (x,y,z)).getValue (BlockSpecial.TYPE) == SpecialType.ACCELERATOR)
+							count++;
+						if (world.getBlockState (tile.getPos ().subtract (new Vec3i (x,y,z))).getBlock () == SpriteBlocks.habitatSpecial && world.getBlockState (tile.getPos ().subtract (new Vec3i (x,y,z))).getValue (BlockSpecial.TYPE) == SpecialType.ACCELERATOR)
+							count++;
+					}
+			return count;
+		}
+		return count;
 	}
 
 	public static int getBuildTime (IStructure structure,int tier) {

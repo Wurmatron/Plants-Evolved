@@ -116,13 +116,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		setColonyValue (nbt,nbtMax,getColonyValue (nbt) + value > 0 ? getColonyValue (nbt) + value : 0);
 	}
 
+	public ItemStack getColony () {
+		return colony;
+	}
+
 	public void setColony (ItemStack colony) {
 		this.colony = colony != null ? colony : ItemStack.EMPTY;
 		markDirty ();
-	}
-
-	public ItemStack getColony () {
-		return colony;
 	}
 
 	public int getPopulationFoodUsage () {
@@ -257,7 +257,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	}
 
 	private int getProcessingSpeed () {
-		return 1;
+		return 1 + MutiBlockHelper.countAccelerators (world,this);
 	}
 
 	public boolean addOutput (ItemStack stack) {

@@ -6,6 +6,7 @@ tile.habitat.name=Habitat Core
 tile.casing.name=Habitat Casing
 tile.output.name=Habitat Output
 tile.input.name=Habitat Input
+special.accelerator.name=Build Queue Accelerator
 
 # Stats
 stat.population.name=Population
@@ -75,7 +76,7 @@ tip.worth.name=Worth %WORTH% Units
 
 # Info
 info.colonyInvalid.name=This habitat does not have a valid colony!
-info.energyOverload.name=%STRUCTURE% will overLoad your energy system, either  build more energy production or stop it from building.
+info.energyOverload.name=%STRUCTURE% will overload your current energy system, to avoid shutdown either build more energy production or stop it from building.
 
 # Output
 output.ironIngot.name=Iron Ingot

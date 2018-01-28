@@ -3,6 +3,7 @@ package wurmatron.spritesofthegalaxy.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import wurmatron.spritesofthegalaxy.api.mutiblock.SpecialType;
 import wurmatron.spritesofthegalaxy.common.reference.Local;
 import wurmatron.spritesofthegalaxy.common.reference.Registry;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
@@ -18,6 +19,7 @@ public class SpriteBlocks {
 	public static Block habitatCasing;
 	public static Block habitatOutput;
 	public static Block habitatInput;
+	public static Block habitatSpecial;
 
 	public static void registerBlocks () {
 		ArrayList <String> habitatCore = new ArrayList <> ();
@@ -26,6 +28,7 @@ public class SpriteBlocks {
 		register (habitatCasing = new BlockCasing ());
 		register (habitatOutput = new BlockOutput ());
 		register (habitatInput = new BlockInput ());
+		register (habitatSpecial = new BlockSpecial (),SpecialType.ACCELERATOR);
 	}
 
 	public static void registerTiles () {
@@ -37,6 +40,10 @@ public class SpriteBlocks {
 
 	private static void register (Block block) {
 		Registry.registerBlock (block,block.getUnlocalizedName ().substring (5));
+	}
+
+	private static void register (Block block,SpecialType type) {
+		Registry.registerBlock (block,block.getUnlocalizedName ().substring (5),type);
 	}
 
 	private static void register (Block block,ArrayList <String> tooltip) {
