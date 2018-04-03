@@ -39,6 +39,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	@Override
 	public void update () {
 		if (update && world.getWorldTime () % 20 == 0) {
+			addOutput(new ItemStack (Items.DIAMOND));
 			int isValid = MutiBlockHelper.getSize (world,pos);
 			mutiBlockSize = isValid;
 			if (isValid > 0) {
@@ -352,13 +353,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private String convertToData (ItemStack item) {
 		if (item != null) {
 			item.setCount (1);
-			return StackHelper.convertToString (item);
+			return StackHelper.convert (item,false);
 		}
 		return "";
 	}
 
 	private ItemStack convertToStack (String stack) {
-		return StackHelper.convertToStack (stack);
+		return StackHelper.convert (stack);
 	}
 
 	@Override

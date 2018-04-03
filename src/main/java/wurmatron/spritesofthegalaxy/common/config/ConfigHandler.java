@@ -30,6 +30,8 @@ public class ConfigHandler {
 		Settings.debug = debug.getBoolean ();
 		Property maxTier = config.get (Configuration.CATEGORY_GENERAL,"maxTier",Defaults.maxTier,"Max Tier for Modules",1,16);
 		Settings.maxTier = maxTier.getInt ();
+		Property createDefaultOutput = config.get (Configuration.CATEGORY_GENERAL,"defaultOutput",Defaults.defaultOutput,"Create default habitat output's");
+		Settings.createDefaultOutput = createDefaultOutput.getBoolean ();
 		// Habitat
 		Property maxPopulation = config.get (Global.HABITAT,"defaultMaxPopulation",Defaults.maxPopulation,"Max Population for a newly created Habitat",1,Integer.MAX_VALUE);
 		Settings.startPopulation = maxPopulation.getInt ();
@@ -43,8 +45,6 @@ public class ConfigHandler {
 		Settings.workerPercentage = workerPercentage.getDouble ();
 		Property structurePopulationRequirement = config.get (Global.HABITAT,"structurePopulationRequirement",Defaults.structurePopulationRequirement,"The amount of population per tier of structure required for it to function");
 		Settings.structurePopulationRequirement = structurePopulationRequirement.getDouble ();
-
-
 		if (!DIRECTORY.exists ())
 			DIRECTORY.mkdir ();
 		LogHandler.info ("Config Loaded");
@@ -52,12 +52,6 @@ public class ConfigHandler {
 			config.save ();
 			LogHandler.info ("Config Saved");
 		}
-	}
-
-	@SubscribeEvent
-	public void configChanged (ConfigChangedEvent.OnConfigChangedEvent e) {
-		if (e.getModID ().equals (Global.MODID))
-			syncConfig ();
 	}
 
 	private static HashMap <IStructure, Integer> getDefaultStructures (String configLine) {
@@ -83,6 +77,12 @@ public class ConfigHandler {
 					LogHandler.info ("Invalid Structure Config line '#', it must follow this format \"structure;level\"".replaceAll ("#",line));
 		}
 		return defaultStructures;
+	}
+
+	@SubscribeEvent
+	public void configChanged (ConfigChangedEvent.OnConfigChangedEvent e) {
+		if (e.getModID ().equals (Global.MODID))
+			syncConfig ();
 	}
 
 }

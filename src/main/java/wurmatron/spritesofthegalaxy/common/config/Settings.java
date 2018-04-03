@@ -9,6 +9,7 @@ public class Settings {
 	// General
 	public static boolean debug;
 	public static int maxTier;
+	public static boolean createDefaultOutput;
 
 	// Habitat
 	public static int startPopulation;

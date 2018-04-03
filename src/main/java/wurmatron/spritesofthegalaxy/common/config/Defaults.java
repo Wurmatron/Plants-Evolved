@@ -5,6 +5,7 @@ public class Defaults {
 	// General
 	public static final boolean debug = false;
 	public static final int maxTier = 10;
+	public static final boolean defaultOutput = true;
 
 	// Habitat
 	public static final int maxPopulation = 32;

@@ -176,18 +176,11 @@ public class MutiBlockHelper {
 
 	public static BlockPos findOutput (World world,TileHabitatCore tile) {
 		if (getSize (world,tile.getPos (),tile.mutiBlockSize)) {
-			int direction = tile.mutiBlockSize / 2;
-			for (int x = 0; x <= direction; x++)
-				for (int y = 0; y <= direction; y++)
-					for (int z = 0; z <= direction; z++) {
-						if (x == 0 && y == 0 && z == 0)
-							continue;
-						if (world.getTileEntity (tile.getPos ().add (x,y,z)) instanceof TileOutput)
-							return tile.getPos ().add (x,y,z);
-						else if (world.getTileEntity (tile.getPos ().subtract (new Vec3i (x,y,z))) instanceof TileOutput)
-							return tile.getPos ().subtract (new Vec3i (x,y,z));
-					}
-			return null;
+			for (int x = tile.getPos ().getX () - 5; x < tile.getPos ().getX () + 4; x++)
+				for (int y = tile.getPos ().getY () - 5; y < tile.getPos ().getY () + 4; y++)
+					for (int z = tile.getPos ().getZ () - 5; z < tile.getPos ().getZ () + 4; z++)
+						if (world.getTileEntity (new BlockPos (x,y,z)) != null && world.getTileEntity (new BlockPos (x,y,z)) instanceof TileOutput)
+							return new BlockPos (x,y,z);
 		}
 		return null;
 	}

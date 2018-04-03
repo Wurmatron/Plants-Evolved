@@ -17,12 +17,10 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 
 	@Override
 	public void update () {
-		if (getCore () != null)
-			if (outputLocation != null && world.getWorldTime () % 5 == 0 && hasItems ())
-				if (hasItems ())
-					for (int index = 0; index < getSizeInventory (); index++)
-						if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index)))
-							setInventorySlotContents (index,ItemStack.EMPTY);
+		if (outputLocation != null && world.getWorldTime () % 5 == 0 && hasItems ())
+			for (int index = 0; index < getSizeInventory (); index++)
+				if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index)))
+					setInventorySlotContents (index,ItemStack.EMPTY);
 		if (world.getWorldTime () % 20 == 0)
 			updateOutputLocation ();
 	}
@@ -177,7 +175,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 
 	private boolean hasItems () {
 		for (ItemStack item : inventory)
-			if (item != null || item != ItemStack.EMPTY)
+			if (item != ItemStack.EMPTY)
 				return true;
 		return false;
 	}
@@ -219,6 +217,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	}
 
 	public void updateOutputLocation () {
+		outputLocation = null;
 		if (isValidInventory (pos.up ()))
 			outputLocation = pos.up ();
 		else if (isValidInventory (pos.down ()))

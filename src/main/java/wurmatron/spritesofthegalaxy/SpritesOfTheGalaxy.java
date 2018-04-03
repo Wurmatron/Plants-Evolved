@@ -16,6 +16,7 @@ import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.blocks.SpriteBlocks;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
+import wurmatron.spritesofthegalaxy.common.config.Settings;
 import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.proxy.CommonProxy;
@@ -60,21 +61,23 @@ public class SpritesOfTheGalaxy {
 	public void onInit (FMLInitializationEvent e) {
 		NetworkRegistry.INSTANCE.registerGuiHandler (SpritesOfTheGalaxy.instance,new GuiHandler ());
 		NetworkHandler.registerPackets ();
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("ironIngot",100,StackHelper.convertToString (new ItemStack (Items.IRON_INGOT,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("goldIngot",1000,StackHelper.convertToString (new ItemStack (Items.GOLD_INGOT,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("coal",10,StackHelper.convertToString (new ItemStack (Items.COAL,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("lapis",20,StackHelper.convertToString (new ItemStack (Items.DYE,1,4))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("redstone",5,StackHelper.convertToString (new ItemStack (Items.REDSTONE,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("diamond",5000,StackHelper.convertToString (new ItemStack (Items.DIAMOND,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("emerald",50,StackHelper.convertToString (new ItemStack (Items.EMERALD,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("leather",50,StackHelper.convertToString (new ItemStack (Items.LEATHER,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("string",5000,StackHelper.convertToString (new ItemStack (Items.STRING,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("blaze",5000,StackHelper.convertToString (new ItemStack (Items.BLAZE_ROD,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("wood",5000,StackHelper.convertToString (new ItemStack (Blocks.WOOL,1,0))));
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("glowstone",5000,StackHelper.convertToString (new ItemStack (Items.GLOWSTONE_DUST,1,0))));
-		HashMap <String, Integer> zombieStructure = new HashMap <> ();
-		zombieStructure.put (StructureHelper.zombieStructure.getName (),1);
-		SpritesOfTheGalaxyAPI.register (new OutputJson ("witherHead",5000,StackHelper.convertToString (new ItemStack (Items.SKULL,1,1)),zombieStructure));
+		if (Settings.createDefaultOutput) {
+			JsonLoader.saveOutput (new OutputJson ("ironIngot",100,StackHelper.convert (new ItemStack (Items.IRON_INGOT,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("goldIngot",1000,StackHelper.convert (new ItemStack (Items.GOLD_INGOT,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("coal",10,StackHelper.convert (new ItemStack (Items.COAL,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("lapis",20,StackHelper.convert (new ItemStack (Items.DYE,1,4),false)));
+			JsonLoader.saveOutput (new OutputJson ("redstone",5,StackHelper.convert (new ItemStack (Items.REDSTONE,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("diamond",5000,StackHelper.convert (new ItemStack (Items.DIAMOND,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("emerald",50,StackHelper.convert (new ItemStack (Items.EMERALD,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("leather",50,StackHelper.convert (new ItemStack (Items.LEATHER,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("string",5000,StackHelper.convert (new ItemStack (Items.STRING,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("blaze",5000,StackHelper.convert (new ItemStack (Items.BLAZE_ROD,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("wood",5000,StackHelper.convert (new ItemStack (Blocks.WOOL,1,0),false)));
+			JsonLoader.saveOutput (new OutputJson ("glowstone",5000,StackHelper.convert (new ItemStack (Items.GLOWSTONE_DUST,1,0),false)));
+			HashMap <String, Integer> zombieStructure = new HashMap <> ();
+			zombieStructure.put (StructureHelper.zombieStructure.getName (),1);
+			JsonLoader.saveOutput (new OutputJson ("witherHead",5000,StackHelper.convert (new ItemStack (Items.SKULL,1,1),false),zombieStructure));
+		}
 	}
 
 	@Mod.EventHandler

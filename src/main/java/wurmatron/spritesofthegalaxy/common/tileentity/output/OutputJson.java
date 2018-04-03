@@ -49,7 +49,7 @@ public class OutputJson implements IOutput {
 
 	@Override
 	public ItemStack getItem () {
-		return StackHelper.convertToStack (item);
+		return StackHelper.convert (item);
 	}
 
 	@Override
