@@ -44,8 +44,7 @@ public class MutiBlockHelper {
 	}
 
 	private static boolean isBlockValid (World world,BlockPos pos) {
-		Block block = world.getBlockState (pos).getBlock ();
-		return block instanceof BlockMutiBlock;
+		return world.getBlockState (pos).getBlock () instanceof BlockMutiBlock;
 	}
 
 	public static void setTilesCore (World world,BlockPos pos,int size) {

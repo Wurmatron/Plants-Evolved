@@ -209,7 +209,8 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 					tile.setInventorySlotContents (index,item);
 					ItemStack item2 = stack.copy ();
 					item2.setCount (amountLeft);
-					return addToStorage (item2);
+					addToStorage (item2);
+					return true;
 				}
 			}
 		}

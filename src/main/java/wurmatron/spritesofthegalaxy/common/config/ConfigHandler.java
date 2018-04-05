@@ -56,23 +56,23 @@ public class ConfigHandler {
 
 	private static HashMap <IStructure, Integer> getDefaultStructures (String configLine) {
 		HashMap <IStructure, Integer> defaultStructures = new HashMap <> ();
-		if (configLine != null && configLine.length () > 0 && configLine.contains (";")) {
+		if (configLine != null && configLine.length () > 0 && configLine.contains (":")) {
 			String[] lines = configLine.split (" ");
 			for (String line : lines)
-				if (line.contains (";")) {
-					IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (line.substring (0,line.indexOf (";")));
+				if (line.contains (":")) {
+					IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (line.substring (0,line.indexOf (":")));
 					if (structure != null) {
 						try {
-							int lvl = Integer.valueOf (line.substring (line.indexOf (";") + 1,line.length ()));
+							int lvl = Integer.valueOf (line.substring (line.indexOf (":") + 1,line.length ()));
 							if (lvl > 0)
 								defaultStructures.put (structure,lvl);
 							else
 								throw new NumberFormatException ("Number Must Be Greater Than 0");
 						} catch (NumberFormatException e) {
-							LogHandler.info ("Invalid Structure Tier '#', it must be a number and be greater than 0".replaceAll ("#",line.substring (0,line.indexOf (";"))));
+							LogHandler.info ("Invalid Structure Tier '#', it must be a number and be greater than 0".replaceAll ("#",line.substring (0,line.indexOf (":"))));
 						}
 					} else
-						LogHandler.info ("Invalid Structure Name '#'".replaceAll ("#",line.substring (0,line.indexOf (";"))));
+						LogHandler.info ("Invalid Structure Name '#'".replaceAll ("#",line.substring (0,line.indexOf (":"))));
 				} else
 					LogHandler.info ("Invalid Structure Config line '#', it must follow this format \"structure;level\"".replaceAll ("#",line));
 		}

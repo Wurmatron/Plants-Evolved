@@ -39,7 +39,6 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	@Override
 	public void update () {
 		if (update && world.getWorldTime () % 20 == 0) {
-			addOutput(new ItemStack (Items.DIAMOND));
 			int isValid = MutiBlockHelper.getSize (world,pos);
 			mutiBlockSize = isValid;
 			if (isValid > 0) {
