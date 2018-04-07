@@ -111,10 +111,15 @@ public class MutiBlockHelper {
 	}
 
 	public static int calcMineralsForStructure (IStructure structure,int currentTier,int nextTier,int researchLevel) {
-		int amountNeeded = 0;
-		for (int index = currentTier + 1; index <= nextTier; index++)
-			amountNeeded += structure.getCost (researchLevel,index);
-		return Math.abs (amountNeeded);
+		if(nextTier - currentTier == 1)
+			return structure.getCost (researchLevel,nextTier);
+		else {
+			int times = nextTier - currentTier;
+			int cost = 0;
+			for(int index = 0; index < times; index++)
+				cost += structure.getCost (researchLevel,currentTier + index);
+			return cost;
+		}
 	}
 
 	public static int calcMineralsForStorage (StorageType type,int currentTier,int nextTier,int researchLevel) {

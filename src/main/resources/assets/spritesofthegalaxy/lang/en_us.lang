@@ -61,6 +61,7 @@ gui.mutiBlockInfo_1.name=Requires a Minimum of 3 x 3 x 3 Casing!
 gui.mutiBlockInfo_2.name=Multi-Block: 3, 5, 7, 9
 gui.sendToBuildQueue.name='STRUCTURE' has been added to the build queue!
 gui.missingStructure.name=Required Structures 'STRUCTURE'
+gui.energyCost.name=Requires 'ENERGY' Energy
 
 # Item
 item.spriteColony.name=Sprite Colony
