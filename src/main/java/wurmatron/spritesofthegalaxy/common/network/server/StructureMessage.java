@@ -50,7 +50,7 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 
 	@Override
 	public void process (EntityPlayer player,Side side) {
-		if(side == Side.SERVER) {
+		if (side == Side.SERVER) {
 			int[] coreLoc = data.getIntArray (NBT.POSITION);
 			IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURES));
 			int tier = data.getInteger (NBT.LEVEL);
@@ -63,7 +63,6 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 						core.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,tier,MutiBlockHelper.getStructureLevel (core,structure),0));
 						core.removeStructure (structure);
 					} else {
-						LogHandler.info ("CostN: " + MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (core,structure),tier,0));
 						core.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (core,structure),tier,0));
 						core.buildStructure (structure,tier);
 					}
