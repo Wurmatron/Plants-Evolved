@@ -400,7 +400,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public boolean importStack (ItemStack stack) {
 		if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 0)
-			if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
+			if (getColonyValue (NBT.MAX_MINERALS) >= getColonyValue (NBT.MINERALS) + (10 * stack.getCount ())) {
 				addColonyValue (NBT.MINERALS,10 * stack.getCount ());
 				return true;
 			} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 1)
