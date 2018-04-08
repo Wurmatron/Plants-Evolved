@@ -19,7 +19,6 @@ import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
-import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -54,12 +53,6 @@ public class GuiStructure extends GuiHabitatBase {
 				buttonList.add (addButt);
 				buttonList.add (negButt);
 			}
-			if (tile.getBuildQueue ().size () > 0)
-				for (Object[] queue : tile.getBuildQueue ())
-					if (queue != null && queue.length > 0 && queue[0] instanceof IStructure && ((IStructure) queue[0]).getName ().equalsIgnoreCase (structures.get (index).getName ())) {
-						negButt.enabled = false;
-						addButt.enabled = false;
-					}
 			if (tile.getBuildQueue ().size () == 0) {
 				negButt.enabled = true;
 				addButt.enabled = true;
@@ -80,11 +73,6 @@ public class GuiStructure extends GuiHabitatBase {
 					destroyButton (structures.get (index));
 	}
 
-	private void reloadButtons () {
-		buttonList.clear ();
-		initGui ();
-	}
-
 	private void proccessButton (IStructure structure) {
 		int currentTier = MutiBlockHelper.getStructureLevel (tile,structure);
 		int nextTier = currentTier + keyAmount ();
@@ -92,8 +80,21 @@ public class GuiStructure extends GuiHabitatBase {
 			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (tile,structure),nextTier,0));
 			if (tile.getColonyValue (NBT.ENERGY) < (tile.getPowerUsage () + structure.getEnergyUsage (nextTier)))
 				Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.RED + I18n.translateToLocal (Local.ENERGY_OVERLOAD).replaceAll ("%STRUCTURE%",structure.getDisplayName ())),false);
-			NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
-			Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.GOLD + I18n.translateToLocal (Local.SEND_TO_BUILDQUEUE).replaceAll ("'STRUCTURE'",structure.getDisplayName ())),false);
+			else {
+				if (keyAmount () > 0) {
+					if (tile.getBuildQueue ().size () + keyAmount () <= tile.getColonyValue (NBT.BUILD_QUEUE)) {
+						NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
+						Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.GOLD + I18n.translateToLocal (Local.SEND_TO_BUILDQUEUE).replaceAll ("'STRUCTURE'",structure.getDisplayName ())),false);
+					} else {
+						TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.BUILDQUEUE_FULL));
+						text.getStyle ().setColor (TextFormatting.RED);
+						mc.ingameGUI.getChatGUI ().printChatMessage (text);
+					}
+				} else {
+					NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,false));
+					Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.GOLD + I18n.translateToLocal (Local.SEND_TO_BUILDQUEUE).replaceAll ("'STRUCTURE'",structure.getDisplayName ())),false);
+				}
+			}
 		} else if (!MutiBlockHelper.hasRequiredResearch (tile,structure)) {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MISSING_RESEARCH).replaceAll ("'Research'",TextFormatting.GOLD + DisplayHelper.formatNeededResearch (ResearchHelper.getNeededResearch (tile.getResearch (),structure))));
 			text.getStyle ().setColor (TextFormatting.RED);
@@ -111,12 +112,9 @@ public class GuiStructure extends GuiHabitatBase {
 
 	private void destroyButton (IStructure structure) {
 		int nextTier = keyAmount ();
-		LogHandler.info ("DS: " + Settings.defaultStructures.get (structure));
 		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && Settings.defaultStructures.get (structure) > 0) {
-			LogHandler.info ("A");
 			if (MutiBlockHelper.getStructureLevel (tile,structure) - nextTier >= 0 && MutiBlockHelper.getMinimumLevel (structure) <= MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
-				LogHandler.info ("B");
-				NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
+				NetworkHandler.sendToServer (new StructureMessage (structure,MutiBlockHelper.getStructureLevel (tile,structure) - nextTier,tile,true));
 			} else if (MutiBlockHelper.getMinimumLevel (structure) > MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
 				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));
 				text.getStyle ().setColor (TextFormatting.RED);

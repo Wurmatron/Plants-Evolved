@@ -19,6 +19,7 @@ import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -131,16 +132,28 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		return (int) (getColonyValue (NBT.POPULATION,null) * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1));
 	}
 
+	public double calcPopulationFoodUsage (double population) {
+		return (population * (Settings.populationFoodRequirement > 0 ? Settings.populationFoodRequirement : 1));
+	}
+
 	public boolean canPopulationGrow () {
 		return ((int) getColonyValue (NBT.POPULATION,null)) < getColonyValue (NBT.MAX_POPULATION) && (getColonyValue (NBT.FOOD) - getPopulationFoodUsage ()) > 0;
 	}
 
 	private void growPopulation () {
 		if (canPopulationGrow () && getColonyValue (NBT.POPULATION,null) < getColonyValue (NBT.MAX_POPULATION))
-			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,(getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
-		if (getPopulationFoodUsage () > getColonyValue (NBT.FOOD) + ((int) (getColonyValue (NBT.FOOD) * starvationPercentage))) {
-			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,(getColonyValue (NBT.POPULATION,null) - (getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
+			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,checkForZero ((getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
+		else if (getPopulationFoodUsage () > getColonyValue (NBT.FOOD) + ((int) (getColonyValue (NBT.FOOD) * starvationPercentage)))
+			setColonyValue (NBT.POPULATION,NBT.MAX_POPULATION,(getColonyValue (NBT.POPULATION,null) - (getColonyValue (NBT.POPULATION,null) * (1 - Settings.populationGrowth))));
+	}
+
+	private double checkForZero (double amount) {
+		double reqFood = calcPopulationFoodUsage (amount);
+		if (reqFood > getColonyValue (NBT.FOOD)) {
+			int foodLeft = getColonyValue (NBT.FOOD) - (int) (getColonyValue (NBT.POPULATION,null) * Settings.populationFoodRequirement);
+			return getColonyValue (NBT.POPULATION,null) + ((double) foodLeft / Settings.populationFoodRequirement);
 		}
+		return amount;
 	}
 
 	public HashMap <IStructure, Integer> getStructures () {
@@ -149,13 +162,13 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 
 	public void removeStructure (IStructure structure) {
 		if (structure != null && colony != ItemStack.EMPTY && colony.hasTagCompound () && getStructures ().containsKey (structure)) {
-			HashMap <IResearch, Integer> currentStructures = ItemSpriteColony.getResearch (colony);
+			HashMap <IStructure, Integer> currentStructures = ItemSpriteColony.getStructures (colony);
 			if (currentStructures.containsKey (structure) && structure instanceof IProduction) {
 				IProduction production = (IProduction) structure;
 				production.removeProduction (this,currentStructures.get (structure));
 			}
 			currentStructures.remove (structure);
-			setColony (ItemSpriteColony.saveResearch (colony,currentStructures));
+			setColony (ItemSpriteColony.saveStructure (colony,currentStructures));
 		}
 	}
 
@@ -256,16 +269,15 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		}
 	}
 
+	// TODO Build Queue Selection (Diff Category's)
 	private void proccessBuildQueue () {
-		if (buildQueue.size () > 0) {
-			if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) > 0)
+		if (buildQueue.size () > 0 && buildQueue.get (0).length == 3) {
+			if (((int) buildQueue.get (0)[2]) > 0)
 				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],decressTime (((int) buildQueue.get (0)[2]))});
-			else if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) <= 0)
+			if ((((int) buildQueue.get (0)[2]) <= 0))
 				if (buildQueue.get (0)[0] instanceof IStructure) {
-					if (getColonyValue (NBT.MINERALS) >= MutiBlockHelper.calcMineralsForStructure ((IStructure) buildQueue.get (0)[0],MutiBlockHelper.getStructureLevel (this,(IStructure) buildQueue.get (0)[0]),((int) buildQueue.get (0)[1]) + 1,MutiBlockHelper.getResearchBonus (this,(IStructure) buildQueue.get (0)[0]))) {
-						addStructure ((IStructure) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
-						buildQueue.remove (0);
-					}
+					addStructure ((IStructure) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
+					buildQueue.remove (0);
 				} else if (buildQueue.get (0)[0] instanceof StorageType) {
 					setStorage ((StorageType) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
 					buildQueue.remove (0);

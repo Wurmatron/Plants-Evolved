@@ -50,22 +50,26 @@ public class StructureMessage extends CustomMessage.CustomtServerMessage <Struct
 
 	@Override
 	public void process (EntityPlayer player,Side side) {
-		if (side == Side.SERVER) {
-			int[] coreLoc = data.getIntArray (NBT.POSITION);
-			IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURES));
-			int tier = data.getInteger (NBT.LEVEL);
-			boolean remove = data.getBoolean (NBT.TYPE);
-			BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
-			if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
-				TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
-				if (core != null) {
-					if (remove) {
-						core.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,tier,MutiBlockHelper.getStructureLevel (core,structure),0));
-						core.removeStructure (structure);
-					} else {
-						core.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (core,structure),tier,0));
+		int[] coreLoc = data.getIntArray (NBT.POSITION);
+		IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURES));
+		int tier = data.getInteger (NBT.LEVEL);
+		boolean remove = data.getBoolean (NBT.TYPE);
+		BlockPos coreLocation = new BlockPos (coreLoc[0],coreLoc[1],coreLoc[2]);
+		if (player.world.getTileEntity (coreLocation) != null && player.world.getTileEntity (coreLocation) instanceof TileHabitatCore) {
+			TileHabitatCore core = (TileHabitatCore) player.world.getTileEntity (coreLocation);
+			if (core != null) {
+				if (remove) {
+					core.addColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,tier,MutiBlockHelper.getStructureLevel (core,structure),0));
+					core.removeStructure (structure);
+					core.addStructure (structure,tier);
+
+				} else {
+					core.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (core,structure),tier,0));
+					if (tier - MutiBlockHelper.getStructureLevel (core,structure) > 1) {
+						for(int index = 0; index < (tier - MutiBlockHelper.getStructureLevel (core,structure)); index++)
+							core.buildStructure (structure, MutiBlockHelper.getStructureLevel (core,structure) + index);
+					} else
 						core.buildStructure (structure,tier);
-					}
 				}
 			}
 		}

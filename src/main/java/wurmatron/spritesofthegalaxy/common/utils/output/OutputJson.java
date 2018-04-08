@@ -1,4 +1,4 @@
-package wurmatron.spritesofthegalaxy.common.tileentity.output;
+package wurmatron.spritesofthegalaxy.common.utils.output;
 
 import net.minecraft.item.ItemStack;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;

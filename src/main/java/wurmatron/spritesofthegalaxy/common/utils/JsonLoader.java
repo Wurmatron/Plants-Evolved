@@ -6,11 +6,9 @@ import org.apache.commons.io.FileUtils;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IOutput;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
-import wurmatron.spritesofthegalaxy.common.tileentity.output.OutputJson;
+import wurmatron.spritesofthegalaxy.common.utils.output.OutputJson;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class JsonLoader {

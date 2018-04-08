@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.client.GuiHandler;
 import wurmatron.spritesofthegalaxy.common.blocks.SpriteBlocks;
 import wurmatron.spritesofthegalaxy.common.config.ConfigHandler;
@@ -24,7 +23,7 @@ import wurmatron.spritesofthegalaxy.common.reference.Global;
 import wurmatron.spritesofthegalaxy.common.reference.Registry;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.structure.StructureHelper;
-import wurmatron.spritesofthegalaxy.common.tileentity.output.OutputJson;
+import wurmatron.spritesofthegalaxy.common.utils.output.OutputJson;
 import wurmatron.spritesofthegalaxy.common.utils.JsonLoader;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
