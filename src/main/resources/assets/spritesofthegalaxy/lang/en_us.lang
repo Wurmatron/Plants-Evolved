@@ -17,6 +17,11 @@ stat.minerals.name=Minerals
 stat.energy.name=Energy
 stat.gem.name=Gems
 stat.magic.name=Magic
+maxPopulation=Population
+maxMinerals=Minerals
+maxMagic=Magic
+maxGem=Gem
+
 
 # Gui
 gui.agriculture.name=Agriculture
@@ -28,7 +33,7 @@ gui.energyProduction.name=Energy Prod.
 gui.magicProduction.name=Magic Prod.
 gui.mobFarm.name=Mob Farm
 gui.liquidFarm.name=Liquid Farm
-gui.nursery.name=Nursery
+gui.husbandry.name=Husbandry
 gui.research.name=Science
 gui.researchAgriculture.name=Agriculture
 gui.researchIndustry.name=Industry
@@ -68,6 +73,8 @@ item.spriteColony.name=Sprite Colony
 item.Mineral.name=Mineral Resource
 item.Gem.name=Gem Resource
 item.Magic.name=Magic Resource
+item.Compound.name=Speed Compound
+item.RichCompound.name=Rich Speed Compound
 
 # Research
 research.land.name=Farm Land

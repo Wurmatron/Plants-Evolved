@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import wurmatron.spritesofthegalaxy.api.SpritesOfTheGalaxyAPI;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.common.network.CustomMessage;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
@@ -20,9 +21,12 @@ public class CancelQueueRequest extends CustomMessage.CustomtServerMessage <Canc
 	public CancelQueueRequest () {
 	}
 
-	public CancelQueueRequest (BlockPos core,IStructure structure) {
+	public CancelQueueRequest (BlockPos core,Object structure) {
 		data.setIntArray (NBT.POSITION,new int[] {core.getX (),core.getY (),core.getZ ()});
-		data.setString (NBT.STRUCTURE,structure.getName ());
+		if (structure instanceof IStructure)
+			data.setString (NBT.STRUCTURE,((IStructure) structure).getName ());
+		else if (structure instanceof StorageType)
+			data.setString (NBT.STORAGE,((StorageType) structure).name ());
 	}
 
 	@Override
@@ -39,6 +43,9 @@ public class CancelQueueRequest extends CustomMessage.CustomtServerMessage <Canc
 	public void process (EntityPlayer player,Side side) {
 		TileHabitatCore tile = (TileHabitatCore) player.world.getTileEntity (new BlockPos (data.getIntArray (NBT.POSITION)[0],data.getIntArray (NBT.POSITION)[1],data.getIntArray (NBT.POSITION)[2]));
 		if (tile != null)
-			tile.removeFromBuildQueue (SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURE)));
+			if (data.hasKey (NBT.STRUCTURES))
+				tile.removeFromBuildQueue (SpritesOfTheGalaxyAPI.getStructureFromName (data.getString (NBT.STRUCTURE)));
+			else if (data.hasKey (NBT.STORAGE))
+				tile.removeFromBuildQueue (StorageType.valueOf (data.getString (NBT.STORAGE)));
 	}
 }

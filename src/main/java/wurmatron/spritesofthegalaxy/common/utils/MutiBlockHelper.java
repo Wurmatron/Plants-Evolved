@@ -111,12 +111,12 @@ public class MutiBlockHelper {
 	}
 
 	public static int calcMineralsForStructure (IStructure structure,int currentTier,int nextTier,int researchLevel) {
-		if(nextTier - currentTier == 1)
+		if (nextTier - currentTier == 1)
 			return structure.getCost (researchLevel,nextTier);
 		else {
 			int times = nextTier - currentTier;
 			int cost = 0;
-			for(int index = 0; index < times; index++)
+			for (int index = 0; index < times; index++)
 				cost += structure.getCost (researchLevel,currentTier + index);
 			return cost;
 		}
@@ -212,6 +212,9 @@ public class MutiBlockHelper {
 		return structure.getBuildTime (tier);
 	}
 
+	public static int getBuildTime (StorageType type,int tier) {
+		return ((int) type.getScale ()) * tier;
+	}
 
 	public static int getResearchBonus (TileHabitatCore tile,IStructure structure) {
 		return 0;

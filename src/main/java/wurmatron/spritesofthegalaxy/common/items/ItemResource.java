@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ItemResource extends Item {
 
-	public static final String[] minerals = new String[] {"Mineral","Gem","Magic"};
+	public static final String[] minerals = new String[] {"Mineral","Gem","Magic","Compound", "RichCompound"};
 
 	public ItemResource () {
 		setCreativeTab (SpritesOfTheGalaxy.tabSprites);
@@ -38,6 +38,11 @@ public class ItemResource extends Item {
 
 	@Override
 	public void addInformation (ItemStack stack,@Nullable World world,List <String> tip,ITooltipFlag flag) {
-		tip.add (I18n.translateToLocal (Local.TOOLTIP_WORTH).replaceAll ("%WORTH%",10 + ""));
+		if (stack.getItemDamage () == 3)
+			tip.add (I18n.translateToLocal (Local.TOOLTIP_WORTH).replaceAll ("%WORTH%",100 + ""));
+		else if(stack.getItemDamage () == 4)
+			tip.add (I18n.translateToLocal (Local.TOOLTIP_WORTH).replaceAll ("%WORTH%",1000 + ""));
+		else
+			tip.add (I18n.translateToLocal (Local.TOOLTIP_WORTH).replaceAll ("%WORTH%",10 + ""));
 	}
 }

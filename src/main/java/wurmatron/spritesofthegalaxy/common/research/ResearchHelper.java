@@ -68,37 +68,37 @@ public class ResearchHelper {
 	}},ResearchType.PRODUCTION);
 
 	// Energy
-	public static final Research fuel = new Research ("fuel",100,null,ResearchType.PRODUCTION);
+	public static final Research fuel = new Research ("fuel",100,null,ResearchType.ENERGY);
 	public static final Research nuclear = new Research ("nuclear",10000,new HashMap <IResearch, Integer> () {{
 		put (fuel,5);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research fusion = new Research ("fusion",100000,new HashMap <IResearch, Integer> () {{
 		put (fuel,20);
 		put (nuclear,5);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research solar = new Research ("solar",1000,new HashMap <IResearch, Integer> () {{
 		put (fuel,5);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research wind = new Research ("wind",1000,new HashMap <IResearch, Integer> () {{
 		put (fuel,5);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research hydro = new Research ("hydro",1000,new HashMap <IResearch, Integer> () {{
 		put (fuel,5);
 		put (wind,1);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research extraDimensionalEnergy = new Research ("extraDimensionalEnergy",1000000000,new HashMap <IResearch, Integer> () {{
 		put (fuel,100);
 		put (fusion,50);
 		put (solar,50);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research star = new Research ("star",1000000,new HashMap <IResearch, Integer> () {{
 		put (fusion,25);
 		put (hydro,20);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 	public static final Research interstellar = new Research ("interstellar",100000000,new HashMap <IResearch, Integer> () {{
 		put (star,5);
 		put (fusion,25);
-	}},ResearchType.PRODUCTION);
+	}},ResearchType.ENERGY);
 
 	// Industry
 	public static final Research primative = new Research ("primative",100,null,ResearchType.PRODUCTION);

@@ -19,7 +19,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 	public void update () {
 		if (outputLocation != null && world.getWorldTime () % 5 == 0 && hasItems ())
 			for (int index = 0; index < getSizeInventory (); index++)
-				if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index)))
+				if (getStackInSlot (index) != null || getStackInSlot (index) != ItemStack.EMPTY && addToStorage (getStackInSlot (index), true))
 					setInventorySlotContents (index,ItemStack.EMPTY);
 		if (world.getWorldTime () % 20 == 0)
 			updateOutputLocation ();
@@ -180,12 +180,13 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 		return false;
 	}
 
-	public boolean addToStorage (ItemStack stack) {
+	public boolean addToStorage (ItemStack stack,boolean firstRun) {
 		if (outputLocation != null) {
 			IInventory tile = (IInventory) world.getTileEntity (outputLocation);
 			if (stack != null && stack != ItemStack.EMPTY && tile != null)
 				for (int index = 0; index < tile.getSizeInventory (); index++)
-					return addToInventory (tile,index,stack);
+					if (firstRun)
+						return addToInventory (tile,index,stack);
 		}
 		return false;
 	}
@@ -209,7 +210,7 @@ public class TileOutput extends TileMutiBlock implements ITickable, IInventory {
 					tile.setInventorySlotContents (index,item);
 					ItemStack item2 = stack.copy ();
 					item2.setCount (amountLeft);
-					addToStorage (item2);
+					addToStorage (item2, false);
 					return true;
 				}
 			}

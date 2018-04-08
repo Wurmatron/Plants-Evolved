@@ -57,10 +57,10 @@ public class StorageTypeMessage extends CustomMessage.CustomtServerMessage <Stor
 			if (core != null) {
 				if (remove) {
 					core.addColonyValue (NBT.MINERALS,type.getCost () * tier);
-					core.setStorage (type,0);
+					core.setStorage (type,tier);
 				} else {
 					core.consumeColonyValue (NBT.MINERALS,type.getCost () * tier);
-					core.setStorage (type,tier);
+					core.buildStructure (type,tier+1);
 				}
 			}
 		}

@@ -19,7 +19,7 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 			if (tile != null)
 				for (int index = 0; index < inventory.length; index++)
 					if (getStackInSlot (index) != ItemStack.EMPTY && tile.importStack (getStackInSlot (index)))
-						setInventorySlotContents (index,null);
+						setInventorySlotContents (index,ItemStack.EMPTY);
 		}
 	}
 
@@ -45,13 +45,13 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 		if (getStackInSlot (index) != null) {
 			if (this.getStackInSlot (index).getCount () <= count) {
 				ItemStack stack = this.getStackInSlot (index);
-				setInventorySlotContents (index,null);
+				setInventorySlotContents (index,ItemStack.EMPTY);
 				markDirty ();
 				return stack;
 			} else {
 				ItemStack stack = getStackInSlot (index).splitStack (count);
 				if (getStackInSlot (index).getCount () <= 0)
-					setInventorySlotContents (index,null);
+					setInventorySlotContents (index,ItemStack.EMPTY);
 				else
 					setInventorySlotContents (index,getStackInSlot (index));
 				markDirty ();
@@ -71,10 +71,10 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 	@Override
 	public void setInventorySlotContents (int index,ItemStack stack) {
 		if (index >= 0 && index <= getSizeInventory ()) {
-			if (stack != null && stack.getCount () > getInventoryStackLimit ())
+			if (stack != ItemStack.EMPTY && stack.getCount () > getInventoryStackLimit ())
 				stack.setCount (getInventoryStackLimit ());
-			if (stack != null && stack.getCount () == 0)
-				stack = null;
+			if (stack != ItemStack.EMPTY && stack.getCount () == 0)
+				stack = ItemStack.EMPTY;
 			this.inventory[index] = stack;
 			this.markDirty ();
 		}
@@ -123,7 +123,7 @@ public class TileInput extends TileMutiBlock implements ITickable, IInventory {
 	@Override
 	public void clear () {
 		for (int i = 0; i < this.getSizeInventory (); i++)
-			setInventorySlotContents (i,null);
+			setInventorySlotContents (i,ItemStack.EMPTY);
 	}
 
 	@Override

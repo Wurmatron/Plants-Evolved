@@ -60,7 +60,7 @@ public class ResearchUpdateMessage extends CustomMessage.CustomtServerMessage <R
 				if (remove) {
 					core.setResearchPoints (research.getResearchTab (),core.getResearchPoints (research.getResearchTab ()) + MutiBlockHelper.calcPointsForResearch (research,level,MutiBlockHelper.getResearchLevel (core,research)));
 				} else
-					core.setResearchPoints (research.getResearchTab (),core.getResearchPoints (research.getResearchTab ()) - MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (core,research),level));
+					core.consumeResearchPoints (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (core,research),level));
 				core.setResearch (research,level);
 			}
 		}

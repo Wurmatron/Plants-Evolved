@@ -20,7 +20,7 @@ public class GuiManage extends GuiHabitatBase {
 	protected GuiTexturedButton magicProduction;
 	protected GuiTexturedButton mobFarm;
 	protected GuiTexturedButton liquidFarm;
-	protected GuiTexturedButton nursery;
+	protected GuiTexturedButton husbandry;
 	protected GuiTexturedButton research;
 	protected GuiTexturedButton storage;
 
@@ -37,7 +37,7 @@ public class GuiManage extends GuiHabitatBase {
 		buttonList.add (magicProduction = new GuiTexturedButton (13,startWidth + 61,startHeight + 69,60,15,1,I18n.translateToLocal (Local.MAGIC_PRODUCTION)));
 		buttonList.add (mobFarm = new GuiTexturedButton (14,startWidth + 61,startHeight + 85,60,15,1,I18n.translateToLocal (Local.MOB_FARM)));
 		buttonList.add (liquidFarm = new GuiTexturedButton (15,startWidth + 61,startHeight + 101,60,15,1,I18n.translateToLocal (Local.LIQUID_FARM)));
-		buttonList.add (nursery = new GuiTexturedButton (16,startWidth + 61,startHeight + 117,60,15,1,I18n.translateToLocal (Local.NURSERY)));
+		buttonList.add (husbandry = new GuiTexturedButton (16,startWidth + 61,startHeight + 117,60,15,1,I18n.translateToLocal (Local.HUSBANDRY)));
 		buttonList.add (research = new GuiTexturedButton (17,startWidth + 61,startHeight + 133,60,15,1,I18n.translateToLocal (Local.RESEARCH)));
 		buttonList.add (storage = new GuiTexturedButton (18,startWidth + 61,startHeight + 149,60,15,1,I18n.translateToLocal (Local.STORAGE)));
 	}

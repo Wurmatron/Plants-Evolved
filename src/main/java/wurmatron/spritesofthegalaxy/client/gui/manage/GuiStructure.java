@@ -19,6 +19,7 @@ import wurmatron.spritesofthegalaxy.common.reference.NBT;
 import wurmatron.spritesofthegalaxy.common.research.ResearchHelper;
 import wurmatron.spritesofthegalaxy.common.tileentity.TileHabitatCore;
 import wurmatron.spritesofthegalaxy.common.utils.DisplayHelper;
+import wurmatron.spritesofthegalaxy.common.utils.LogHandler;
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 
 import java.awt.*;
@@ -110,9 +111,11 @@ public class GuiStructure extends GuiHabitatBase {
 
 	private void destroyButton (IStructure structure) {
 		int nextTier = keyAmount ();
-		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && nextTier >= Settings.defaultStructures.get (structure)) {
-			if (MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount () >= 0 && MutiBlockHelper.getMinimumLevel (structure) <= MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
-				tile.addColonyValue (NBT.MINERALS,MutiBlockHelper.calculateSellBack (MutiBlockHelper.calcMineralsForStructure (structure,nextTier,MutiBlockHelper.getStructureLevel (tile,structure),0)));
+		LogHandler.info ("DS: " + Settings.defaultStructures.get (structure));
+		if (!Settings.defaultStructures.containsKey (structure) || Settings.defaultStructures.containsKey (structure) && Settings.defaultStructures.get (structure) > 0) {
+			LogHandler.info ("A");
+			if (MutiBlockHelper.getStructureLevel (tile,structure) - nextTier >= 0 && MutiBlockHelper.getMinimumLevel (structure) <= MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
+				LogHandler.info ("B");
 				NetworkHandler.sendToServer (new StructureMessage (structure,nextTier,tile,true));
 			} else if (MutiBlockHelper.getMinimumLevel (structure) > MutiBlockHelper.getStructureLevel (tile,structure) - keyAmount ()) {
 				TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.MIN_LEVEL_REQ));

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import wurmatron.spritesofthegalaxy.api.mutiblock.IStructure;
+import wurmatron.spritesofthegalaxy.api.mutiblock.StorageType;
 import wurmatron.spritesofthegalaxy.api.research.IResearch;
 import wurmatron.spritesofthegalaxy.client.gui.GuiHabitatBase;
 import wurmatron.spritesofthegalaxy.client.gui.utils.GuiTexturedButton;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class GuiOverview extends GuiHabitatBase {
 
-	private HashMap <IStructure, Integer> cancelButtons = new HashMap <> ();
+	private HashMap <Object, Integer> cancelButtons = new HashMap <> ();
 
 	public GuiOverview (TileHabitatCore tile) {
 		super (tile);
@@ -74,20 +75,22 @@ public class GuiOverview extends GuiHabitatBase {
 					GlStateManager.popMatrix ();
 					int id = cancelButtons.size () + 100;
 					buttonList.add (new GuiTexturedButton (id,startWidth + 121,startHeight + 90 + (index * 17),15,15,3,"X"));
-					cancelButtons.put ((IStructure) tile.getBuildQueue ().get (index)[0],id);
+					cancelButtons.put (tile.getBuildQueue ().get (index)[0],id);
 				} else if (index <= 17) {
 					GlStateManager.pushMatrix ();
 					mc.renderEngine.bindTexture (new ResourceLocation (Global.MODID,"textures/gui/parts.png"));
 					drawTexturedModalRect (startWidth + 135,startHeight + 106 + (index * 17),0,0,110,15);
-					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + tile.getBuildQueue ().get (index)[2],startWidth + 15,startHeight + 139 + (index * 17),Color.white.getRGB ());
+					drawString (fontRenderer,getDisplayName (tile.getBuildQueue ().get (index)[0]) + " -> lvl " + tile.getBuildQueue ().get (index)[1] + " | " + DisplayHelper.formatNum ((int) tile.getBuildQueue ().get (index)[2]),startWidth + 15,startHeight + 139 + (index * 17),Color.white.getRGB ());
 					GlStateManager.popMatrix ();
 				}
 		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 38,startWidth + 180,startHeight + 44)) {
 			List <String> text = new ArrayList <> ();
 			text.add ("Workers: " + tile.getRequiredWorkers () + " / " + tile.getAmountOfWorkers ());
-			text.add ("Growth: " + (int) (tile.getColonyValue (NBT.POPULATION,null) - (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth)));
+			int growth = (int) (tile.getColonyValue (NBT.POPULATION,null) - (tile.getColonyValue (NBT.POPULATION,null) * Settings.populationGrowth));
+			if (tile.getColonyValue (NBT.FOOD) == 0)
+				growth = 0;
+			text.add ("Growth: " + growth);
 			drawHoveringText (text,startWidth + 200,startHeight + 46);
-
 		}
 		if (isWithin (mouseX,mouseY,startWidth + 140,startHeight + 46,startWidth + 180,startHeight + 50))
 			drawHoveringText ("Usage: " + tile.getPopulationFoodUsage (),startWidth + 200,startHeight + 52);
@@ -102,9 +105,16 @@ public class GuiOverview extends GuiHabitatBase {
 		super.initGui ();
 		startWidth = (width - 256) / 2;
 		startHeight = (height - 256) / 2;
-		buttonList.add (new GuiTexturedButton (10,startWidth + 6,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME)));
-		buttonList.add (new GuiTexturedButton (11,startWidth + 6,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS)));
-		buttonList.add (new GuiTexturedButton (10,startWidth + 6,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO)));
+		GuiTexturedButton income = new GuiTexturedButton (10,startWidth + 6,startHeight + 21,60,15,I18n.translateToLocal (Local.INCOME));
+		GuiTexturedButton stats = new GuiTexturedButton (11,startWidth + 6,startHeight + 37,60,15,I18n.translateToLocal (Local.STATS));
+		GuiTexturedButton info = new GuiTexturedButton (10,startWidth + 6,startHeight + 53,60,15,I18n.translateToLocal (Local.INFO));
+		// WIP
+		income.enabled = false;
+		stats.enabled = false;
+		info.enabled = false;
+		buttonList.add (income);
+		buttonList.add (stats);
+		buttonList.add (info);
 	}
 
 	@Override
@@ -117,6 +127,8 @@ public class GuiOverview extends GuiHabitatBase {
 			return ((IStructure) obj).getName ().substring (0,1).toUpperCase () + ((IStructure) obj).getName ().substring (1,((IStructure) obj).getName ().length ());
 		else if (obj instanceof IResearch)
 			return ((IResearch) obj).getName ();
+		else if (obj instanceof StorageType)
+			return I18n.translateToLocal (((StorageType) obj).getDisplayKey ());
 		return "Unknown";
 	}
 
@@ -124,7 +136,7 @@ public class GuiOverview extends GuiHabitatBase {
 	protected void actionPerformed (GuiButton butt) throws IOException {
 		super.actionPerformed (butt);
 		if (butt.id >= 100) {
-			for (IStructure structure : cancelButtons.keySet ())
+			for (Object structure : cancelButtons.keySet ())
 				if (cancelButtons.get (structure) == butt.id) {
 					NetworkHandler.sendToServer (new CancelQueueRequest (tile.getPos (),structure));
 					NetworkHandler.sendToServer (new ClientBuildQueueRequest (tile.getPos ()));

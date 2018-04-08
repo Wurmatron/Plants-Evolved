@@ -107,14 +107,12 @@ public class GuiHabitatBase extends GuiScreen {
 		drawString (fontRenderer,str,startWidth + startX - fontRenderer.getStringWidth (str) / 2,startHeight + startH,Color.white.getRGB ());
 		if (isWithin (mouseX,mouseY,startWidth + buttX,startHeight + buttY,startWidth + buttX + 13,startHeight + buttY + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			for (StorageType st : output.getCost ().keySet ())
-				displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) + keyAmount () - 1) * output.getCost ().get (st))));
+			displayInfo.add (I18n.translateToLocal (Local.COST_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) + keyAmount () - 1) * output.getCost ().get (StorageType.MINERAL))));
 			drawHoveringText (displayInfo,startWidth + buttX,startHeight + buttY);
 		}
 		if (isWithin (mouseX,mouseY,startWidth + buttX2,startHeight + buttY2,startWidth + buttX2 + 13,startHeight + buttY2 + 12)) {
 			List <String> displayInfo = new ArrayList ();
-			for (StorageType st : output.getCost ().keySet ())
-				displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (st))))));
+			displayInfo.add (I18n.translateToLocal (Local.GIVE_MINERAL).replace ("'Minerals'",DisplayHelper.formatNum ((MutiBlockHelper.getOutputLevel (tile,output) * tile.getColonyValue (MutiBlockHelper.getType (StorageType.MINERAL))))));
 			drawHoveringText (displayInfo,startWidth + buttX2,startHeight + buttY2);
 		}
 	}

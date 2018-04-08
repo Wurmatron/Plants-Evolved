@@ -21,7 +21,7 @@ public class Local {
 	public static final String MAGIC_PRODUCTION = "gui.magicProduction.name";
 	public static final String MOB_FARM = "gui.mobFarm.name";
 	public static final String LIQUID_FARM = "gui.liquidFarm.name";
-	public static final String NURSERY = "gui.nursery.name";
+	public static final String HUSBANDRY = "gui.husbandry.name";
 	public static final String RESEARCH = "gui.research.name";
 	public static final String STORAGE = "gui.storage.name";
 	public static final String RESEARCH_AGRICLTURE = "gui.researchAgriculture.name";

@@ -38,4 +38,9 @@ public class Research implements IResearch {
 	public ResearchType getResearchTab () {
 		return type;
 	}
+
+	@Override
+	public String toString () {
+		return "[" + name + "]" + baseCost +"_" + type;
+	}
 }

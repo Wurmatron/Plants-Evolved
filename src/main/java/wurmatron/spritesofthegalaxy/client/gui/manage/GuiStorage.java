@@ -1,5 +1,6 @@
 package wurmatron.spritesofthegalaxy.client.gui.manage;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -58,6 +59,7 @@ public class GuiStorage extends GuiHabitatBase {
 		if (MutiBlockHelper.canBuildStorageType (tile,type,currentTier,nextTier)) {
 			tile.consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStorage (type,MutiBlockHelper.getStorageLevel (tile,type),nextTier,0));
 			NetworkHandler.sendToServer (new StorageTypeMessage (type,nextTier,tile,false));
+			Minecraft.getMinecraft ().player.sendStatusMessage (new TextComponentString (TextFormatting.GOLD + I18n.translateToLocal (Local.SEND_TO_BUILDQUEUE).replaceAll ("'STRUCTURE'",I18n.translateToLocal (type.getDisplayKey ()))),false);
 		} else {
 			TextComponentString text = new TextComponentString (I18n.translateToLocal (Local.NEED_MINERALS).replaceAll ("'Minerals'",DisplayHelper.formatNum (MutiBlockHelper.calcMineralsForStorage (type,currentTier,nextTier,0))));
 			text.getStyle ().setColor (TextFormatting.RED);

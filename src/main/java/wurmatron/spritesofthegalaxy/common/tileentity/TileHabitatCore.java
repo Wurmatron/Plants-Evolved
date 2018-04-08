@@ -18,6 +18,7 @@ import wurmatron.spritesofthegalaxy.common.items.SpriteItems;
 import wurmatron.spritesofthegalaxy.common.network.NetworkHandler;
 import wurmatron.spritesofthegalaxy.common.network.client.ClientBuildQueueRequest;
 import wurmatron.spritesofthegalaxy.common.reference.NBT;
+
 import wurmatron.spritesofthegalaxy.common.utils.MutiBlockHelper;
 import wurmatron.spritesofthegalaxy.common.utils.StackHelper;
 
@@ -123,6 +124,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	public void setColony (ItemStack colony) {
 		this.colony = colony != null ? colony : ItemStack.EMPTY;
 		markDirty ();
+		requestUpdate ();
 	}
 
 	public int getPopulationFoodUsage () {
@@ -218,15 +220,25 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		}
 	}
 
-	public void buildStructure (IStructure structure,int tier) {
+	public void consumeResearchPoints (ResearchType researchType,int amt) {
+		setResearchPoints (researchType,getResearchPoints (researchType) - amt);
+	}
+
+	public void buildStructure (Object structure,int tier) {
 		for (Object[] obj : buildQueue)
-			if (obj[0].equals (structure))
+			if (obj[0].equals (structure) && (tier == (int) obj[1]))
 				return;
 		if (getColonyValue (NBT.BUILD_QUEUE) > buildQueue.size ()) {
-			buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime (structure,tier + 1)});
-			NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
-			consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure (structure,MutiBlockHelper.getStructureLevel (this,structure),tier + 1,MutiBlockHelper.getResearchBonus (this,structure)));
-			markDirty ();
+			if (structure instanceof IStructure) {
+				buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime ((IStructure) structure,tier + 1)});
+				consumeColonyValue (NBT.MINERALS,MutiBlockHelper.calcMineralsForStructure ((IStructure) structure,MutiBlockHelper.getStructureLevel (this,(IStructure) structure),tier + 1,MutiBlockHelper.getResearchBonus (this,(IStructure) structure)));
+				NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
+				markDirty ();
+			} else if (structure instanceof StorageType) {
+				buildQueue.add (new Object[] {structure,tier,MutiBlockHelper.getBuildTime ((StorageType) structure,tier + 1)});
+				NetworkHandler.sendToServer (new ClientBuildQueueRequest (pos));
+				markDirty ();
+			}
 		}
 	}
 
@@ -247,13 +259,23 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 	private void proccessBuildQueue () {
 		if (buildQueue.size () > 0) {
 			if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) > 0)
-				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],((int) buildQueue.get (0)[2]) - getProcessingSpeed ()});
+				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],decressTime (((int) buildQueue.get (0)[2]))});
 			else if (buildQueue.get (0).length == 3 && ((int) buildQueue.get (0)[2]) <= 0)
-				if (getColonyValue (NBT.MINERALS) >= MutiBlockHelper.calcMineralsForStructure ((IStructure) buildQueue.get (0)[0],MutiBlockHelper.getStructureLevel (this,(IStructure) buildQueue.get (0)[0]),((int) buildQueue.get (0)[1]) + 1,MutiBlockHelper.getResearchBonus (this,(IStructure) buildQueue.get (0)[0]))) {
-					addStructure ((IStructure) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
+				if (buildQueue.get (0)[0] instanceof IStructure) {
+					if (getColonyValue (NBT.MINERALS) >= MutiBlockHelper.calcMineralsForStructure ((IStructure) buildQueue.get (0)[0],MutiBlockHelper.getStructureLevel (this,(IStructure) buildQueue.get (0)[0]),((int) buildQueue.get (0)[1]) + 1,MutiBlockHelper.getResearchBonus (this,(IStructure) buildQueue.get (0)[0]))) {
+						addStructure ((IStructure) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
+						buildQueue.remove (0);
+					}
+				} else if (buildQueue.get (0)[0] instanceof StorageType) {
+					setStorage ((StorageType) buildQueue.get (0)[0],(int) buildQueue.get (0)[1]);
 					buildQueue.remove (0);
 				}
 		}
+	}
+
+	private int decressTime (int time) {
+		int t = time - getProcessingSpeed ();
+		return t > 0 ? t : 0;
 	}
 
 	private int getProcessingSpeed () {
@@ -265,7 +287,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		if (output != null && world.getTileEntity (output) instanceof TileOutput) {
 			TileOutput tile = (TileOutput) world.getTileEntity (output);
 			if (tile != null)
-				return tile.addToStorage (stack);
+				return tile.addToStorage (stack,true);
 		}
 		return false;
 	}
@@ -281,7 +303,7 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 				for (IStructure structure : getStructures ().keySet ())
 					if (structure instanceof ITickStructure && getPowerUsage () <= getColonyValue (NBT.ENERGY) && (structure.getPopulationRequirment () * getStructures ().get (structure)) <= popLeft) {
 						((ITickStructure) structure).tickStructure (this,getStructures ().get (structure));
-						popLeft = -(int) (structure.getPopulationRequirment () * getStructures ().get (structure));
+						popLeft -= (int) (structure.getPopulationRequirment () * getStructures ().get (structure));
 					}
 			}
 	}
@@ -323,10 +345,17 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		NBTTagList structureList = nbt.getTagList (NBT.STRUCTURES,8);
 		for (int index = 0; index < structureList.tagCount (); index++) {
 			NBTTagCompound temp = (NBTTagCompound) structureList.get (index);
-			IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (temp.getString (NBT.STRUCTURE));
-			int tier = temp.getInteger (NBT.LEVEL);
-			int time = temp.getInteger (NBT.TIME);
-			buildQueue.add (new Object[] {structure,tier,time});
+			if (temp.hasKey (NBT.STRUCTURE)) {
+				IStructure structure = SpritesOfTheGalaxyAPI.getStructureFromName (temp.getString (NBT.STRUCTURE));
+				int tier = temp.getInteger (NBT.LEVEL);
+				int time = temp.getInteger (NBT.TIME);
+				buildQueue.add (new Object[] {structure,tier,time});
+			} else if (temp.hasKey (NBT.STORAGE)) {
+				StorageType structure = StorageType.valueOf (temp.getString (NBT.STORAGE));
+				int tier = temp.getInteger (NBT.LEVEL);
+				int time = temp.getInteger (NBT.TIME);
+				buildQueue.add (new Object[] {structure,tier,time});
+			}
 		}
 	}
 
@@ -338,11 +367,19 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		nbt.setInteger (NBT.SIZE,mutiBlockSize);
 		NBTTagList structureList = new NBTTagList ();
 		for (Object[] obj : buildQueue) {
-			NBTTagCompound temp = new NBTTagCompound ();
-			temp.setString (NBT.STRUCTURE,((IStructure) obj[0]).getName ());
-			temp.setInteger (NBT.LEVEL,((int) obj[1]));
-			temp.setInteger (NBT.TIME,((int) obj[2]));
-			structureList.appendTag (temp);
+			if (obj[0] instanceof IStructure) {
+				NBTTagCompound temp = new NBTTagCompound ();
+				temp.setString (NBT.STRUCTURE,((IStructure) obj[0]).getName ());
+				temp.setInteger (NBT.LEVEL,((int) obj[1]));
+				temp.setInteger (NBT.TIME,((int) obj[2]));
+				structureList.appendTag (temp);
+			} else if (obj[0] instanceof StorageType) {
+				NBTTagCompound temp = new NBTTagCompound ();
+				temp.setString (NBT.STORAGE,((StorageType) obj[0]).name ());
+				temp.setInteger (NBT.LEVEL,((int) obj[1]));
+				temp.setInteger (NBT.TIME,((int) obj[2]));
+				structureList.appendTag (temp);
+			}
 		}
 		nbt.setTag (NBT.STRUCTURES,structureList);
 		super.writeToNBT (nbt);
@@ -385,33 +422,54 @@ public class TileHabitatCore extends TileMutiBlock implements ITickable {
 		return buildQueue;
 	}
 
-	public void removeFromBuildQueue (IStructure structure) {
+	public void removeFromBuildQueue (Object structure) {
 		if (buildQueue.size () > 0) {
 			Object[] markForRemoval = new Object[0];
 			for (Object[] bq : buildQueue)
-				if (((IStructure) bq[0]).getName ().equalsIgnoreCase (structure.getName ()))
-					markForRemoval = bq;
+				if (bq[0] instanceof IStructure) {
+					if (((IStructure) bq[0]).getName ().equalsIgnoreCase (((IStructure) structure).getName ()))
+						markForRemoval = bq;
+				} else if (bq[0] instanceof StorageType)
+					if (((StorageType) bq[0]).name ().equalsIgnoreCase (((StorageType) structure).name ()))
+						markForRemoval = bq;
 			if (markForRemoval.length > 0) {
-				addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]),getStructures ().get (markForRemoval[0]),((int) markForRemoval[1]),0));
+				if (structure instanceof IStructure)
+					addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStructure (((IStructure) markForRemoval[0]),getStructures ().get (markForRemoval[0]),((int) markForRemoval[1]),0));
+				if (structure instanceof StorageType)
+					addColonyValue (NBT.MINERALS,NBT.MAX_MINERALS,MutiBlockHelper.calcMineralsForStorage ((StorageType) markForRemoval[0],getStorage ().get (markForRemoval[0]),((int) markForRemoval[1]),0));
 				buildQueue.remove (markForRemoval);
 			}
 		}
 	}
 
 	public boolean importStack (ItemStack stack) {
-		if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 0)
+		if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 0) {
 			if (getColonyValue (NBT.MAX_MINERALS) >= getColonyValue (NBT.MINERALS) + (10 * stack.getCount ())) {
 				addColonyValue (NBT.MINERALS,10 * stack.getCount ());
 				return true;
-			} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 1)
-				if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
-					addColonyValue (NBT.GEM,10 * stack.getCount ());
-					return true;
-				} else if (stack.getItem () == Items.IRON_INGOT)
-					if (getColonyValue (NBT.MAX_MINERALS) >= getColonyValue (NBT.MINERALS) + (100 * stack.getCount ())) {
-						addColonyValue (NBT.MINERALS,100 * stack.getCount ());
-						return true;
-					}
+			}
+		} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 1) {
+			if (getColonyValue (NBT.MAX_GEM) >= getColonyValue (NBT.GEM) + (10 * stack.getCount ())) {
+				addColonyValue (NBT.GEM,10 * stack.getCount ());
+				return true;
+			}
+		} else if (stack.getItem () == Items.IRON_INGOT) {
+			if (getColonyValue (NBT.MAX_MINERALS) >= getColonyValue (NBT.MINERALS) + (100 * stack.getCount ())) {
+				addColonyValue (NBT.MINERALS,100 * stack.getCount ());
+				return true;
+			}
+		} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 3) {
+			if (buildQueue.size () > 0) {
+				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],((int) buildQueue.get (0)[2]) - ((int) buildQueue.get (0)[2] / 100)});
+				return true;
+			}
+		} else if (stack.getItem () == SpriteItems.mineral && stack.getItemDamage () == 4) {
+			if (buildQueue.size () > 0) {
+				buildQueue.set (0,new Object[] {buildQueue.get (0)[0],buildQueue.get (0)[1],((int) buildQueue.get (0)[2]) - ((int) buildQueue.get (0)[2] / 10)});
+				NetworkHandler.sendToServer (new ClientBuildQueueRequest (getPos ()));
+				return true;
+			}
+		}
 		return false;
 	}
 

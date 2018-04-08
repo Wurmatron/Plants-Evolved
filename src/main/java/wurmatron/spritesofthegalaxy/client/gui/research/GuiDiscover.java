@@ -62,7 +62,7 @@ public class GuiDiscover extends GuiHabitatBase {
 		int currentTier = MutiBlockHelper.getResearchLevel (tile,research);
 		int nextTier = currentTier + keyAmount ();
 		if (MutiBlockHelper.canBuildResearchType (tile,research,currentTier,nextTier) && ResearchHelper.isValidMove (tile.getResearch (),research)) {
-			tile.setResearchPoints (research.getResearchTab (),tile.getResearchPoints (research.getResearchTab ()) - MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),nextTier));
+			tile.consumeResearchPoints (research.getResearchTab (),MutiBlockHelper.calcPointsForResearch (research,MutiBlockHelper.getResearchLevel (tile,research),nextTier));
 			NetworkHandler.sendToServer (new ResearchUpdateMessage (research,nextTier,tile,false));
 		} else {
 			if (!ResearchHelper.isValidMove (tile.getResearch (),research)) {
