@@ -1,0 +1,117 @@
+# Creative Tabs
+itemGroup.tabPlants=Plants Evolved
+
+# Block
+tile.habitat.name=Habitat Core
+tile.casing.name=Habitat Casing
+tile.output.name=Habitat Output
+tile.input.name=Habitat Input
+special.accelerator.name=Build Queue Accelerator
+
+# Stats
+stat.population.name=Population
+stat.food.name=Food
+stat.lineage.name=Lineage
+stat.size.name=Size
+stat.minerals.name=Minerals
+stat.energy.name=Energy
+stat.gem.name=Gems
+stat.magic.name=Magic
+maxPopulation=Population
+maxMinerals=Minerals
+maxMagic=Magic
+maxGem=Gem
+
+
+# Gui
+gui.agriculture.name=Agriculture
+gui.stats.name=Stats
+gui.income.name=Income
+gui.info.name=Info
+gui.mines.name=Mines
+gui.energyProduction.name=Energy Prod.
+gui.magicProduction.name=Magic Prod.
+gui.mobFarm.name=Mob Farm
+gui.liquidFarm.name=Liquid Farm
+gui.husbandry.name=Husbandry
+gui.research.name=Science
+gui.researchAgriculture.name=Agriculture
+gui.researchIndustry.name=Industry
+gui.researchEnergy.name=Energy
+gui.researchResearch.name=Research
+gui.storage.name=Storage
+gui.researchMagic.name=Magic
+gui.researchUnique.name=Unique
+gui.missingResearch.name=Required Research 'Research'
+gui.needMinerals.name=Need 'Minerals' More Minerals!
+gui.currentlyProvide.name=Currently Provides 'PRODUCE'.
+gui.prevLevel.name=Previous Tier Produces 'PRODUCE'
+gui.nextLevel.name=Next Tier Produces 'PRODUCE'
+gui.costMineral.name=Costs 'Minerals' Minerals
+gui.giveMineral.name=Gives 'Minerals' Minerals
+gui.costPoints.name=Costs 'POINTS' Research Points
+gui.givePoints.name=Gives 'POINTS' Research Points
+gui.needPoints.name=Need 'POINTS' More Research Points!.
+gui.energy.name=Energy
+gui.minimumLevelRequired.name=You Cannot Scrap Any Further (Minimum Level Reached)
+gui.maxPopulation.name=Population
+gui.maxMinerals.name=Minerals
+gui.maxMagic.name=Magic
+gui.maxGem.name=Gem
+gui.queue.name=Queue
+gui.buildQueueFull.name=The Build Queue Is Full Try Upgrading Its Storage in the Storage Tab!
+gui.buildQueue.name=Build Queue
+gui.populationCost.name=Requires 'POPULATION' Population
+gui.mutiBlockInfo_1.name=Requires a Minimum of 3 x 3 x 3 Casing!
+gui.mutiBlockInfo_2.name=Multi-Block: 3, 5, 7, 9
+gui.sendToBuildQueue.name='STRUCTURE' has been added to the build queue!
+gui.missingStructure.name=Required Structures 'STRUCTURE'
+gui.energyCost.name=Requires 'ENERGY' Energy
+
+# Item
+item.spriteColony.name=Sprite Colony
+item.Mineral.name=Mineral Resource
+item.Gem.name=Gem Resource
+item.Magic.name=Magic Resource
+item.Compound.name=Speed Compound
+item.RichCompound.name=Rich Speed Compound
+
+# Research
+research.land.name=Farm Land
+
+# Tooltip
+tip.worth.name=Worth %WORTH% Units
+
+# Info
+info.colonyInvalid.name=This habitat does not have a valid colony!
+info.energyOverload.name=%STRUCTURE% will overload your current energy system, to avoid shutdown either build more energy production or stop it from building.
+
+# Output
+output.ironIngot.name=Iron Ingot
+output.goldIngot.name=Gold Ingot
+output.coal.name=Coal
+output.lapis.name=Lapis
+output.redstone.name=Redstone
+output.diamond.name=Diamond
+output.emerald.name=Emerald
+output.leather.name=Leather
+output.string.name=String
+output.blaze.name=Blaze
+output.wood.name=Wood
+output.glowstone.name=Glowstone
+output.witherHead.name=Wither Head
+
+# Research
+research.Land.name=Land
+research.GreenHouse.name=Greenhouse
+research.UnderGround.name=Underground
+research.HydroPonics.name=Hydroponics
+research.Synthesis.name=Synthesis
+research.Augmentation.name=Augmentation
+research.steam.name=Steam
+research.mass.name=Mass
+research.robotic.name=Robotic
+research.atomicAssembly.name=Atomic Assembly
+research.written.name=Written
+research.computational.name=Computational
+research.ai.name=A.I.

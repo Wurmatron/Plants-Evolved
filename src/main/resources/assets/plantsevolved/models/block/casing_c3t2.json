@@ -1,0 +1,13 @@
+{
+    "__comment": "Model for when three adjacent sides connected sides in a T shape.",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "plantsevolved:blocks/casing/casing0C",
+        "down": "plantsevolved:blocks/casing/casing2C_we",
+		"up": "plantsevolved:blocks/casing/casing4C",
+		"north": "plantsevolved:blocks/casing/casing3C_uwe",
+		"south": "plantsevolved:blocks/casing/casing3C_uwe",
+		"west": "plantsevolved:blocks/casing/casing4C",
+		"east": "plantsevolved:blocks/casing/casing4C"
+    }
+}

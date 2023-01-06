@@ -1,0 +1,13 @@
+{
+    "__comment": "Model file for four connected sides in a cross shape.",
+	"parent": "block/cube",
+    "textures": {
+		"particle": "plantsevolved:blocks/casing/casing0C",
+        "down": "plantsevolved:blocks/casing/casing4C",
+		"up": "plantsevolved:blocks/casing/casing4C",
+		"north": "plantsevolved:blocks/casing/casing4C",
+		"south": "plantsevolved:blocks/casing/casing4C",
+		"west": "plantsevolved:blocks/casing/casing4C",
+		"east": "plantsevolved:blocks/casing/casing4C"
+    }
+}

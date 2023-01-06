@@ -1,7 +1,7 @@
 [
   {
-    "modid": "spritesofthegalaxy",
-    "name": "Sprites Of The Galaxy",
+    "modid": "plantsevolved",
+    "name": "Plants Evolved",
     "description": "",
     "version": "${version}",
     "mcversion": "${mcversion}",
